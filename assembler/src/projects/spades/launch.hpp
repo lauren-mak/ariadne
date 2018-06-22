@@ -140,25 +140,25 @@ void assemble_genome() {
         SPAdes.add<debruijn_graph::ContigOutput>(false);
     }
 
+    INFO("W - Start");
+
+    StageManager barcodeDeconvolutionStage({cfg::get().developer_mode,
+                         cfg::get().load_from,
+                         cfg::get().output_saves});    
+    barcodeDeconvolutionStage.add<debruijn_graph::Construction>();
+    barcodeDeconvolutionStage.add<debruijn_graph::RawSimplification>(two_step_rr);
+    barcodeDeconvolutionStage.add<debruijn_graph::Simplification>();
+    barcodeDeconvolutionStage.add<debruijn_graph::DistanceEstimation>();
+    barcodeDeconvolutionStage.run(conj_gp, cfg::get().entry_point.c_str());
+
+    
+    
+    INFO("W - End");
+
     SPAdes.add<debruijn_graph::ContigOutput>();
 
     SPAdes.run(conj_gp, cfg::get().entry_point.c_str());
 
-    // WARIS starts here
-
-    INFO("W - Start");
-
-    StageManager emptyStage({cfg::get().developer_mode,
-                         cfg::get().load_from,
-                         cfg::get().output_saves});    
-    emptyStage.add<debruijn_graph::Construction>();
-    emptyStage.add<debruijn_graph::RawSimplification>(two_step_rr);
-    emptyStage.add<debruijn_graph::Simplification>();
-    emptyStage.add<debruijn_graph::DistanceEstimation>();
-    emptyStage.run(conj_gp, cfg::get().entry_point.c_str());
-
-    
-    INFO("W - End");
 
     // For informing spades.py about estimated params
     debruijn_graph::config::write_lib_data(fs::append_path(cfg::get().output_dir, "final"));
