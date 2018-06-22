@@ -24,6 +24,7 @@
 #include "series_analysis.hpp"
 #include "pipeline/stage.hpp"
 #include "contig_output_stage.hpp"
+#include "spades/assembler/src/common/io/reads/molecule_extraction_stage.hpp"
 
 namespace spades {
 
@@ -142,6 +143,22 @@ void assemble_genome() {
     SPAdes.add<debruijn_graph::ContigOutput>();
 
     SPAdes.run(conj_gp, cfg::get().entry_point.c_str());
+
+    // WARIS starts here
+
+    INFO("W - Start");
+
+    StageManager emptyStage({cfg::get().developer_mode,
+                         cfg::get().load_from,
+                         cfg::get().output_saves});    
+    emptyStage.add<debruijn_graph::Construction>();
+    emptyStage.add<debruijn_graph::RawSimplification>(two_step_rr);
+    emptyStage.add<debruijn_graph::Simplification>();
+    emptyStage.add<debruijn_graph::DistanceEstimation>();
+    emptyStage.run(conj_gp, cfg::get().entry_point.c_str());
+
+    
+    INFO("W - End");
 
     // For informing spades.py about estimated params
     debruijn_graph::config::write_lib_data(fs::append_path(cfg::get().output_dir, "final"));
