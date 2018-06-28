@@ -24,8 +24,8 @@
 #include "series_analysis.hpp"
 #include "pipeline/stage.hpp"
 #include "contig_output_stage.hpp"
-#include "assembly_graph/paths/path_processor.hpp"
-// #include "io/reads/molecule_extraction_stage.hpp"
+#include "barcode_deconvolution_stage.hpp"
+// #include "molecule_extraction_stage.cpp"
 
 namespace spades {
 
@@ -50,7 +50,6 @@ inline bool HybridLibrariesPresent() {
 }
 
 void assemble_genome() {
-
     INFO("SPAdes started");
     if (cfg::get().mode == debruijn_graph::config::pipeline_type::meta && !MetaCompatibleLibraries()) {
         ERROR("Sorry, current version of metaSPAdes can work either with single library (paired-end only) "
@@ -142,27 +141,11 @@ void assemble_genome() {
         SPAdes.add<debruijn_graph::ContigOutput>(false);
     }
 
-    INFO("W - Start");
+    SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
 
-    StageManager barcodeDeconvolutionStage({cfg::get().developer_mode,
-                         cfg::get().load_from,
-                         cfg::get().output_saves});    
-    barcodeDeconvolutionStage.add<debruijn_graph::Construction>();
-    // barcodeDeconvolutionStage.add<debruijn_graph::RawSimplification>(two_step_rr);
-    // barcodeDeconvolutionStage.add<debruijn_graph::Simplification>();
-    barcodeDeconvolutionStage.add<debruijn_graph::DistanceEstimation>();
-    barcodeDeconvolutionStage.add<debruijn_graph::ContigOutput>();
-    // omnigraph::PathProcessor()
-    barcodeDeconvolutionStage.run(conj_gp, cfg::get().entry_point.c_str());
+    SPAdes.add<debruijn_graph::ContigOutput>();
 
-    
-    
-    INFO("W - End");
-
-    // SPAdes.add<debruijn_graph::ContigOutput>();
-
-    // SPAdes.run(conj_gp, cfg::get().entry_point.c_str());
-
+    SPAdes.run(conj_gp, cfg::get().entry_point.c_str());
 
     // For informing spades.py about estimated params
     debruijn_graph::config::write_lib_data(fs::append_path(cfg::get().output_dir, "final"));
