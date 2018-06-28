@@ -34,7 +34,8 @@ enum class LibraryType {
     TrustedContigs,
     TSLReads,
     PathExtendContigs,
-    UntrustedContigs
+    UntrustedContigs,
+    RNA10x
 };
 
 enum class LibraryOrientation {
