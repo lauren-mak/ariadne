@@ -110,6 +110,11 @@ class BidirectionalPath : public PathListener {
     float weight_;
 
 public:
+
+    // Wanted to make private, with a setter and getter but assumed must be public since
+    // direct access allowed in barcode_deconvolution_stage in extractLongReads member function
+    std::string barcode;
+
     BidirectionalPath(const Graph& g)
             : g_(g),
               conj_path_(nullptr),
