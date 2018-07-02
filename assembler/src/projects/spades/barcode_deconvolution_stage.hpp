@@ -25,7 +25,7 @@ namespace debruijn_graph {
 
       	void run(conj_graph_pack &gp, const char*){
             gp.EnsureIndex();
-            gp.kmer_mapper.Attach();
+            if(!gp.kmer_mapper.IsAttached()) gp.kmer_mapper.Attach();
             INFO("Barcode Deconvolution Started");
             config::dataset& dataset_info = cfg::get_writable().ds;
             for (auto& lib : dataset_info.reads) {
@@ -392,7 +392,7 @@ namespace debruijn_graph {
     }
 
 
-    void processReads(debruijn_graph::conj_graph_pack &graph_pack, const lib_t& lib_10x) {
+    void processReads(debruijn_graph::conj_graph_pack &graph_pack, const lib_t& lib_10x){
         INFO("CHECK PROCESS READS STARTS");
         auto mapper = MapperInstance(graph_pack);
         auto stream = io::paired_easy_reader(lib_10x, false, false);
@@ -406,44 +406,51 @@ namespace debruijn_graph {
         while(!stream->eof()) {
             *stream >> read;
             string barcode_string = GetTenXBarcodeFromRead(read);
-            INFO("BARCODE: " << barcode_string);
             if(barcode_string != ""){
                 if(barcode_string != current_barcode && !paths.empty()) {
-                  // long_reads = // vector of pairs(pointer to path(deque of edgeids), pointer to path for conjugate graph(deque of edgeids))
+                  // long_reads = // vector of pairs(pointer to path(deque of edgeids),
+                  // pointer to path for conjugate graph(deque of edgeids))
                   extractor.extractLongReads(paths, long_reads, current_barcode);
                   paths.clear();
                 }
             }
-            INFO("IS THIS WHERE I FAIL?"); // It's here
             const auto &path1 = mapper->MapRead(read.first());
             const auto &path2 = mapper->MapRead(read.second());
-            INFO("OR HERE?");
             paths.push_back(path1);
             paths.push_back(path2);
 
             current_barcode = barcode_string;
         }
-        INFO("IM GUESSING THIS IS WHERE I FAIL NOW");
         extractor.extractLongReads(paths, long_reads, current_barcode);
-        INFO("OR MAYBE NOT");
         paths.clear();
         for(auto pair1 : long_reads) {
             for(auto pair2 : long_reads){
-                if(pair1.first != pair2.first){
+                if(&pair1.first != &pair2.first){
                     VertexId startVertex = graph_pack.g.EdgeEnd(pair1.first->Back());
                     VertexId endVertex = graph_pack.g.EdgeStart(pair2.first->Front());
+
                     // I have the vertices, just find distance. ProcessPath gives you the path
-                    DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(graph_pack.g);
-                    int error_code = ProcessPaths(graph_pack.g, 0, 25000, startVertex, endVertex, callback);
-                    auto all_distances = callback.distances();
-                    for(auto howFar : all_distances){
-                        INFO("distance from " << pair1.first->barcode << " to " << pair2.first->barcode << ": " << howFar);
+                    DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> 
+                        callback(graph_pack.g);
+
+                    int error_code = ProcessPaths(graph_pack.g, 0, 25000,
+                                                 startVertex, endVertex, callback);
+
+                    std::vector<size_t> all_distances = callback.distances();
+                    if(all_distances.size() == 0) {
+                        INFO("Too low coverage: distances between reads not found");
+                    } 
+                    else {
+                        for(auto howFar : all_distances){
+                            INFO("distance from " << pair1.first->barcode << " to " << pair2.first->barcode << ": " << howFar);
+                        }
                     }
                 }
             }
         }
         path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
-        writer.OutputPaths(long_reads, cfg::get().output_dir + "/extracted.fasta");
+        INFO("Outputting updated reads with barcode to " << cfg::get().output_dir << "extracted.fasta");
+        writer.OutputPaths(long_reads, cfg::get().output_dir + "extracted.fasta");
 
     }
 
