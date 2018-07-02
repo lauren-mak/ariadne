@@ -423,6 +423,7 @@ namespace debruijn_graph {
         }
         extractor.extractLongReads(paths, long_reads, current_barcode);
         paths.clear();
+        bool found_distances = false;
         for(auto pair1 : long_reads) {
             for(auto pair2 : long_reads){
                 if(&pair1.first != &pair2.first){
@@ -437,8 +438,8 @@ namespace debruijn_graph {
                                                  startVertex, endVertex, callback);
 
                     std::vector<size_t> all_distances = callback.distances();
-                    if(all_distances.size() == 0) {
-                        INFO("Too low coverage: distances between reads not found");
+                    if(all_distances.size() > 0) {
+                        found_distances = true;
                     } 
                     else {
                         for(auto howFar : all_distances){
@@ -448,6 +449,7 @@ namespace debruijn_graph {
                 }
             }
         }
+        if(!found_distances) INFO("Too low coverage: distances betwee reads not found");
         path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
         INFO("Outputting updated reads with barcode to " << cfg::get().output_dir << "extracted.fasta");
         writer.OutputPaths(long_reads, cfg::get().output_dir + "extracted.fasta");
