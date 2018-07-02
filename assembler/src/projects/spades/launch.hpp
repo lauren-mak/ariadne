@@ -141,7 +141,7 @@ void assemble_genome() {
         SPAdes.add<debruijn_graph::ContigOutput>(false);
     }
 
-    SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
+    if(cfg::get().rr_enable) SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
 
     SPAdes.add<debruijn_graph::ContigOutput>();
 
