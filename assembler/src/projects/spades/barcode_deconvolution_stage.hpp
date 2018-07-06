@@ -438,13 +438,11 @@ namespace debruijn_graph {
                                                  startVertex, endVertex, callback);
 
                     std::vector<size_t> all_distances = callback.distances();
-                    if(all_distances.size() > 0) {
+                    if(all_distances.size() > 0 && !found_distances) {
                         found_distances = true;
                     } 
-                    else {
-                        for(auto howFar : all_distances){
-                            INFO("distance from " << pair1.first->barcode << " to " << pair2.first->barcode << ": " << howFar);
-                        }
+                    for(auto howFar : all_distances){
+                        INFO("distance from " << pair1.first->barcode << " to " << pair2.first->barcode << ": " << howFar);
                     }
                 }
             }
