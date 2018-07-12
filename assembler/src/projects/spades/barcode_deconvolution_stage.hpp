@@ -6,6 +6,7 @@
 #include "io/dataset_support/dataset_readers.hpp"
 #include "assembly_graph/paths/bidirectional_path_io/bidirectional_path_output.hpp"
 #include "assembly_graph/paths/bidirectional_path_io/io_support.hpp"
+#include <unordered_map>
 
 
 namespace debruijn_graph {
@@ -317,8 +318,65 @@ namespace debruijn_graph {
         analogOfExtractLongReads(graph_pack, paths, long_reads, current_barcode);
         paths.clear();
         bool distances_found = false;
+
+
+        std::string current_barcode2 = "";
+        int counter = 0;
+        struct hash_pairs{
+            std::size_t operator() (const std::pair<std::string, std::string>& p) const {
+                return boost::hash_value(p);
+            }
+        };
+        std::unordered_map<std::pair<std::string, std::string>, int, hash_pairs> associated_barcodes;
+        
+
         for(auto pair1 : long_reads) {
+
+            if(current_barcode != pair1.first->barcode){
+                // if(counter && current_barcode != current_barcode2) INFO(current_barcode << "_____" << current_barcode2 << ' ' << counter << " overlaps       LAST BARCODE");
+                auto toFind = std::make_pair(current_barcode, current_barcode2);
+                auto toFind1 = std::make_pair(current_barcode2, current_barcode);
+                if(counter && current_barcode != current_barcode2) {
+                    INFO("SOMETHING ACTUALLY HAPPENS HERE?");
+                    auto found1 = associated_barcodes.find(toFind);
+                    auto found2 = associated_barcodes.find(toFind1);
+                    if(found1 != associated_barcodes.end()){
+                        associated_barcodes[toFind] += counter;
+                    } else if(found2 != associated_barcodes.end()) {
+                        associated_barcodes[toFind1] += counter;
+                    } else {
+                        associated_barcodes[toFind] = counter;
+                    }
+                }
+                counter = 0;
+                current_barcode = pair1.first->barcode;
+            }
+
+
             for(auto pair2 : long_reads){
+
+                if(current_barcode2 != pair2.first->barcode){
+                    auto toFind = std::make_pair(current_barcode, current_barcode2);
+                    auto toFind1 = std::make_pair(current_barcode2, current_barcode);
+                    // if(counter && current_barcode != current_barcode2) INFO(current_barcode << "_____" << current_barcode2 << ' ' << counter << " overlaps");
+
+                    
+                    if(counter && current_barcode != current_barcode2) {
+                        auto found1 = associated_barcodes.find(toFind);
+                        auto found2 = associated_barcodes.find(toFind1);
+                        if(found1 != associated_barcodes.end()){
+                            associated_barcodes[toFind] += counter;
+                        } else if(found2 != associated_barcodes.end()) {
+                            associated_barcodes[toFind1] += counter;
+                        } else {
+                            associated_barcodes[toFind] = counter;
+                        }
+                    }
+
+                    current_barcode2 = pair2.first->barcode;
+                    counter = 0;
+                }
+
                 if(&pair1.first != &pair2.first){
                     VertexId startVertex = graph_pack.g.EdgeEnd(pair1.first->Back());
                     VertexId endVertex = graph_pack.g.EdgeStart(pair2.first->Front());
@@ -328,14 +386,23 @@ namespace debruijn_graph {
                     std::vector<size_t> all_distances = callback.distances();
                     if(all_distances.size() > 0) {
                         distances_found = true;
+                        ++counter;
                     }
-                    for(auto howFar : all_distances){
-                        INFO("distance from " << pair1.first->barcode << " to " << pair2.first->barcode << ": " << howFar << " distances size: " << all_distances.size());
-                    }
+                    // for(auto howFar : all_distances){
+                    //     INFO("distance from " << pair1.first->barcode << " to " << pair2.first->barcode << ": " << howFar);
+                    // }
                 }
             }
         }
-        if(!distances_found) INFO("Coverage too low: distance between reads not found");
+        counter = 0;
+        for(auto it = associated_barcodes.begin(); it != associated_barcodes.end(); ++it) {
+            if(it->second > 14){
+                INFO(it->first << ':' << it->second);
+                ++counter;
+            }
+        }
+        INFO(counter);
+        if(distances_found == false) INFO("Coverage too low: distance between reads not found");
         path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
         INFO("Outputting updated reads with barcode to " << cfg::get().output_dir << "extracted.fasta");
         writer.OutputPaths(long_reads, cfg::get().output_dir + "extracted.fasta");
