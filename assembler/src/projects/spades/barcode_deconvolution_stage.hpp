@@ -325,13 +325,39 @@ namespace debruijn_graph {
         //         return boost::hash_value(p);
         //     }
         // };
-        std::unordered_map<std::string, path_extend::PathContainer> associated_barcodes;
+        // std::unordered_map<std::string, path_extend::PathContainer> associated_barcodes;
+        std::unordered_map<std::string, std::vector<size_t>> associated_barcodes;
         
 
         for(auto pair1 : long_reads) {
             for(auto pair2 : long_reads){
                 
 
+                // if(&pair1.first != &pair2.first && pair1.first->barcode == pair2.first->barcode) {
+                //     VertexId startVertex = graph_pack.g.EdgeEnd(pair1.first->Back());
+                //     VertexId endVertex = graph_pack.g.EdgeStart(pair2.first->Front());
+                //     // I have the vertices, just find distance. ProcessPath gives you the path
+                //     DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(graph_pack.g);
+                //     ProcessPaths(graph_pack.g, 0, 25000, startVertex, endVertex, callback);
+                //     std::vector<size_t> all_distances = callback.distances();
+                //     if(all_distances.size() > 0) {
+                //         distances_found = true;
+                //         if(associated_barcodes.find(pair1.first->barcode) != associated_barcodes.end()){
+                //             associated_barcodes[pair1.first->barcode].AddPair(pair1.first, pair1.second);
+                //             associated_barcodes[pair1.first->barcode].AddPair(pair2.first, pair2.second);
+                //         } else{
+                //             associated_barcodes[pair1.first->barcode];
+                //             associated_barcodes[pair1.first->barcode].AddPair(pair1.first, pair1.second);
+                //             associated_barcodes[pair1.first->barcode].AddPair(pair2.first, pair2.second);
+                //         }
+                //     }
+
+
+
+                //     for(auto howFar : all_distances){
+                //         INFO("distance from " << pair1.first->barcode << " " << pair1.first->GetId() << " to " << pair2.first->barcode << " " << pair2.first->GetId() << ": " << howFar);
+                //     }
+                // }
                 if(&pair1.first != &pair2.first && pair1.first->barcode == pair2.first->barcode) {
                     VertexId startVertex = graph_pack.g.EdgeEnd(pair1.first->Back());
                     VertexId endVertex = graph_pack.g.EdgeStart(pair2.first->Front());
@@ -342,12 +368,12 @@ namespace debruijn_graph {
                     if(all_distances.size() > 0) {
                         distances_found = true;
                         if(associated_barcodes.find(pair1.first->barcode) != associated_barcodes.end()){
-                            associated_barcodes[pair1.first->barcode].AddPair(pair1.first, pair1.second);
-                            associated_barcodes[pair1.first->barcode].AddPair(pair2.first, pair2.second);
+                            associated_barcodes[pair1.first->barcode].push_back(pair1.first->GetId());
+                            associated_barcodes[pair1.first->barcode].push_back(pair2.first->GetId());
                         } else{
                             associated_barcodes[pair1.first->barcode];
-                            associated_barcodes[pair1.first->barcode].AddPair(pair1.first, pair1.second);
-                            associated_barcodes[pair1.first->barcode].AddPair(pair2.first, pair2.second);
+                            associated_barcodes[pair1.first->barcode].push_back(pair1.first->GetId());
+                            associated_barcodes[pair1.first->barcode].push_back(pair2.first->GetId());
                         }
                     }
 
@@ -363,11 +389,11 @@ namespace debruijn_graph {
             INFO(it->first << ": " << it->second.size());
             path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
             INFO("Outputting individual barcode clusters for: " << it->first << " to " << cfg::get().output_dir << "extracted.fasta");
-            writer.OutputPaths(it->second, cfg::get().output_dir + "barcodes/" + it->first + "extracted.fasta");
+            // writer.OutputPaths(it->second, cfg::get().output_dir + "barcodes/" + it->first + "extracted.fasta");
         }
-        path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
-        INFO("Outputting updated reads with barcode to " << cfg::get().output_dir << "extracted.fasta");
-        writer.OutputPaths(long_reads, cfg::get().output_dir + "extracted.fasta");
+        // path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
+        // INFO("Outputting updated reads with barcode to " << cfg::get().output_dir << "extracted.fasta");
+        // writer.OutputPaths(long_reads, cfg::get().output_dir + "extracted.fasta");
         // boost::disjoint_sets
     }
 
