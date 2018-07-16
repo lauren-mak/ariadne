@@ -353,18 +353,17 @@ namespace debruijn_graph {
 
 
 
-                    // for(auto howFar : all_distances){
-                    //     INFO("distance from " << pair1.first->barcode << " " << pair1.first->GetId() << " to " << pair2.first->barcode << " " << pair2.first->GetId() << ": " << howFar);
-                    // }
+                    for(auto howFar : all_distances){
+                        INFO("distance from " << pair1.first->barcode << " " << pair1.first->GetId() << " to " << pair2.first->barcode << " " << pair2.first->GetId() << ": " << howFar);
+                    }
                 }
             }
         }
         for(auto it = associated_barcodes.begin(); it != associated_barcodes.end(); ++it) {
-            std::string info = it->first + ": " + std::to_string(it->second.size());
-            INFO(info);
-            // path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
-            // INFO("Outputting individual barcode clusters for: " << it->first << " to " << cfg::get().output_dir << "barcodes/" << it->first << "extracted.fasta");
-            // writer.OutputPaths(long_reads, cfg::get().output_dir + "barcodes/" + it->first + "extracted.fasta");
+            INFO(it->first << ": " << it->second.size());
+            path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
+            INFO("Outputting individual barcode clusters for: " << it->first << " to " << cfg::get().output_dir << "extracted.fasta");
+            writer.OutputPaths(it->second, cfg::get().output_dir + "barcodes/" + it->first + "extracted.fasta");
         }
         path_extend::ContigWriter writer(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
         INFO("Outputting updated reads with barcode to " << cfg::get().output_dir << "extracted.fasta");
