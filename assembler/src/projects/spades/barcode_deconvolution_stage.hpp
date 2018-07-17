@@ -325,7 +325,6 @@ namespace debruijn_graph {
         //         return boost::hash_value(p);
         //     }
         // };
-        // std::unordered_map<std::string, path_extend::PathContainer> associated_barcodes;
         std::unordered_map<std::string, std::vector<size_t>> associated_barcodes;
         
 
@@ -333,31 +332,6 @@ namespace debruijn_graph {
             for(auto pair2 : long_reads){
                 
 
-                // if(&pair1.first != &pair2.first && pair1.first->barcode == pair2.first->barcode) {
-                //     VertexId startVertex = graph_pack.g.EdgeEnd(pair1.first->Back());
-                //     VertexId endVertex = graph_pack.g.EdgeStart(pair2.first->Front());
-                //     // I have the vertices, just find distance. ProcessPath gives you the path
-                //     DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(graph_pack.g);
-                //     ProcessPaths(graph_pack.g, 0, 25000, startVertex, endVertex, callback);
-                //     std::vector<size_t> all_distances = callback.distances();
-                //     if(all_distances.size() > 0) {
-                //         distances_found = true;
-                //         if(associated_barcodes.find(pair1.first->barcode) != associated_barcodes.end()){
-                //             associated_barcodes[pair1.first->barcode].AddPair(pair1.first, pair1.second);
-                //             associated_barcodes[pair1.first->barcode].AddPair(pair2.first, pair2.second);
-                //         } else{
-                //             associated_barcodes[pair1.first->barcode];
-                //             associated_barcodes[pair1.first->barcode].AddPair(pair1.first, pair1.second);
-                //             associated_barcodes[pair1.first->barcode].AddPair(pair2.first, pair2.second);
-                //         }
-                //     }
-
-
-
-                //     for(auto howFar : all_distances){
-                //         INFO("distance from " << pair1.first->barcode << " " << pair1.first->GetId() << " to " << pair2.first->barcode << " " << pair2.first->GetId() << ": " << howFar);
-                //     }
-                // }
                 if(&pair1.first != &pair2.first && pair1.first->barcode == pair2.first->barcode) {
                     VertexId startVertex = graph_pack.g.EdgeEnd(pair1.first->Back());
                     VertexId endVertex = graph_pack.g.EdgeStart(pair2.first->Front());
@@ -368,12 +342,10 @@ namespace debruijn_graph {
                     if(all_distances.size() > 0) {
                         distances_found = true;
                         if(associated_barcodes.find(pair1.first->barcode) != associated_barcodes.end()){
-                            associated_barcodes[pair1.first->barcode].push_back(pair1.first->GetId());
-                            associated_barcodes[pair1.first->barcode].push_back(pair2.first->GetId());
+                            associated_barcodes[pair1.first->barcode].push_back(*std::min_element(all_distances.begin(), all_distances.end()))
                         } else{
                             associated_barcodes[pair1.first->barcode];
-                            associated_barcodes[pair1.first->barcode].push_back(pair1.first->GetId());
-                            associated_barcodes[pair1.first->barcode].push_back(pair2.first->GetId());
+                            associated_barcodes[pair1.first->barcode].push_back(*std::min_element(all_distances.begin(), all_distances.end()))
                         }
                     }
 
