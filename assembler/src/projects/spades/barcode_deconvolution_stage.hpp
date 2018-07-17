@@ -342,10 +342,10 @@ namespace debruijn_graph {
                     if(all_distances.size() > 0) {
                         distances_found = true;
                         if(associated_barcodes.find(pair1.first->barcode) != associated_barcodes.end()){
-                            associated_barcodes[pair1.first->barcode].push_back(*std::min_element(all_distances.begin(), all_distances.end()))
+                            associated_barcodes[pair1.first->barcode].push_back(*std::min_element(all_distances.begin(), all_distances.end()));
                         } else{
                             associated_barcodes[pair1.first->barcode];
-                            associated_barcodes[pair1.first->barcode].push_back(*std::min_element(all_distances.begin(), all_distances.end()))
+                            associated_barcodes[pair1.first->barcode].push_back(*std::min_element(all_distances.begin(), all_distances.end()));
                         }
                     }
 
