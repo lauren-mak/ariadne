@@ -35,10 +35,15 @@ public:
     void WritePaths(const ScaffoldStorage &scaffold_storage, const std::string &fn) const {
         std::ofstream os(fn);
         for (const auto& scaffold_info : scaffold_storage) {
+            // scaffold_info.name = ">EDGE_" + scaffold_info.path->GetId() + "_length_" + scaffold_info.path->Length() + "_cov_" + scaffold_info.path->Coverage() + ";\n";
+            // os << ">EDGE_" << scaffold_info.path->GetId() << "_length_" << scaffold_info.path->Length() << "_cov_" << scaffold_info.path->Coverage() << ";\n";
             os << scaffold_info.name << "\n";
+            // os << scaffold_info.sequence << "\n";
             os << ToPathString(*scaffold_info.path) << "\n";
+            // os << ">EDGE_" << scaffold_info.path->GetId() << "_length_" << scaffold_info.path->Length() << "_cov_" << scaffold_info.path->Coverage() << "'" << ";\n";
             os << scaffold_info.name << "'" << "\n";
             os << ToPathString(*scaffold_info.path->GetConjPath()) << "\n";
+            // NOT CHANGING...YET
         }
     }
 
@@ -149,6 +154,21 @@ public:
 
 private:
     DECL_LOGGER("ContigWriter")
+};
+
+class FastqWriter {
+    const Graph& g_;
+    shared_ptr<ContigNameGenerator> name_generator_;
+
+public:
+    FastqWriter(const Graph& g,
+                 shared_ptr<ContigNameGenerator> name_generator) :
+            g_(g),
+            name_generator_(name_generator) {
+    }    
+
+    void OutputPaths(std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& paths, std::string& file_);
+
 };
 
 }
