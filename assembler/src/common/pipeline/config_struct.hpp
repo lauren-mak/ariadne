@@ -543,6 +543,8 @@ struct debruijn_config {
 
     bool need_mapping;
 
+    int barcode_distance;
+
     debruijn_config() :
             use_single_reads(false) {
 

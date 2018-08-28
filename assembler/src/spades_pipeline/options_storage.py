@@ -86,6 +86,7 @@ tmp_dir = None
 k_mers = None
 qvoffset = None  # auto-detect by default
 cov_cutoff = 'off'  # default is 'off'
+barcode_distance = 25000 # default is 25K --WARIS
 
 # hidden options
 save_gp = False
@@ -140,7 +141,7 @@ dict_of_rel2abs = dict()
 long_options = "12= merged= threads= memory= tmp-dir= iterations= phred-offset= sc iontorrent meta large-genome rna plasmid "\
                "ss-fr ss-rf fast fast:false "\
                "only-error-correction only-assembler "\
-               "disable-gzip-output disable-gzip-output:false disable-rr disable-rr:false " \
+               "disable-gzip-output disable-gzip-output:false disable-rr disable-rr:false barcode-distance" \
                "help version test debug debug:false reference= series-analysis= config-file= dataset= "\
                "bh-heap-check= spades-heap-check= read-buffer-size= help-hidden "\
                "mismatch-correction mismatch-correction:false careful careful:false save-gp save-gp:false "\

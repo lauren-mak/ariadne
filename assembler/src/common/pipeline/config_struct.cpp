@@ -756,6 +756,8 @@ void load_cfg(debruijn_config &cfg, boost::property_tree::ptree const &pt,
 
     load(cfg.ss, pt, "strand_specificity", complete);
     load(cfg.calculate_coverage_for_each_lib, pt, "calculate_coverage_for_each_lib", complete);
+    load(cfg.barcode_distance, pt, "barcode_distance", complete);
+    INFO("FINDING BARCODE DISTANCE: " << cfg.barcode_distance);
 
 
     if (pt.count("plasmid")) {

@@ -175,3 +175,5 @@ bwa_aligner
 flanking_range 55
 series_analysis ""
 save_gp false
+
+barcode_distance 25000

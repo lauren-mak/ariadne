@@ -122,20 +122,20 @@ namespace debruijn_graph {
 
                     if(path2.first.front().first == path.first.back().first){
                         long int distance_between_reads = path2_start - path1_end;
-                        if((distance_between_reads < 25000 && distance_between_reads > 0) || (distance_between_reads > -25000 && distance_between_reads < 0))
+                        if((distance_between_reads < cfg::get().barcode_distance && distance_between_reads > 0) || (distance_between_reads > -(cfg::get().barcode_distance) && distance_between_reads < 0))
                             AddEdge(visited, path, path2, path_set, gp, first, barcode);
                     } else{
                         DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);
                         VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
                         VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
-                        ProcessPaths(gp.g, 0, 25000, startVertex, endVertex, callback);
+                        ProcessPaths(gp.g, 0, cfg::get().barcode_distance, startVertex, endVertex, callback);
                         if(callback.distances().size()){
                             vector<size_t> distances = callback.distances();
                             size_t min_elem = distances[0];
                             for(size_t i = 1; i < distances.size(); ++i){
                                 if(distances[i] < min_elem) min_elem = distances[i];
                             }
-                            long int distance_between_reads = 25000 - path2_start - path1_end - min_elem;
+                            long int distance_between_reads = cfg::get().barcode_distance - path2_start - path1_end - min_elem;
                             if(distance_between_reads >= 0) AddEdge(visited, path, path2, path_set, gp, first, barcode);
                         }
                     }
@@ -150,6 +150,7 @@ namespace debruijn_graph {
         auto stream = io::paired_easy_reader(lib_10x, false, false);
         io::PairedRead read;
         std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::string, std::string>>> paths;
+        INFO("barcode distance: " << cfg::get().barcode_distance);
         //barcode --> BidirectionalPath
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
 
