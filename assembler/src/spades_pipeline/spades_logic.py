@@ -60,7 +60,6 @@ def prepare_config_spades(filename, cfg, log, additional_contigs_fname, K, stage
         else:
             subst_dict["coverage_threshold"] = cfg.cov_cutoff
     subst_dict["barcode_distance"] = cfg.barcode_distance
-    print("BARCODE DISTANCE: " + cfg.barcode_distance)
     if cfg.lcer_cutoff is not None:
         subst_dict["lcer_enabled"] = bool_to_str(True)
         subst_dict["lcer_coverage_threshold"] = cfg.lcer_cutoff
