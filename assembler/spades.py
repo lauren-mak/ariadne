@@ -320,7 +320,7 @@ def fill_cfg(options_to_parse, log, secondary_filling=False):
         # start new option for distance here -- WARIS
         elif opt == "--barcode-distance":
             if support.is_int(arg) and int(arg) > 0:
-                options_storage.barcode_distance = int(arg)
+                options_storage.barcode_distance = int(arg.split(" "))
             else:
                 support.error('wrong value for --barcode-distance option: ' + arg +
                               ' (should be a positive int number', log)

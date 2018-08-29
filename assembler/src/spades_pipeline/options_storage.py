@@ -86,7 +86,7 @@ tmp_dir = None
 k_mers = None
 qvoffset = None  # auto-detect by default
 cov_cutoff = 'off'  # default is 'off'
-barcode_distance = 25000 # default is 25K --WARIS
+barcode_distance = None  # default is 25K --WARIS
 
 # hidden options
 save_gp = False
