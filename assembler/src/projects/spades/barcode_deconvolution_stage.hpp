@@ -23,7 +23,7 @@ namespace debruijn_graph {
     class BarcodeDeconvolutionStage : public spades::AssemblyStage {
     public:
 
-        BarcodeDeconvolutionStage() : AssemblyStage("10X dbg", "10X_dbg") {}
+        BarcodeDeconvolutionStage() : AssemblyStage("barcode_deconvolution_stage", "barcode_deconvolution_stage") {}
 
         void run(conj_graph_pack &gp, const char*){
             gp.EnsureIndex();
