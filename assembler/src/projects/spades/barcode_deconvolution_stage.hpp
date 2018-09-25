@@ -23,23 +23,27 @@ namespace debruijn_graph {
     class BarcodeDeconvolutionStage : public spades::AssemblyStage {
     public:
 
-        BarcodeDeconvolutionStage() : AssemblyStage("barcode_deconvolution_stage", "barcode_deconvolution_stage") {}
+        BarcodeDeconvolutionStage(bool preliminary = false) 
+        : AssemblyStage(preliminary ? "Preliminary Barcode Deconvolution" : "BarcodeDeconvolution",
+                        preliminary ? "barcode_deconvolution_preliminary" : "barcode_deconvolution") {}
 
-        void run(conj_graph_pack &gp, const char*){
-            gp.EnsureIndex();
-            if(!gp.kmer_mapper.IsAttached()) gp.kmer_mapper.Attach();
-            INFO("Barcode Deconvolution Started");
-            int i = 0;
-            config::dataset& dataset_info = cfg::get_writable().ds;
-            for (auto& lib : dataset_info.reads) {
-
-                if(i == 0) processReads(gp, lib);
-                ++i;
-            }
-            INFO("Barcode Deconvolution Ended");
-        }
+        void run(conj_graph_pack &gp, const char*);
 
     };
+
+    void BarcodeDeconvolutionStage::run(conj_graph_pack &gp, const char*){
+        gp.EnsureIndex();
+        if(!gp.kmer_mapper.IsAttached()) gp.kmer_mapper.Attach();
+        INFO("Barcode Deconvolution Started");
+        int i = 0;
+        config::dataset& dataset_info = cfg::get_writable().ds;
+        for (auto& lib : dataset_info.reads) {
+
+            if(i == 0) processReads(gp, lib);
+            ++i;
+        }
+        INFO("Barcode Deconvolution Ended");
+    }
 
     std::string GetTenXBarcodeFromRead(const io::PairedRead &read) {
         std::string delimeter = "BX:Z:";
