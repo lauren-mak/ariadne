@@ -181,7 +181,7 @@ namespace debruijn_graph {
         clusterReads(graph_pack, paths, connected_components, current_barcode);
         paths.clear();
         path_extend::FastqWriter writer2(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
-        std::string file_name = cfg::get().output_dir + "extracted.fastq";
+        std::string file_name = cfg::get().output_dir + std::to_string(cfg::get().barcode_distance) + "extracted.fastq";
         INFO("Outputting updated reads with enhanced barcodes to " << file_name);
         writer2.OutputPaths(connected_components, file_name);
     }

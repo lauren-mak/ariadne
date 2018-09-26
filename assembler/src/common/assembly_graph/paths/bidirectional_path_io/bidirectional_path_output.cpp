@@ -55,7 +55,7 @@ void depthFirstSearch(BidirectionalPath*& first, std::unordered_map<path_extend:
 void path_extend::FastqWriter::OutputPaths(std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& paths, std::string& file_){
     io::OFastqReadStream os_(file_);
     ofstream statistics_file;
-    statistics_file.open(cfg::get().output_dir + "statistics.txt");
+    statistics_file.open(cfg::get().output_dir + std::to_string(cfg::get().barcode_distance) + "statistics.txt");
     for(auto barcode = paths.begin(); barcode != paths.end(); ++barcode){
         size_t counter = 1;
         std::unordered_set<BidirectionalPath*> visited;
