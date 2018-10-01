@@ -114,6 +114,7 @@ public:
     // Wanted to make private, with a setter and getter but assumed must be public since
     // direct access allowed in barcode_deconvolution_stage in extractLongReads member function
     std::string barcode;
+    std::string name;
     std::string sequence_string;
     std::string quality_string;
 
@@ -155,7 +156,8 @@ public:
               weight_(path.weight_),
               barcode(path.barcode),
               sequence_string(path.sequence_string),
-              quality_string(path.quality_string) {
+              quality_string(path.quality_string),
+              name(path.name) {
     }
 
     const Graph &g() const{

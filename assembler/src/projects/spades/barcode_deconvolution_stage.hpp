@@ -63,8 +63,8 @@ namespace debruijn_graph {
     }
 
     void AddEdge(std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*>& visited, 
-        const std::pair<MappingPath<EdgeId>, std::pair<std::string, std::string>>& path, 
-        const std::pair<MappingPath<EdgeId>, std::pair<std::string, std::string>>& path2,
+        const std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>& path, 
+        const std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>& path2,
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
         debruijn_graph::conj_graph_pack &gp, 
         bool first,
@@ -79,7 +79,9 @@ namespace debruijn_graph {
                     bidirectional_path->PushBack(e);
                     bidirectional_path->GetConjPath()->PushBack(gp.g.conjugate(e));
             }
-            bidirectional_path->quality_string = path.second.first;
+            // TODO -stop using pairs and store header(name), quality and sequence smarter
+            bidirectional_path->name = path.second.first.first;
+            bidirectional_path->quality_string = path.second.first.second;
             bidirectional_path->sequence_string = path.second.second;
             //                                          Pointer to path        vector of paths with edges to first(adjacencies)
             path_set[barcode][bidirectional_path] =  std::vector<path_extend::BidirectionalPath*>();
@@ -100,7 +102,8 @@ namespace debruijn_graph {
                     bidirectional_path2->PushBack(e);
                     bidirectional_path2->GetConjPath()->PushBack(gp.g.conjugate(e));
             }
-            bidirectional_path2->quality_string = path2.second.first;
+            bidirectional_path2->name = path2.second.first.first;
+            bidirectional_path2->quality_string = path2.second.first.second;
             bidirectional_path2->sequence_string = path2.second.second;
             path_set[barcode][visited[&path.first]].push_back(bidirectional_path2);
             visited[&path2.first] = bidirectional_path2;
@@ -111,7 +114,7 @@ namespace debruijn_graph {
     }
 
     void clusterReads(debruijn_graph::conj_graph_pack &gp,
-        std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::string, std::string>>>& paths,
+        std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
         std::string& barcode){
         std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
@@ -153,7 +156,7 @@ namespace debruijn_graph {
         auto mapper = MapperInstance(graph_pack);
         auto stream = io::paired_easy_reader(lib_10x, false, false);
         io::PairedRead read;
-        std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::string, std::string>>> paths;
+        std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>> paths;
         INFO("barcode distance: " << cfg::get().barcode_distance);
         //barcode --> BidirectionalPath
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
@@ -170,10 +173,10 @@ namespace debruijn_graph {
                 const auto &path1 = mapper->MapRead(read.first());
                 const auto &path2 = mapper->MapRead(read.second());
                 if(path1.size()) {
-                    paths.push_back(std::make_pair(path1, std::make_pair(read.first().GetQualityString(), read.first().GetSequenceString())));
+                    paths.push_back(std::make_pair(path1, std::make_pair(std::make_pair(read.first().name(), read.first().GetQualityString()), read.first().GetSequenceString())));
                 }
                 if(path2.size()) {
-                    paths.push_back(std::make_pair(path2, std::make_pair(read.second().GetQualityString(), read.second().GetSequenceString())));
+                    paths.push_back(std::make_pair(path2, std::make_pair(std::make_pair(read.second().name(), read.second().GetQualityString()), read.second().GetSequenceString())));
                 }
             }
             current_barcode = barcode_string;
