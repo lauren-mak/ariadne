@@ -158,6 +158,16 @@ namespace debruijn_graph {
         io::PairedRead read;
         std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>> paths;
         INFO("barcode distance: " << cfg::get().barcode_distance);
+
+
+        path_extend::FastqWriter writer2(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
+        std::string file_name = cfg::get().output_dir + std::to_string(cfg::get().barcode_distance) + "extracted.fastq";
+        INFO("Outputting updated reads with enhanced barcodes to " << file_name);
+        io::OFastqReadStream os_(file_name);
+        std::ofstream statistics_file;
+        statistics_file.open(cfg::get().output_dir + std::to_string(cfg::get().barcode_distance) + "statistics.txt");
+
+
         //barcode --> BidirectionalPath
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
 
@@ -168,6 +178,8 @@ namespace debruijn_graph {
             if(barcode_string != ""){
                 if(barcode_string != current_barcode && !paths.empty()){
                     clusterReads(graph_pack, paths, connected_components, current_barcode);
+                    writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
+                    int pewpew = connected_components.erase(current_barcode);
                     paths.clear();
                 }
                 const auto &path1 = mapper->MapRead(read.first());
@@ -182,11 +194,9 @@ namespace debruijn_graph {
             current_barcode = barcode_string;
         }
         clusterReads(graph_pack, paths, connected_components, current_barcode);
+        writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
+        int pewpew = connected_components.erase(current_barcode);
         paths.clear();
-        path_extend::FastqWriter writer2(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
-        std::string file_name = cfg::get().output_dir + std::to_string(cfg::get().barcode_distance) + "extracted.fastq";
-        INFO("Outputting updated reads with enhanced barcodes to " << file_name);
-        writer2.OutputPaths(connected_components, file_name);
     }
 }
 

@@ -38,7 +38,7 @@ void path_extend::ContigWriter::OutputPaths(const PathContainer &paths, const ve
     DEBUG("Contigs written");
 }
 
-void depthFirstSearch(BidirectionalPath*& first, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, std::unordered_set<BidirectionalPath*>& visited, io::OFastqReadStream& os_, size_t counter, const std::string& barcode, size_t& statistics){
+void depthFirstSearch(BidirectionalPath*& first, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, std::unordered_set<BidirectionalPath*>& visited, io::OFastqReadStream& os_, size_t counter, size_t& statistics){
     for(size_t i = 0; i < paths[first].size(); ++i){
         if(!visited.count(paths[first][i])){
             std::string name = paths[first][i]->name;
@@ -48,55 +48,57 @@ void depthFirstSearch(BidirectionalPath*& first, std::unordered_map<path_extend:
             os_ << left;
             ++statistics;
             visited.insert(paths[first][i]);
-            depthFirstSearch(paths[first][i], paths, visited, os_, counter, barcode, statistics);
+            depthFirstSearch(paths[first][i], paths, visited, os_, counter, statistics);
         }
     }
 }
 
-void path_extend::FastqWriter::OutputPaths(std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& paths, std::string& file_){
-    io::OFastqReadStream os_(file_);
-    ofstream statistics_file;
-    statistics_file.open(cfg::get().output_dir + std::to_string(cfg::get().barcode_distance) + "statistics.txt");
-    for(auto barcode = paths.begin(); barcode != paths.end(); ++barcode){
-        size_t counter = 1;
-        std::unordered_set<BidirectionalPath*> visited;
-        // INFO("Number of nodes in " << it->first << ": " << paths[it->first].size());
-        for(auto iter = paths[barcode->first].begin(); iter != paths[barcode->first].end(); ++iter){
-            size_t statistics = 0;
-            std::string name = iter->first->name;
-            std::string sequence_string = iter->first->sequence_string;
-            std::string quality_string = iter->first->quality_string;
-            if(paths[barcode->first][iter->first].size() > 1){
-                if(!visited.count(iter->first)){
-                    io::SingleRead left(name + " counter:-" + std::to_string(counter), sequence_string, quality_string);
-                    os_ << left;
-                    ++statistics;
-                    visited.insert(iter->first);
-                }
-                for(size_t i = 0; i < paths[barcode->first][iter->first].size(); ++i){
+void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
+    std::string& barcode, 
+    io::OFastqReadStream& os_, 
+    std::ofstream& statistics_file) {
+    
 
-                    if(!visited.count(paths[barcode->first][iter->first][i])){
-                        std::string other_name = paths[barcode->first][iter->first][i]->name;
-                        
-                        std::string other_sequence_string = paths[barcode->first][iter->first][i]->sequence_string;
-                        std::string other_quality_string = paths[barcode->first][iter->first][i]->quality_string;
-                        io::SingleRead other(other_name + "-" + std::to_string(counter), other_sequence_string, other_quality_string);
-                        os_ << other;
-                        ++statistics;
-                        visited.insert(paths[barcode->first][iter->first][i]);
-                        depthFirstSearch(paths[barcode->first][iter->first][i], paths[barcode->first], visited, os_, counter, barcode->first, statistics);
-                        statistics_file << barcode->first << "-" << counter << ": " << statistics << endl;
-                        ++counter;
-                    }
-                }
-                
-            } else {
-                io::SingleRead left(name, sequence_string, quality_string);
+    size_t counter = 1;
+    std::unordered_set<BidirectionalPath*> visited;
+    // INFO("Number of nodes in " << it->first << ": " << paths[it->first].size());
+
+
+    for(auto iter = paths.begin(); iter != paths.end(); ++iter){
+        size_t statistics = 0;
+        std::string name = iter->first->name;
+        std::string sequence_string = iter->first->sequence_string;
+        std::string quality_string = iter->first->quality_string;
+        if(paths[iter->first].size() > 1){
+            if(!visited.count(iter->first)){
+                io::SingleRead left(name + " counter:-" + std::to_string(counter), sequence_string, quality_string);
                 os_ << left;
                 ++statistics;
+                visited.insert(iter->first);
             }
-            //barcodes, sizes of connected
+            for(size_t i = 0; i < paths[iter->first].size(); ++i){
+
+                if(!visited.count(paths[iter->first][i])){
+                    std::string other_name = paths[iter->first][i]->name;
+                    
+                    std::string other_sequence_string = paths[iter->first][i]->sequence_string;
+                    std::string other_quality_string = paths[iter->first][i]->quality_string;
+                    io::SingleRead other(other_name + "-" + std::to_string(counter), other_sequence_string, other_quality_string);
+                    os_ << other;
+                    ++statistics;
+                    visited.insert(paths[iter->first][i]);
+                    depthFirstSearch(paths[iter->first][i], paths, visited, os_, counter, statistics);
+                    statistics_file << barcode << "-" << counter << ": " << statistics << endl;
+                    ++counter;
+                }
+            }
+            
+        } else {
+            io::SingleRead left(name, sequence_string, quality_string);
+            os_ << left;
+            ++statistics;
         }
+        //barcodes, sizes of connected
     }
 }
 
