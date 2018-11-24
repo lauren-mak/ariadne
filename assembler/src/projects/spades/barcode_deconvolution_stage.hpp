@@ -176,8 +176,8 @@ namespace debruijn_graph {
             *stream >> read;
             std::string barcode_string = GetTenXBarcodeFromRead(read);
             if(barcode_string != ""){
-                if(barcode_string != current_barcode && !paths.empty() && first_two_thousand <= 1000){
-                    INFO(first_two_thousand);
+                if(barcode_string != current_barcode && !paths.empty() && first_thousand <= 1000){
+                    INFO(first_thousand);
                     first_thousand++;
                     clusterReads(graph_pack, paths, connected_components, current_barcode);
                     writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
