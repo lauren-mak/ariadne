@@ -170,15 +170,15 @@ namespace debruijn_graph {
 
         //barcode --> BidirectionalPath
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
-        int first_two_thousand = 0;
+        int first_thousand = 0;
         std::string current_barcode = "";
         while(!stream->eof()) {
             *stream >> read;
             std::string barcode_string = GetTenXBarcodeFromRead(read);
             if(barcode_string != ""){
-                if(barcode_string != current_barcode && !paths.empty() && first_two_thousand <= 2000){
+                if(barcode_string != current_barcode && !paths.empty() && first_two_thousand <= 1000){
                     INFO(first_two_thousand);
-                    first_two_thousand++;
+                    first_thousand++;
                     clusterReads(graph_pack, paths, connected_components, current_barcode);
                     writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
                     int pewpew = connected_components.erase(current_barcode);
