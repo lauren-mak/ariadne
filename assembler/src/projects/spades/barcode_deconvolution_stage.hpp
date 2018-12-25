@@ -129,7 +129,7 @@ namespace debruijn_graph {
 
                     if(path2.first.front().first == path.first.back().first){
                         long int distance_between_reads = path2_start - path1_end;
-                        if((distance_between_reads < cfg::get().barcode_distance && distance_between_reads > 0) || (distance_between_reads > -(cfg::get().barcode_distance) && distance_between_reads < 0))
+                        if(abs(distance_between_reads) < cfg::get().barcode_distance && distance_between_reads > 0)
                             AddEdge(visited, path, path2, path_set, gp, first, barcode);
                     } else{
                         DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);

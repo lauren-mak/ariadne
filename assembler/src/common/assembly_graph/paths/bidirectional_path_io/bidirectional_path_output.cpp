@@ -38,67 +38,97 @@ void path_extend::ContigWriter::OutputPaths(const PathContainer &paths, const ve
     DEBUG("Contigs written");
 }
 
-void depthFirstSearch(BidirectionalPath*& first, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, std::unordered_set<BidirectionalPath*>& visited, io::OFastqReadStream& os_, size_t counter, size_t& statistics){
-    for(size_t i = 0; i < paths[first].size(); ++i){
-        if(!visited.count(paths[first][i])){
-            std::string name = paths[first][i]->name;
-            std::string sequence_string = paths[first][i]->sequence_string;
-            std::string quality_string = paths[first][i]->quality_string;
-            io::SingleRead left(name + " counter:-" + std::to_string(counter), sequence_string, quality_string);
-            os_ << left;
-            ++statistics;
-            visited.insert(paths[first][i]);
-            depthFirstSearch(paths[first][i], paths, visited, os_, counter, statistics);
-        }
-    }
-}
+// void depthFirstSearch(BidirectionalPath*& first, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, std::unordered_set<BidirectionalPath*>& visited, io::OFastqReadStream& os_, size_t& counter, size_t& statistics){
+//     for(size_t i = 0; i < paths[first].size(); ++i){
+//         if(!visited.count(paths[first][i])){
+//             std::string name = paths[first][i]->name;
+//             std::string sequence_string = paths[first][i]->sequence_string;
+//             std::string quality_string = paths[first][i]->quality_string;
+//             io::SingleRead left(name + " cluster#: " + std::to_string(counter), sequence_string, quality_string);
+//             os_ << left;
+//             ++statistics;
+//             visited.insert(paths[first][i]);
+//             depthFirstSearch(paths[first][i], paths, visited, os_, counter, statistics);
+//         }
+//     }
+// }
 
 void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
     std::string& barcode, 
     io::OFastqReadStream& os_, 
     std::ofstream& statistics_file) {
     
+    std::queue<BidirectionalPath*> cluster_queue;
 
-    size_t counter = 1;
     std::unordered_set<BidirectionalPath*> visited;
     // INFO("Number of nodes in " << it->first << ": " << paths[it->first].size());
 
-
+    size_t counter = 1;
     for(auto iter = paths.begin(); iter != paths.end(); ++iter){
+        if(visited.count(iter->first)) continue;
         size_t statistics = 0;
+        
         std::string name = iter->first->name;
         std::string sequence_string = iter->first->sequence_string;
         std::string quality_string = iter->first->quality_string;
-        if(paths[iter->first].size() > 1){
-            if(!visited.count(iter->first)){
-                io::SingleRead left(name + " counter:-" + std::to_string(counter), sequence_string, quality_string);
+
+        // read from which connected component graph is built
+        //running a BFS
+
+        if(paths[iter->first].size() > 1 && !visited.count(iter->first)){
+
+            cluster_queue.push(iter->first);
+            visited.insert(iter->first);
+            while(!cluster_queue.empty()){
+                // x:dequeue()
+                BidirectionalPath* pointer = cluster_queue.front();
+                
+                // Mark x in T
+                std::string name = pointer->name;
+                std::string sequence_string = pointer->sequence_string;
+                std::string quality_string = pointer->quality_string;
+                io::SingleRead left(name + " cluster#: " + std::to_string(counter), sequence_string, quality_string);
                 os_ << left;
                 ++statistics;
-                visited.insert(iter->first);
-            }
-            for(size_t i = 0; i < paths[iter->first].size(); ++i){
-
-                if(!visited.count(paths[iter->first][i])){
-                    std::string other_name = paths[iter->first][i]->name;
-                    
-                    std::string other_sequence_string = paths[iter->first][i]->sequence_string;
-                    std::string other_quality_string = paths[iter->first][i]->quality_string;
-                    io::SingleRead other(other_name + "-" + std::to_string(counter), other_sequence_string, other_quality_string);
-                    os_ << other;
-                    ++statistics;
-                    visited.insert(paths[iter->first][i]);
-                    depthFirstSearch(paths[iter->first][i], paths, visited, os_, counter, statistics);
-                    statistics_file << barcode << "-" << counter << ": " << statistics << endl;
-                    ++counter;
+                
+                // For all unmarked neighbors of X
+                for (size_t i = 0; i < paths[pointer].size(); ++i){
+                    if(!visited.count(paths[pointer][i])){
+                        // Mark and put in queue
+                        cluster_queue.push( paths[pointer][i] );
+                        visited.insert( paths[pointer][i] );
+                    }
                 }
+                cluster_queue.pop();
             }
+            statistics_file << barcode << " cluster#: " << counter << ", number reads in cluster: " << statistics << endl;
+
+            // // all reads in singular connected component
+            // for(size_t i = 0; i < paths[iter->first].size(); ++i){
+
+            //     if(!visited.count(paths[iter->first][i])){
+            //         std::string other_name = paths[iter->first][i]->name;
+                    
+            //         std::string other_sequence_string = paths[iter->first][i]->sequence_string;
+            //         std::string other_quality_string = paths[iter->first][i]->quality_string;
+            //         io::SingleRead other(other_name + " cluster#: " + std::to_string(counter), other_sequence_string, other_quality_string);
+            //         os_ << other;
+            //         ++statistics;
+            //         visited.insert(paths[iter->first][i]);
+            //         depthFirstSearch(paths[iter->first][i], paths, visited, os_, counter, statistics);
+            //         ++counter;
+            //     }
+            // }
             
-        } else {
-            io::SingleRead left(name, sequence_string, quality_string);
+        } 
+        else if (!visited.count(iter->first)){
+            visited.insert(iter->first);
+            io::SingleRead left(name + " cluster#: " + std::to_string(counter), sequence_string, quality_string);
+            statistics_file << barcode << " cluster#: " << counter <<  ": singleton cluster" << endl;
             os_ << left;
             ++statistics;
         }
-        //barcodes, sizes of connected
+        counter++;
     }
 }
 
