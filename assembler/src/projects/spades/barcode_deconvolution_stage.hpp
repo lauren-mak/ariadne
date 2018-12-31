@@ -113,6 +113,56 @@ namespace debruijn_graph {
         }
     }
 
+    // void clusterReads(debruijn_graph::conj_graph_pack &gp,
+    //     std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
+    //     std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
+    //     std::string& barcode){
+    //     std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
+    //     for (auto const& path : paths) {
+    //         bool first = true;
+    //         for(auto const& path2 : paths) {
+
+    //             if(&path.first != &path2.first){
+
+    //                 const size_t path2_start = path2.first.start_pos();
+    //                 const size_t path1_end = path.first.end_pos();
+
+    //                 if(path2.first.front().first == path.first.back().first){
+    //                     long int distance_between_reads = path2_start - path1_end;
+    //                     if(abs(distance_between_reads) < cfg::get().barcode_distance && distance_between_reads >= 0)
+    //                         AddEdge(visited, path, path2, path_set, gp, first, barcode);
+    //                 } else{
+    //                     DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);
+    //                     VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
+    //                     VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
+    //                     ProcessPaths(gp.g, 0, cfg::get().barcode_distance, startVertex, endVertex, callback);
+    //                     if(callback.distances().size()){
+    //                         vector<size_t> distances = callback.distances();
+    //                         size_t min_elem = distances[0];
+    //                         for(size_t i = 1; i < distances.size(); ++i){
+    //                             if(distances[i] < min_elem) min_elem = distances[i];
+    //                         }
+    //                         long int distance_between_reads = cfg::get().barcode_distance - path2_start - path1_end - min_elem;
+    //                         if(distance_between_reads >= 0) AddEdge(visited, path, path2, path_set, gp, first, barcode);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         // for each component with more than one paired read output another barcode, such as -1, -2 etc
+    //     }
+    // }
+
+
+    std::vector<VertexId> VerticesReachedFrom(VertexId& start_vertex, 
+                        debruijn_graph::conj_graph_pack &gp) {
+        // INFO("vertices reached from distace: " << cfg::get().barcode_distance);
+        auto bounded_dijkstra = DijkstraHelper<Graph>::CreateBoundedDijkstra(gp.g, 
+                                cfg::get().barcode_distance);
+        bounded_dijkstra.Run(start_vertex);
+        TRACE("Reached vertices size - " << bounded_dijkstra.ReachedVertices());
+        return bounded_dijkstra.ReachedVertices();
+    }
+
     void clusterReads(debruijn_graph::conj_graph_pack &gp,
         std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
@@ -120,8 +170,10 @@ namespace debruijn_graph {
         std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
         for (auto const& path : paths) {
             bool first = true;
+            VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
+            std::vector<VertexId> reached_vertices = VerticesReachedFrom(startVertex, gp);
+            std::sort(reached_vertices.begin(), reached_vertices.end());
             for(auto const& path2 : paths) {
-
                 if(&path.first != &path2.first){
 
                     const size_t path2_start = path2.first.start_pos();
@@ -129,26 +181,29 @@ namespace debruijn_graph {
 
                     if(path2.first.front().first == path.first.back().first){
                         long int distance_between_reads = path2_start - path1_end;
-                        if(abs(distance_between_reads) < cfg::get().barcode_distance && distance_between_reads > 0)
+                        if(abs(distance_between_reads) < cfg::get().barcode_distance && distance_between_reads >= 0)
                             AddEdge(visited, path, path2, path_set, gp, first, barcode);
                     } else{
-                        DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);
-                        VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
                         VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
-                        ProcessPaths(gp.g, 0, cfg::get().barcode_distance, startVertex, endVertex, callback);
-                        if(callback.distances().size()){
-                            vector<size_t> distances = callback.distances();
-                            size_t min_elem = distances[0];
-                            for(size_t i = 1; i < distances.size(); ++i){
-                                if(distances[i] < min_elem) min_elem = distances[i];
-                            }
-                            long int distance_between_reads = cfg::get().barcode_distance - path2_start - path1_end - min_elem;
-                            if(distance_between_reads >= 0) AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                        if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
+                            AddEdge(visited, path, path2, path_set, gp, first, barcode);
                         }
+                        // DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);
+                        // VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
+                        // VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
+                        // ProcessPaths(gp.g, 0, cfg::get().barcode_distance, startVertex, endVertex, callback);
+                        // if(callback.distances().size()){
+                        //     vector<size_t> distances = callback.distances();
+                        //     size_t min_elem = distances[0];
+                        //     for(size_t i = 1; i < distances.size(); ++i){
+                        //         if(distances[i] < min_elem) min_elem = distances[i];
+                        //     }
+                        // long int distance_between_reads = cfg::get().barcode_distance - path2_start - path1_end - min_elem;
+                        // if(distance_between_reads >= 0) AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                        // }
                     }
                 }
             }
-            // for each component with more than one paired read output another barcode, such as -1, -2 etc
         }
     }
 
@@ -177,8 +232,8 @@ namespace debruijn_graph {
             std::string barcode_string = GetTenXBarcodeFromRead(read);
             if(barcode_string != ""){
                 if(barcode_string != current_barcode && !paths.empty() && first_thousand <= 1000){
-                    INFO(first_thousand);
                     first_thousand++;
+                    INFO("Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
                     clusterReads(graph_pack, paths, connected_components, current_barcode);
                     writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
                     int pewpew = connected_components.erase(current_barcode);
@@ -186,6 +241,7 @@ namespace debruijn_graph {
                 }
                 const auto &path1 = mapper->MapRead(read.first());
                 const auto &path2 = mapper->MapRead(read.second());
+                // LEFT OFF HERE
                 if(path1.size()) {
                     paths.push_back(std::make_pair(path1, std::make_pair(std::make_pair(read.first().name(), read.first().GetQualityString()), read.first().GetSequenceString())));
                 }
