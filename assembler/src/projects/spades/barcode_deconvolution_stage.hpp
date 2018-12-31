@@ -233,7 +233,7 @@ namespace debruijn_graph {
             if(barcode_string != ""){
                 if(barcode_string != current_barcode && !paths.empty() && first_thousand <= 1000){
                     first_thousand++;
-                    INFO("Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
+                    INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
                     clusterReads(graph_pack, paths, connected_components, current_barcode);
                     writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
                     int pewpew = connected_components.erase(current_barcode);
@@ -251,6 +251,7 @@ namespace debruijn_graph {
             }
             current_barcode = barcode_string;
         }
+        INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
         clusterReads(graph_pack, paths, connected_components, current_barcode);
         writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
         int pewpew = connected_components.erase(current_barcode);
