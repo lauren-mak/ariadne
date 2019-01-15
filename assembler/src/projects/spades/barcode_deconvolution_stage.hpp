@@ -155,7 +155,7 @@ namespace debruijn_graph {
 
     std::vector<VertexId> VerticesReachedFrom(VertexId& start_vertex, 
                         debruijn_graph::conj_graph_pack &gp) {
-        INFO("vertices reached from distace: " << cfg::get().barcode_distance);
+        // INFO("vertices reached from distace: " << cfg::get().barcode_distance);
         auto bounded_dijkstra = DijkstraHelper<Graph>::CreateBoundedDijkstra(gp.g, 
                                 cfg::get().barcode_distance);
         bounded_dijkstra.Run(start_vertex);
