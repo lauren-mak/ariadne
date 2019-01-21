@@ -154,10 +154,10 @@ namespace debruijn_graph {
 
 
     std::vector<VertexId> VerticesReachedFrom(VertexId& start_vertex, 
-                        debruijn_graph::conj_graph_pack &gp) {
+                        debruijn_graph::conj_graph_pack &gp, int edge_size) {
         // INFO("vertices reached from distace: " << cfg::get().barcode_distance);
         auto bounded_dijkstra = DijkstraHelper<Graph>::CreateBoundedDijkstra(gp.g, 
-                                cfg::get().barcode_distance);
+                                cfg::get().barcode_distance - edge_size);
         bounded_dijkstra.Run(start_vertex);
         TRACE("Reached vertices size - " << bounded_dijkstra.ReachedVertices());
         return bounded_dijkstra.ReachedVertices();
@@ -171,7 +171,7 @@ namespace debruijn_graph {
         for (auto const& path : paths) {
             bool first = true;
             VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
-            std::vector<VertexId> reached_vertices = VerticesReachedFrom(startVertex, gp);
+            std::vector<VertexId> reached_vertices = VerticesReachedFrom(startVertex, gp, abs(path.first.end_pos()-path.first.start_pos()));
             std::sort(reached_vertices.begin(), reached_vertices.end());
             for(auto const& path2 : paths) {
                 if(&path.first != &path2.first){
@@ -181,7 +181,7 @@ namespace debruijn_graph {
 
                     if(path2.first.front().first == path.first.back().first){
                         long int distance_between_reads = path2_start - path1_end;
-                        if(abs(distance_between_reads) < cfg::get().barcode_distance && distance_between_reads >= 0)
+                        if(abs(distance_between_reads) < cfg::get().barcode_distance && abs(distance_between_reads) >= 0)
                             AddEdge(visited, path, path2, path_set, gp, first, barcode);
                     } else{
                         VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
@@ -206,6 +206,8 @@ namespace debruijn_graph {
             }
         }
     }
+
+
 
     void processReads(debruijn_graph::conj_graph_pack &graph_pack, const lib_t& lib_10x) {
         auto mapper = MapperInstance(graph_pack);

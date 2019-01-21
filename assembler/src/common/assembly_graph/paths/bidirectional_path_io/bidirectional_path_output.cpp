@@ -53,6 +53,20 @@ void path_extend::ContigWriter::OutputPaths(const PathContainer &paths, const ve
 //     }
 // }
 
+std::string GetUpdatedReadName(std::string& read, size_t& counter) {
+    std::string delimeter = "-1";
+    size_t start_pos = read.find(delimeter);
+    size_t delimeter_size = delimeter.length();
+    if (start_pos != string::npos) {
+        std::string read_name = 
+            read.substr(0, start_pos) + "-" + std::to_string(counter) + read.substr(start_pos+delimeter_size);
+        TRACE(read_name)
+        INFO(read_name)
+        return read_name;
+    }
+    return "";
+}
+
 void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
     std::string& barcode, 
     io::OFastqReadStream& os_, 
@@ -68,7 +82,7 @@ void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::Bidir
         if(visited.count(iter->first)) continue;
         size_t statistics = 0;
         
-        std::string name = iter->first->name;
+        std::string name = GetUpdatedReadName(iter->first->name, counter);
         std::string sequence_string = iter->first->sequence_string;
         std::string quality_string = iter->first->quality_string;
 
@@ -84,10 +98,10 @@ void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::Bidir
                 BidirectionalPath* pointer = cluster_queue.front();
                 
                 // Mark x in T
-                std::string name = pointer->name;
+                std::string name = GetUpdatedReadName(iter->first->name, counter);
                 std::string sequence_string = pointer->sequence_string;
                 std::string quality_string = pointer->quality_string;
-                io::SingleRead left(name + " cluster#: " + std::to_string(counter), sequence_string, quality_string);
+                io::SingleRead left(name, sequence_string, quality_string);
                 os_ << left;
                 ++statistics;
                 
@@ -101,7 +115,7 @@ void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::Bidir
                 }
                 cluster_queue.pop();
             }
-            statistics_file << barcode << " cluster#: " << counter << ", number reads in cluster: " << statistics << endl;
+            statistics_file << barcode << "-" << counter << ", number reads in cluster: " << statistics << endl;
 
             // // all reads in singular connected component
             // for(size_t i = 0; i < paths[iter->first].size(); ++i){
@@ -123,8 +137,8 @@ void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::Bidir
         } 
         else if (!visited.count(iter->first)){
             visited.insert(iter->first);
-            io::SingleRead left(name + " cluster#: " + std::to_string(counter), sequence_string, quality_string);
-            statistics_file << barcode << " cluster#: " << counter <<  ": singleton cluster" << endl;
+            io::SingleRead left(name, sequence_string, quality_string);
+            statistics_file << barcode << "-" << counter <<  ": singleton cluster" << endl;
             os_ << left;
             ++statistics;
         }
