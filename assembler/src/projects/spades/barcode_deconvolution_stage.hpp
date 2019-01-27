@@ -8,6 +8,7 @@
 #include "assembly_graph/paths/bidirectional_path_io/io_support.hpp"
 #include <unordered_map>
 #include <string>
+#include <cstdlib>
 
 
 namespace debruijn_graph {
@@ -171,37 +172,47 @@ namespace debruijn_graph {
         for (auto const& path : paths) {
             bool first = true;
             VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
-            std::vector<VertexId> reached_vertices = VerticesReachedFrom(startVertex, gp, abs(path.first.end_pos()-path.first.start_pos()));
+            std::vector<VertexId> reached_vertices = VerticesReachedFrom(startVertex, gp, std::abs(path.first.end_pos()-path.first.start_pos()));
             std::sort(reached_vertices.begin(), reached_vertices.end());
             for(auto const& path2 : paths) {
+                bool done = false;
                 if(&path.first != &path2.first){
 
                     const size_t path2_start = path2.first.start_pos();
                     const size_t path1_end = path.first.end_pos();
 
-                    if(path2.first.front().first == path.first.back().first){
-                        long int distance_between_reads = path2_start - path1_end;
-                        if(abs(distance_between_reads) < cfg::get().barcode_distance && abs(distance_between_reads) >= 0)
-                            AddEdge(visited, path, path2, path_set, gp, first, barcode);
-                    } else{
+                    for(size_t i = 0;i < path.first.size(); ++i){
+                        for(size_t j = 0;j < path2.first.size(); ++j){
+                            if(path.first[i].first == path2.first[j].first){
+                                long int distance_between_reads = path2_start - path1_end;
+                                if(std::abs(distance_between_reads) < cfg::get().barcode_distance && std::abs(distance_between_reads) >= 0){
+                                    AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                                    done = true;
+                                }
+
+                            }
+                        }
+                    }
+                    if(!done){
                         VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
                         if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
                             AddEdge(visited, path, path2, path_set, gp, first, barcode);
                         }
-                        // DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);
-                        // VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
-                        // VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
-                        // ProcessPaths(gp.g, 0, cfg::get().barcode_distance, startVertex, endVertex, callback);
-                        // if(callback.distances().size()){
-                        //     vector<size_t> distances = callback.distances();
-                        //     size_t min_elem = distances[0];
-                        //     for(size_t i = 1; i < distances.size(); ++i){
-                        //         if(distances[i] < min_elem) min_elem = distances[i];
-                        //     }
-                        // long int distance_between_reads = cfg::get().barcode_distance - path2_start - path1_end - min_elem;
-                        // if(distance_between_reads >= 0) AddEdge(visited, path, path2, path_set, gp, first, barcode);
-                        // }
                     }
+                    // DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);
+                    // VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
+                    // VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
+                    // ProcessPaths(gp.g, 0, cfg::get().barcode_distance, startVertex, endVertex, callback);
+                    // if(callback.distances().size()){
+                    //     vector<size_t> distances = callback.distances();
+                    //     size_t min_elem = distances[0];
+                    //     for(size_t i = 1; i < distances.size(); ++i){
+                    //         if(distances[i] < min_elem) min_elem = distances[i];
+                    //     }
+                    // long int distance_between_reads = cfg::get().barcode_distance - path2_start - path1_end - min_elem;
+                    // if(distance_between_reads >= 0) AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                    // }
+                    
                 }
             }
         }
