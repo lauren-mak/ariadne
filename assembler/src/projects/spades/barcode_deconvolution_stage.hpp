@@ -194,9 +194,11 @@ namespace debruijn_graph {
                         }
                     }
                     if(!done){
-                        VertexId endVertex = gp.g.EdgeStart(path2.first.front().first);
-                        if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
-                            AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                        for(size_t i = 0; i < path2.first.size(); ++i){
+                            VertexId endVertex = gp.g.EdgeEnd(path2.first[i].first);
+                            if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
+                                AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                            }
                         }
                     }
                     // DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);
