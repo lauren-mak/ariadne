@@ -66,7 +66,7 @@ std::string GetUpdatedReadName(std::string& read, size_t& counter) {
     return "";
 }
 
-void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
+void path_extend::FastqWriter::OutputPaths(std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
     std::string& barcode, 
     io::OFastqReadStream& os_, 
     std::ofstream& statistics_file) {
@@ -81,9 +81,7 @@ void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::Bidir
         if(visited.count(iter->first)) continue;
         size_t statistics = 0;
         
-        std::string name = GetUpdatedReadName(iter->first->name, counter);
-        std::string sequence_string = iter->first->sequence_string;
-        std::string quality_string = iter->first->quality_string;
+        
 
         // read from which connected component graph is built
         //running a BFS
@@ -97,11 +95,7 @@ void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::Bidir
                 BidirectionalPath* pointer = cluster_queue.front();
                 
                 // Mark x in T
-                std::string name = GetUpdatedReadName(iter->first->name, counter);
-                std::string sequence_string = pointer->sequence_string;
-                std::string quality_string = pointer->quality_string;
-                io::SingleRead left(name, sequence_string, quality_string);
-                os_ << left;
+                pointer->name = GetUpdatedReadName(pointer->name, counter);
                 ++statistics;
                 
                 // For all unmarked neighbors of X
@@ -136,12 +130,18 @@ void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::Bidir
         } 
         else if (!visited.count(iter->first)){
             visited.insert(iter->first);
-            io::SingleRead left(name, sequence_string, quality_string);
+            iter->first->name = GetUpdatedReadName(iter->first->name, counter);
             statistics_file << barcode << "-" << counter <<  ": singleton cluster" << endl;
-            os_ << left;
             ++statistics;
         }
         counter++;
+    }
+    for(auto iter = paths.begin(); iter != paths.end(); ++iter){
+        std::string name = iter->first->name ;
+        std::string sequence_string = iter->first->sequence_string;
+        std::string quality_string = iter->first->quality_string;
+        io::SingleRead left(name, sequence_string, quality_string);
+        os_ << left;
     }
 }
 

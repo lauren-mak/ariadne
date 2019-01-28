@@ -66,7 +66,7 @@ namespace debruijn_graph {
     void AddEdge(std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*>& visited, 
         const std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>& path, 
         const std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>& path2,
-        std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
+        std::unordered_map<std::string, std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
         debruijn_graph::conj_graph_pack &gp, 
         bool first,
         std::string &barcode){
@@ -116,7 +116,7 @@ namespace debruijn_graph {
 
     // void clusterReads(debruijn_graph::conj_graph_pack &gp,
     //     std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
-    //     std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
+    //     std::unordered_map<std::string, std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
     //     std::string& barcode){
     //     std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
     //     for (auto const& path : paths) {
@@ -166,7 +166,7 @@ namespace debruijn_graph {
 
     void clusterReads(debruijn_graph::conj_graph_pack &gp,
         std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
-        std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
+        std::unordered_map<std::string, std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
         std::string& barcode){
         std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
         for (auto const& path : paths) {
@@ -239,7 +239,7 @@ namespace debruijn_graph {
 
 
         //barcode --> BidirectionalPath
-        std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
+        std::unordered_map<std::string, std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
         int first_thousand = 0;
         std::string current_barcode = "";
         while(!stream->eof()) {
