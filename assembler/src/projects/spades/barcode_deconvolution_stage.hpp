@@ -112,9 +112,15 @@ namespace debruijn_graph {
         } else{
             // add it to the adjacency list rather than creating a new adjacency list
             if(path_set[barcode][visited[&path.first]].size() >= path_set[barcode][visited[&path2.first]].size()){
-                path_set[barcode][visited[&path.first]].push_back(visited[&path2.first]);    
+                path_set[barcode][visited[&path.first]].push_back(visited[&path2.first]);
+                for(size_t i = 0; i < path_set[barcode][visited[&path2.first]].size(); ++i){
+                    path_set[barcode][visited[&path.first]].push_back(path_set[barcode][visited[&path2.first]][i]);
+                }
             } else {
                 path_set[barcode][visited[&path2.first]].push_back(visited[&path.first]);
+                for(size_t i = 0; i < path_set[barcode][visited[&path2.first]].size(); ++i){
+                    path_set[barcode][visited[&path2.first]].push_back(path_set[barcode][visited[&path.first]][i]);
+                }
             }
         }
     }
