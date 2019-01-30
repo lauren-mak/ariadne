@@ -84,7 +84,7 @@ namespace debruijn_graph {
             bidirectional_path->name = path.second.first.first;
             bidirectional_path->quality_string = path.second.first.second;
             bidirectional_path->sequence_string = path.second.second;
-            //                                          Pointer to path        vector of paths with edges to first(adjacencies)
+        //  Pointer to path        vector of paths with edges to first(adjacencies)
             path_set[barcode][bidirectional_path] =  std::vector<path_extend::BidirectionalPath*>();
             visited[&path.first] = bidirectional_path;
             first = false;
@@ -106,11 +106,16 @@ namespace debruijn_graph {
             bidirectional_path2->name = path2.second.first.first;
             bidirectional_path2->quality_string = path2.second.first.second;
             bidirectional_path2->sequence_string = path2.second.second;
+
             path_set[barcode][visited[&path.first]].push_back(bidirectional_path2);
             visited[&path2.first] = bidirectional_path2;
         } else{
             // add it to the adjacency list rather than creating a new adjacency list
-            path_set[barcode][visited[&path.first]].push_back(visited[&path2.first]);
+            if(path_set[barcode][visited[&path.first]].size() >= path_set[barcode][visited[&path2.first]].size()){
+                path_set[barcode][visited[&path.first]].push_back(visited[&path2.first]);    
+            } else {
+                path_set[barcode][visited[&path2.first]].push_back(visited[&path.first]);
+            }
         }
     }
 
@@ -158,7 +163,7 @@ namespace debruijn_graph {
                         debruijn_graph::conj_graph_pack &gp, int edge_size) {
         // INFO("vertices reached from distace: " << cfg::get().barcode_distance);
         auto bounded_dijkstra = DijkstraHelper<Graph>::CreateBoundedDijkstra(gp.g, 
-                                cfg::get().barcode_distance - edge_size);
+                            cfg::get().barcode_distance - edge_size);
         bounded_dijkstra.Run(start_vertex);
         TRACE("Reached vertices size - " << bounded_dijkstra.ReachedVertices());
         return bounded_dijkstra.ReachedVertices();
@@ -196,6 +201,10 @@ namespace debruijn_graph {
                     if(!done){
                         for(size_t i = 0; i < path2.first.size(); ++i){
                             VertexId endVertex = gp.g.EdgeEnd(path2.first[i].first);
+                            if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
+                                AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                            }
+                            VertexId startVertex = gp.g.EdgeStart(path2.first[i].first);
                             if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
                                 AddEdge(visited, path, path2, path_set, gp, first, barcode);
                             }
