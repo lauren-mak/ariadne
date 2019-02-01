@@ -246,6 +246,7 @@ namespace debruijn_graph {
             *stream >> read;
             std::string barcode_string = GetTenXBarcodeFromRead(read);
             if(barcode_string != ""){
+                if(first_thousand >= 1000) break;
                 if(barcode_string != current_barcode && !paths.empty() && first_thousand < 1000){
                     first_thousand++;
                     INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
