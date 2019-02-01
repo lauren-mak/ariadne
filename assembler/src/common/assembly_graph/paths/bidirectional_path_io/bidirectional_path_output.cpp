@@ -66,7 +66,7 @@ std::string GetUpdatedReadName(std::string& read, size_t& counter) {
     return "";
 }
 
-void path_extend::FastqWriter::OutputPaths(std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
+void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
     std::string& barcode, 
     io::OFastqReadStream& os_, 
     std::ofstream& statistics_file) {

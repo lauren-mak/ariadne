@@ -66,7 +66,7 @@ namespace debruijn_graph {
     void AddEdge(std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*>& visited, 
         const std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>& path, 
         const std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>& path2,
-        std::unordered_map<std::string, std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
+        std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
         debruijn_graph::conj_graph_pack &gp, 
         bool first,
         std::string &barcode){
@@ -84,7 +84,7 @@ namespace debruijn_graph {
             bidirectional_path->name = path.second.first.first;
             bidirectional_path->quality_string = path.second.first.second;
             bidirectional_path->sequence_string = path.second.second;
-        //  Pointer to path        vector of paths with edges to first(adjacencies)
+            //                                          Pointer to path        vector of paths with edges to first(adjacencies)
             path_set[barcode][bidirectional_path] =  std::vector<path_extend::BidirectionalPath*>();
             visited[&path.first] = bidirectional_path;
             first = false;
@@ -106,30 +106,17 @@ namespace debruijn_graph {
             bidirectional_path2->name = path2.second.first.first;
             bidirectional_path2->quality_string = path2.second.first.second;
             bidirectional_path2->sequence_string = path2.second.second;
-
             path_set[barcode][visited[&path.first]].push_back(bidirectional_path2);
             visited[&path2.first] = bidirectional_path2;
         } else{
             // add it to the adjacency list rather than creating a new adjacency list
-            if(path_set[barcode][visited[&path.first]].size() >= path_set[barcode][visited[&path2.first]].size()){
-                path_set[barcode][visited[&path.first]].push_back(visited[&path2.first]);
-                for(size_t i = 0; i < path_set[barcode][visited[&path2.first]].size(); ++i){
-                    path_set[barcode][visited[&path.first]].push_back(path_set[barcode][visited[&path2.first]][i]);
-                }
-		path_set[barcode][visited[&path2.first]].clear();
-            } else {
-                path_set[barcode][visited[&path2.first]].push_back(visited[&path.first]);
-                for(size_t i = 0; i < path_set[barcode][visited[&path2.first]].size(); ++i){
-                    path_set[barcode][visited[&path2.first]].push_back(path_set[barcode][visited[&path.first]][i]);
-                }
-		path_set[barcode][visited[&path.first]].clear();
-            }
+            path_set[barcode][visited[&path.first]].push_back(visited[&path2.first]);
         }
     }
 
     // void clusterReads(debruijn_graph::conj_graph_pack &gp,
     //     std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
-    //     std::unordered_map<std::string, std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
+    //     std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
     //     std::string& barcode){
     //     std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
     //     for (auto const& path : paths) {
@@ -171,7 +158,7 @@ namespace debruijn_graph {
                         debruijn_graph::conj_graph_pack &gp, int edge_size) {
         // INFO("vertices reached from distace: " << cfg::get().barcode_distance);
         auto bounded_dijkstra = DijkstraHelper<Graph>::CreateBoundedDijkstra(gp.g, 
-                            cfg::get().barcode_distance - edge_size);
+                                cfg::get().barcode_distance - edge_size);
         bounded_dijkstra.Run(start_vertex);
         TRACE("Reached vertices size - " << bounded_dijkstra.ReachedVertices());
         return bounded_dijkstra.ReachedVertices();
@@ -179,7 +166,7 @@ namespace debruijn_graph {
 
     void clusterReads(debruijn_graph::conj_graph_pack &gp,
         std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
-        std::unordered_map<std::string, std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
+        std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
         std::string& barcode){
         std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
         for (auto const& path : paths) {
@@ -209,10 +196,6 @@ namespace debruijn_graph {
                     if(!done){
                         for(size_t i = 0; i < path2.first.size(); ++i){
                             VertexId endVertex = gp.g.EdgeEnd(path2.first[i].first);
-                            if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
-                                AddEdge(visited, path, path2, path_set, gp, first, barcode);
-                            }
-                            VertexId startVertex = gp.g.EdgeStart(path2.first[i].first);
                             if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
                                 AddEdge(visited, path, path2, path_set, gp, first, barcode);
                             }
@@ -256,7 +239,7 @@ namespace debruijn_graph {
 
 
         //barcode --> BidirectionalPath
-        std::unordered_map<std::string, std::map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
+        std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
         int first_thousand = 0;
         std::string current_barcode = "";
         while(!stream->eof()) {
