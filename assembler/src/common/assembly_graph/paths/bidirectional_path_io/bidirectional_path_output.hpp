@@ -167,10 +167,12 @@ public:
             name_generator_(name_generator) {
     }    
 
-    void OutputPaths(std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
+    std::queue<path_extend::BidirectionalPath*> OutputPaths(
+    std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
     std::string& barcode, 
     io::OFastqReadStream& os_, 
-    std::ofstream& statistics_file);
+    std::ofstream& statistics_file,
+    std::queue<path_extend::BidirectionalPath*> stability_queue);
 
 };
 

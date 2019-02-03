@@ -69,7 +69,8 @@ namespace debruijn_graph {
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
         debruijn_graph::conj_graph_pack &gp, 
         bool first,
-        std::string &barcode){
+        std::string &barcode,
+        std::queue<path_extend::BidirectionalPath*>& stability_queue){
 
         // If Read hasn't been traversed before & corresponding bidirectional path has not been made
         if(!visited.count(&path.first) && first){
@@ -86,6 +87,7 @@ namespace debruijn_graph {
             bidirectional_path->sequence_string = path.second.second;
             //                                          Pointer to path        vector of paths with edges to first(adjacencies)
             path_set[barcode][bidirectional_path] =  std::vector<path_extend::BidirectionalPath*>();
+            stability_queue.push(bidirectional_path);
             visited[&path.first] = bidirectional_path;
             first = false;
         }
@@ -108,6 +110,7 @@ namespace debruijn_graph {
             bidirectional_path2->sequence_string = path2.second.second;
             path_set[barcode][visited[&path.first]].push_back(bidirectional_path2);
             visited[&path2.first] = bidirectional_path2;
+            stability_queue.push(bidirectional_path2);
         } else{
             // add it to the adjacency list rather than creating a new adjacency list
             path_set[barcode][visited[&path.first]].push_back(visited[&path2.first]);
@@ -167,7 +170,8 @@ namespace debruijn_graph {
     void clusterReads(debruijn_graph::conj_graph_pack &gp,
         std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
-        std::string& barcode){
+        std::string& barcode,
+        std::queue<path_extend::BidirectionalPath*>& stability_queue){
         std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
         for (auto const& path : paths) {
             bool first = true;
@@ -186,7 +190,7 @@ namespace debruijn_graph {
                             if(path.first[i].first == path2.first[j].first){
                                 long int distance_between_reads = path2_start - path1_end;
                                 if(std::abs(distance_between_reads) < cfg::get().barcode_distance && std::abs(distance_between_reads) >= 0){
-                                    AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                                    AddEdge(visited, path, path2, path_set, gp, first, barcode, stability_queue);
                                     done = true;
                                 }
 
@@ -197,7 +201,7 @@ namespace debruijn_graph {
                         for(size_t i = 0; i < path2.first.size(); ++i){
                             VertexId endVertex = gp.g.EdgeEnd(path2.first[i].first);
                             if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
-                                AddEdge(visited, path, path2, path_set, gp, first, barcode);
+                                AddEdge(visited, path, path2, path_set, gp, first, barcode, stability_queue);
                             }
                         }
                     }
@@ -227,6 +231,7 @@ namespace debruijn_graph {
         auto stream = io::paired_easy_reader(lib_10x, false, false);
         io::PairedRead read;
         std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>> paths;
+        std::queue<path_extend::BidirectionalPath*> stability_queue;
         INFO("barcode distance: " << cfg::get().barcode_distance);
 
 
@@ -250,8 +255,9 @@ namespace debruijn_graph {
                 if(barcode_string != current_barcode && !paths.empty() && first_thousand < 1000){
                     first_thousand++;
                     INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
-                    clusterReads(graph_pack, paths, connected_components, current_barcode);
-                    writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
+                    clusterReads(graph_pack, paths, connected_components, current_barcode, stability_queue);
+                    stability_queue = writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file, stability_queue);
+
                     int pewpew = connected_components.erase(current_barcode);
                     paths.clear();
                 }
@@ -270,9 +276,9 @@ namespace debruijn_graph {
         if(first_thousand < 1000){
             first_thousand++;
             INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
-            clusterReads(graph_pack, paths, connected_components, current_barcode);
+            clusterReads(graph_pack, paths, connected_components, current_barcode, stability_queue);
         }
-        writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file);
+        stability_queue = writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file, stability_queue);
         int pewpew = connected_components.erase(current_barcode);
         paths.clear();
     }

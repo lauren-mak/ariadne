@@ -66,10 +66,12 @@ std::string GetUpdatedReadName(std::string& read, size_t& counter) {
     return "";
 }
 
-void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
+std::queue<path_extend::BidirectionalPath*> path_extend::FastqWriter::OutputPaths(
+    std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>& paths, 
     std::string& barcode, 
     io::OFastqReadStream& os_, 
-    std::ofstream& statistics_file) {
+    std::ofstream& statistics_file,
+    std::queue<path_extend::BidirectionalPath*> stability_queue) {
     
     std::queue<BidirectionalPath*> cluster_queue;
 
@@ -136,13 +138,16 @@ void path_extend::FastqWriter::OutputPaths(std::unordered_map<path_extend::Bidir
         }
         counter++;
     }
-    for(auto iter = paths.begin(); iter != paths.end(); ++iter){
-        std::string name = iter->first->name ;
-        std::string sequence_string = iter->first->sequence_string;
-        std::string quality_string = iter->first->quality_string;
+    while(!stability_queue.empty()){
+        path_extend::BidirectionalPath* iter = stability_queue.front();
+        std::string name = iter->name ;
+        std::string sequence_string = iter->sequence_string;
+        std::string quality_string = iter->quality_string;
         io::SingleRead left(name, sequence_string, quality_string);
         os_ << left;
+        stability_queue.pop();
     }
+    return stability_queue;
 }
 
 }
