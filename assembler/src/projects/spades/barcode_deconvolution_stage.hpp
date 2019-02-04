@@ -166,6 +166,15 @@ namespace debruijn_graph {
         TRACE("Reached vertices size - " << bounded_dijkstra.ReachedVertices());
         return bounded_dijkstra.ReachedVertices();
     }
+    std::vector<VertexId> ConjugateVerticesReachedFrom(VertexId& start_vertex, 
+                        debruijn_graph::conj_graph_pack &gp, int edge_size) {
+        // INFO("vertices reached from distace: " << cfg::get().barcode_distance);
+        auto bounded_dijkstra = DijkstraHelper<Graph>::CreateBackwardBoundedDijkstra(gp.g, 
+                                cfg::get().barcode_distance - edge_size);
+        bounded_dijkstra.Run(start_vertex);
+        TRACE("Reached vertices size - " << bounded_dijkstra.ReachedVertices());
+        return bounded_dijkstra.ReachedVertices();
+    }
 
     void clusterReads(debruijn_graph::conj_graph_pack &gp,
         std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>>& paths,
@@ -177,7 +186,9 @@ namespace debruijn_graph {
             bool first = true;
             VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
             std::vector<VertexId> reached_vertices = VerticesReachedFrom(startVertex, gp, std::abs(path.first.end_pos()-path.first.start_pos()));
+            std::vector<VertexId> conjugate_reached_vertices = ConjugateVerticesReachedFrom(startVertex, gp, std::abs(path.first.end_pos()-path.first.start_pos()));
             std::sort(reached_vertices.begin(), reached_vertices.end());
+            std::sort(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end());
             for(auto const& path2 : paths) {
                 bool done = false;
                 if(&path.first != &path2.first){
@@ -200,7 +211,8 @@ namespace debruijn_graph {
                     if(!done){
                         for(size_t i = 0; i < path2.first.size(); ++i){
                             VertexId endVertex = gp.g.EdgeEnd(path2.first[i].first);
-                            if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex)){
+                            if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex) || 
+                                std::binary_search(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end(), endVertex)){
                                 AddEdge(visited, path, path2, path_set, gp, first, barcode, stability_queue);
                             }
                         }
