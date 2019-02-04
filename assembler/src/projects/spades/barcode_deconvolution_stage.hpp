@@ -181,8 +181,6 @@ namespace debruijn_graph {
         std::string& barcode,
         std::queue<path_extend::BidirectionalPath*>& stability_queue){
         std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
-        if(barcode == "CTGCGAGGTCGCGGTT") INFO("CTGCGAGGTCGCGGTT STARTS HERE - " << paths.size());
-
         for (auto const& path : paths) {
             if(!visited.count(&path.first)){
                 std::vector<EdgeId> edges = path.first.simple_path();
@@ -199,7 +197,6 @@ namespace debruijn_graph {
                 //                                          Pointer to path        vector of paths with edges to first(adjacencies)
                 path_set[barcode][bidirectional_path] =  std::vector<path_extend::BidirectionalPath*>();
                 stability_queue.push(bidirectional_path);
-                if(barcode == "CTGCGAGGTCGCGGTT") INFO("barcode queue size - " << stability_queue.size());
                 visited[&path.first] = bidirectional_path;
                 // first = false;
             }
