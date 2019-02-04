@@ -69,8 +69,26 @@ namespace debruijn_graph {
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>>& path_set,
         debruijn_graph::conj_graph_pack &gp, 
         std::string &barcode,
+        bool first,
         std::queue<path_extend::BidirectionalPath*>& stability_queue){
-
+        if(!visited.count(&path.first)){
+            std::vector<EdgeId> edges = path.first.simple_path();
+            path_extend::BidirectionalPath* bidirectional_path = new path_extend::BidirectionalPath(gp.g);
+            bidirectional_path->SetConjPath(new path_extend::BidirectionalPath(gp.g));
+            for (auto e : edges) {
+                    bidirectional_path->PushBack(e);
+                    bidirectional_path->GetConjPath()->PushBack(gp.g.conjugate(e));
+            }
+            // TODO -stop using pairs and store header(name), quality and sequence smarter
+            bidirectional_path->name = path.second.first.first;
+            bidirectional_path->quality_string = path.second.first.second;
+            bidirectional_path->sequence_string = path.second.second;
+            //                                          Pointer to path        vector of paths with edges to first(adjacencies)
+            path_set[barcode][bidirectional_path] =  std::vector<path_extend::BidirectionalPath*>();
+            stability_queue.push(bidirectional_path);
+            visited[&path.first] = bidirectional_path;
+            first = false;
+        }
         // // If Read hasn't been traversed before & corresponding bidirectional path has not been made
         // if(!visited.count(&path.first) && first){
         //     std::vector<EdgeId> edges = path.first.simple_path();
@@ -182,27 +200,7 @@ namespace debruijn_graph {
         std::queue<path_extend::BidirectionalPath*>& stability_queue){
         std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*> visited;
         for (auto const& path : paths) {
-            if(!visited.count(&path.first)){
-                std::vector<EdgeId> edges = path.first.simple_path();
-                path_extend::BidirectionalPath* bidirectional_path = new path_extend::BidirectionalPath(gp.g);
-                bidirectional_path->SetConjPath(new path_extend::BidirectionalPath(gp.g));
-                for (auto e : edges) {
-                        bidirectional_path->PushBack(e);
-                        bidirectional_path->GetConjPath()->PushBack(gp.g.conjugate(e));
-                }
-                // TODO -stop using pairs and store header(name), quality and sequence smarter
-                bidirectional_path->name = path.second.first.first;
-                bidirectional_path->quality_string = path.second.first.second;
-                bidirectional_path->sequence_string = path.second.second;
-                //                                          Pointer to path        vector of paths with edges to first(adjacencies)
-                path_set[barcode][bidirectional_path] =  std::vector<path_extend::BidirectionalPath*>();
-                stability_queue.push(bidirectional_path);
-                visited[&path.first] = bidirectional_path;
-                // first = false;
-            }
-        }
-        for (auto const& path : paths) {
-            // bool first = true;
+            bool first = true;
             VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
             std::vector<VertexId> reached_vertices = VerticesReachedFrom(startVertex, gp, std::abs(path.first.end_pos()-path.first.start_pos()));
             std::vector<VertexId> conjugate_reached_vertices = ConjugateVerticesReachedFrom(startVertex, gp, std::abs(path.first.end_pos()-path.first.start_pos()));
@@ -221,7 +219,7 @@ namespace debruijn_graph {
                                 long int distance_between_reads = path2_start - path1_end;
                                 if(std::abs(distance_between_reads) < cfg::get().barcode_distance && std::abs(distance_between_reads) >= 0){
 
-                                    AddEdge(visited, path, path2, path_set, gp, barcode, stability_queue);
+                                    AddEdge(visited, path, path2, path_set, gp, barcode, first, stability_queue);
                                     done = true;
                                 }
 
@@ -234,7 +232,7 @@ namespace debruijn_graph {
                             if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex) || 
                                 std::binary_search(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end(), endVertex)){
 
-                                AddEdge(visited, path, path2, path_set, gp, barcode, stability_queue);
+                                AddEdge(visited, path, path2, path_set, gp, barcode, first, stability_queue);
                             }
                         }
                     }
@@ -253,6 +251,26 @@ namespace debruijn_graph {
                     // }
                     
                 }
+            }
+        }
+        for (auto const& path : paths) {
+            if(!visited.count(&path.first)){
+                std::vector<EdgeId> edges = path.first.simple_path();
+                path_extend::BidirectionalPath* bidirectional_path = new path_extend::BidirectionalPath(gp.g);
+                bidirectional_path->SetConjPath(new path_extend::BidirectionalPath(gp.g));
+                for (auto e : edges) {
+                        bidirectional_path->PushBack(e);
+                        bidirectional_path->GetConjPath()->PushBack(gp.g.conjugate(e));
+                }
+                // TODO -stop using pairs and store header(name), quality and sequence smarter
+                bidirectional_path->name = path.second.first.first;
+                bidirectional_path->quality_string = path.second.first.second;
+                bidirectional_path->sequence_string = path.second.second;
+                //                                          Pointer to path        vector of paths with edges to first(adjacencies)
+                path_set[barcode][bidirectional_path] =  std::vector<path_extend::BidirectionalPath*>();
+                stability_queue.push(bidirectional_path);
+                visited[&path.first] = bidirectional_path;
+                // first = false;
             }
         }
     }
