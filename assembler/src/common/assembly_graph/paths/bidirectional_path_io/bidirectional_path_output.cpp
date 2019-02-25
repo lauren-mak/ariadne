@@ -88,7 +88,7 @@ std::queue<path_extend::BidirectionalPath*> path_extend::FastqWriter::OutputPath
         // read from which connected component graph is built
         //running a BFS
 
-        if(paths[iter->first].size() > 1 && !visited.count(iter->first)){
+        if(paths[iter->first].size() >= 1 && !visited.count(iter->first)){
 
             cluster_queue.push(iter->first);
             visited.insert(iter->first);
