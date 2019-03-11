@@ -63,6 +63,23 @@ namespace debruijn_graph {
         return "";
     }
 
+    std::string GetTenXBarcodeFromRead(const std::string &read) {
+        std::string delimeter = "BX:Z:";
+        std::string delimeter2 = "-1";
+        size_t start_pos = read.find(delimeter);
+        size_t delimeter_size = delimeter.length();
+        if (start_pos != string::npos) {
+            std::string barcode = read.substr(start_pos + delimeter_size);
+            size_t end_pos = barcode.find(delimeter2);
+            if (end_pos != string::npos) {
+                barcode = barcode.substr(0, end_pos);
+            }
+            TRACE(barcode);
+            return barcode;
+        }
+        return "";
+    }
+
     void AddEdge(std::unordered_map<const MappingPath<EdgeId>*, path_extend::BidirectionalPath*>& visited, 
         const std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>& path, 
         const std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>& path2,
@@ -202,8 +219,16 @@ namespace debruijn_graph {
         for (auto const& path : paths) {
             bool first = true;
             VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
-            std::vector<VertexId> reached_vertices = VerticesReachedFrom(startVertex, gp, std::abs(path.first.end_pos()-path.first.start_pos()));
-            std::vector<VertexId> conjugate_reached_vertices = ConjugateVerticesReachedFrom(startVertex, gp, std::abs(path.first.end_pos()-path.first.start_pos()));
+            std::vector<VertexId> reached_vertices;
+            std::vector<VertexId> conjugate_reached_vertices;
+            if (std::int64_t(path.first.end_pos())-std::int64_t(path.first.start_pos()) >= 0){
+                reached_vertices = VerticesReachedFrom(startVertex, gp, std::int64_t(path.first.end_pos())-std::int64_t(path.first.start_pos()));
+                conjugate_reached_vertices = ConjugateVerticesReachedFrom(startVertex, gp, std::int64_t(path.first.end_pos())-std::int64_t(path.first.start_pos()));
+            } else {
+                reached_vertices = VerticesReachedFrom(startVertex, gp, path.first.end_pos()-path.first.start_pos());
+                conjugate_reached_vertices = ConjugateVerticesReachedFrom(startVertex, gp, path.first.end_pos()-path.first.start_pos());
+            }
+
             std::sort(reached_vertices.begin(), reached_vertices.end());
             std::sort(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end());
             for(auto const& path2 : paths) {
@@ -305,10 +330,12 @@ namespace debruijn_graph {
                 if(first_thousand >= 1000) break;
                 if(barcode_string != current_barcode && !paths.empty() && first_thousand < 1000){
                     first_thousand++;
+                    if(current_barcode == ""){
+                        current_barcode = GetTenXBarcodeFromRead(paths[0].second.first.first);
+                    }
                     INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
                     clusterReads(graph_pack, paths, connected_components, current_barcode, stability_queue);
                     stability_queue = writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file, stability_queue);
-
                     int pewpew = connected_components.erase(current_barcode);
                     paths.clear();
                 }
