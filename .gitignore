@@ -12,3 +12,4 @@ CMakeFiles
 CMakeCache.txt
 cmake_install.cmake
 assembler/src/tools/quality/results*
+assembler/src/cmake-build-debug/*
