@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <string>
 #include <cstdlib>
-
+// LM: All changes introduced by Lauren Mak will be commented and tagged with LM.
 
 namespace debruijn_graph {
 
