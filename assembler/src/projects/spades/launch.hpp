@@ -121,7 +121,15 @@ void assemble_genome() {
     if (cfg::get().correct_mismatches)
         SPAdes.add<debruijn_graph::MismatchCorrection>();
 
-    if (cfg::get().rr_enable) {
+    // LM: Fix_5. Have moved barcode deconvolution up here because further steps involve repeat reconstruction, which requires save-points that are not currently being made.
+    // This change makes unit-testing in CLion possible.
+    if (cfg::get().barcode_distance > 0) {
+        INFO("This loop has been reached...");
+        SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
+    }
+
+    // LM: Testing. So that only the barcode deconvolution stage is added to the run function.
+    /*if (cfg::get().rr_enable) {
         if (!cfg::get().series_analysis.empty())
             SPAdes.add<debruijn_graph::SeriesAnalysis>();
 
@@ -141,13 +149,7 @@ void assemble_genome() {
         SPAdes.add<debruijn_graph::ContigOutput>(false);
     }
 
-    if(cfg::get().rr_enable) {
-
-        SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
-
-    }
-
-    SPAdes.add<debruijn_graph::ContigOutput>();
+    SPAdes.add<debruijn_graph::ContigOutput>();*/
 
     SPAdes.run(conj_gp, cfg::get().entry_point.c_str());
 
