@@ -57,7 +57,7 @@ namespace debruijn_graph {
             if (end_pos != string::npos) {
                 barcode = barcode.substr(0, end_pos);
             }
-            TRACE(barcode);
+            // TRACE(barcode);
             return barcode;
         }
         return "";
@@ -74,7 +74,7 @@ namespace debruijn_graph {
             if (end_pos != string::npos) {
                 barcode = barcode.substr(0, end_pos);
             }
-            TRACE(barcode);
+            // TRACE(barcode);
             return barcode;
         }
         return "";
@@ -193,11 +193,11 @@ namespace debruijn_graph {
 
     std::vector<VertexId> VerticesReachedFrom(VertexId& start_vertex, 
                         debruijn_graph::conj_graph_pack &gp, int edge_size) {
-        // INFO("vertices reached from distace: " << cfg::get().barcode_distance);
+        INFO("vertices reached from distance: " << cfg::get().barcode_distance); // LM: Testing. Nice to have more information.
         auto bounded_dijkstra = DijkstraHelper<Graph>::CreateBoundedDijkstra(gp.g, 
                                 cfg::get().barcode_distance - edge_size);
         bounded_dijkstra.Run(start_vertex);
-        TRACE("Reached vertices size - " << bounded_dijkstra.ReachedVertices());
+        // INFO("Reached vertices size - " << bounded_dijkstra.ReachedVertices()); // LM: Testing. TRACE() isn't showing up even with --debug.
         return bounded_dijkstra.ReachedVertices();
     }
     std::vector<VertexId> ConjugateVerticesReachedFrom(VertexId& start_vertex, 
@@ -206,7 +206,7 @@ namespace debruijn_graph {
         auto bounded_dijkstra = DijkstraHelper<Graph>::CreateBackwardBoundedDijkstra(gp.g, 
                                 cfg::get().barcode_distance - edge_size);
         bounded_dijkstra.Run(start_vertex);
-        TRACE("Reached vertices size - " << bounded_dijkstra.ReachedVertices());
+        // INFO("Reached vertices size - " << bounded_dijkstra.ReachedVertices()); // LM: Testing. TRACE() isn't showing up even with --debug.
         return bounded_dijkstra.ReachedVertices();
     }
 
@@ -219,8 +219,18 @@ namespace debruijn_graph {
         for (auto const& path : paths) {
             bool first = true;
             VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
+            // LM: Fix_2. The end vertex of the reverse complement of the first edge of the read.
+            // VertexId conjStartVertex = gp.g.EdgeStart(path.first.front().first); // This is the start point of the read.
             std::vector<VertexId> reached_vertices;
             std::vector<VertexId> conjugate_reached_vertices;
+            INFO(path.first.start_pos() << " " << path.first.end_pos()); // LM: Testing. This should print the start and end positions of the first read.
+            // INFO(path.first.mapping_at(0).mapped_range.start_pos << " " << path.first.mapping_at(path.first.size() - 1).mapped_range.end_pos); // LM: Testing. This should print the entire mapping path of the read. See method at mapping_path.hpp line 260.
+            // Hopefully, end_pos_read_on_edge = range_mappings_[range_mappings_.size() - 1].mapped_range.end_pos)
+            // LM: Fix_2. Takes the difference between the end of the edge that the read-end sits on and the position of the read-end on the edge, instead of the end and start of the read. Replace entire if-loop with this.
+            // int end_distance = length(path.first.back()) - path.first.mapping_at(path.first.size() - 1).mapped_range.end_pos;
+            // int conj_end_distance = path.first.mapping_at(0).mapped_range.start_pos; // This may be the wrong way to figure out what the distance is to the start vertex.
+            // reached_vertices = VerticesReachedFrom(startVertex, gp, barcode_distance - end_distance); // Find the list of vertices that can be reached with a path of MappingPath<EdgeId>.
+            // conjugate_reached_vertices = ConjugateVerticesReachedFrom(conjStartVertex, gp, barcode_distance - conj_end_distance); // My guess is that this is treats the start of MappingPath<EdgeId> as the goal vertex instead of the initial vertex.
             if (std::int64_t(path.first.end_pos())-std::int64_t(path.first.start_pos()) >= 0){
                 reached_vertices = VerticesReachedFrom(startVertex, gp, std::int64_t(path.first.end_pos())-std::int64_t(path.first.start_pos()));
                 conjugate_reached_vertices = ConjugateVerticesReachedFrom(startVertex, gp, std::int64_t(path.first.end_pos())-std::int64_t(path.first.start_pos()));
@@ -232,34 +242,48 @@ namespace debruijn_graph {
             std::sort(reached_vertices.begin(), reached_vertices.end());
             std::sort(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end());
             for(auto const& path2 : paths) {
-                bool done = false;
                 if(&path.first != &path2.first){
                     // If Read hasn't been traversed before & corresponding bidirectional path has not been made
                     const size_t path2_start = path2.first.start_pos();
                     const size_t path1_end = path.first.end_pos();
 
-                    for(size_t i = 0;i < path.first.size(); ++i){
-                        for(size_t j = 0;j < path2.first.size(); ++j){
-                            if(path.first[i].first == path2.first[j].first){
-                                long int distance_between_reads = path2_start - path1_end;
-                                if(std::abs(distance_between_reads) < cfg::get().barcode_distance && std::abs(distance_between_reads) >= 0){
-
+                    int counter = 0; // LM: Testing. Seeing how many times each second read is being added.
+                    // Fix_3: Small efficiency fix. If the reads i) overlap or ii) are too distant anyways then there's no point in checking to see if they overlap.
+                    long int distance_between_reads = path2_start - path1_end;
+                    INFO("Distance = " << distance_between_reads << " path_end = " << path1_end << " path2_start = " << path2_start);
+                    // LM: Testing. The number of edges covered (partially) by the read.
+                    INFO("path_size = " << path.first.size() << " path2_size = " << path2.first.size());
+                    if(std::abs(distance_between_reads) < cfg::get().barcode_distance && std::abs(distance_between_reads) >= 0){
+                        for(size_t i = 0;i < path.first.size(); ++i){
+                            for(size_t j = 0;j < path2.first.size(); ++j){
+                                // LM: Testing. This should give us the edge ID of the ith and jth edges of reads 1 and 2 respectively.
+                                INFO(path.first[i].first << " " << path2.first[j].first);
+                                // LM: Testing. This should give us the mapping ranges of the ith and jth edges of reads 1 and 2 respectively.
+                                INFO(path.first[i].second.mapped_range << " " << path2.first[j].second.mapped_range);
+                                if(path.first[i].first == path2.first[j].first){
+                                    INFO("This is connection number " << counter); // LM: Testing. To find out how many times each read-read connection was added to the list.
+                                    ++counter; // LM: Testing. Tracking the above.
                                     AddEdge(visited, path, path2, path_set, gp, barcode, first, stability_queue);
-                                    done = true;
+                                    goto added; // LM: Boolean done was not a clean way to record whether or not connectivity established.
                                 }
-
                             }
                         }
                     }
-                    if(!done){
-                        for(size_t i = 0; i < path2.first.size(); ++i){
-                            VertexId endVertex = gp.g.EdgeEnd(path2.first[i].first);
-                            if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex) || 
-                                std::binary_search(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end(), endVertex)){
+                    for(size_t i = 0; i < path2.first.size(); ++i){
+                        VertexId endVertex = gp.g.EdgeEnd(path2.first[i].first);
+                        if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex) ||
+                            std::binary_search(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end(), endVertex)){
+
+                            AddEdge(visited, path, path2, path_set, gp, barcode, first, stability_queue);
+                        } /* else { // LM: Fix_1. Find the reverse complement of the second read, and check it against the set of (reverse complement) reached vertices.
+                            endVertex = gp.g.EdgeEnd(gp.g.conjugate(path2.first[i].first));
+                            if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex) ||
+                                std::binary_search(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end(),
+                                                   endVertex)) {
 
                                 AddEdge(visited, path, path2, path_set, gp, barcode, first, stability_queue);
                             }
-                        }
+                        } */
                     }
                     // DistancesLengthsCallback<debruijn_graph::DeBruijnGraph> callback(gp.g);
                     // VertexId startVertex = gp.g.EdgeEnd(path.first.back().first);
@@ -276,6 +300,7 @@ namespace debruijn_graph {
                     // }
                     
                 }
+                added:;
             }
         }
         for (auto const& path : paths) {
@@ -284,8 +309,9 @@ namespace debruijn_graph {
                 path_extend::BidirectionalPath* bidirectional_path = new path_extend::BidirectionalPath(gp.g);
                 bidirectional_path->SetConjPath(new path_extend::BidirectionalPath(gp.g));
                 for (auto e : edges) {
-                        bidirectional_path->PushBack(e);
-                        bidirectional_path->GetConjPath()->PushBack(gp.g.conjugate(e));
+                    bidirectional_path->PushBack(e);
+                    // Fix_4: TODO Removed GetConjPath() entirely because it's not reported at all, and there's really no point because the reverse conjugate connection technically doesn't exist.
+                    bidirectional_path->GetConjPath()->PushBack(gp.g.conjugate(e));
                 }
                 // TODO -stop using pairs and store header(name), quality and sequence smarter
                 bidirectional_path->name = path.second.first.first;
@@ -337,6 +363,13 @@ namespace debruijn_graph {
                     clusterReads(graph_pack, paths, connected_components, current_barcode, stability_queue);
                     stability_queue = writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file, stability_queue);
                     int pewpew = connected_components.erase(current_barcode);
+                    // LM: Testing. Stops unit test after first barcode with >10 reads, which will likely be separated into >5 enhanced barcodes.
+                    // Currently set to 1 after r0 to see lots of Dijkstra graph details for one barcode only.
+                    if (paths.size() > 10) {
+                        INFO("Should terminate at barcode " << current_barcode);
+                        paths.clear();
+                        break;
+                    }
                     paths.clear();
                 }
                 const auto &path1 = mapper->MapRead(read.first());
