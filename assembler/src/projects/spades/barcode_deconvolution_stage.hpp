@@ -253,7 +253,7 @@ namespace debruijn_graph {
                     // LM: Testing. The number of edges covered (partially) by the read.
                     // INFO("path_size = " << path.first.size() << " path2_size = " << path2.first.size());
                     // Fix_3A: The only thing to check is if the first read ends on the same read as the second read starts. Got rid of the two for-loops checking every edge.
-                    //  // Original Fix_3: Small efficiency fix. If the reads i) overlap or ii) are too distant anyways then there's no point in checking to see if they overlap.
+                    // Original Fix_3: Small efficiency fix. If the reads i) overlap or ii) are too distant anyways then there's no point in checking to see if they overlap.
                     // for(size_t i = 0;i < path.first.size(); ++i){
                         // for(size_t j = 0;j < path2.first.size(); ++j){
                             // LM: Testing. This should give us the edge ID of the ith and jth edges of reads 1 and 2 respectively.
@@ -265,6 +265,16 @@ namespace debruijn_graph {
                             // if(path.first[i].first == path2.first[j].first){
                                 // LM: Fix_5: Previously, this was in the wrong place as it worked whether or not the reads ENDED on the same edge (i.e.: it could work when they coincided).
                                 long int distance_between_reads = path2.first.start_pos() - path.first.end_pos();
+                                if(std::abs(distance_between_reads) < cfg::get().barcode_distance && distance_between_reads >= 0){ // LM: Orignally, this was std::abs(distance) for the second term, which would have rendered it always true.
+                                    // INFO("Same edge end. This is connection number " << counter); // LM: Testing. To find out how many times each read-read connection was added to the list.
+                                    // ++counter; // LM: Testing. Tracking the above.
+                                    AddEdge(visited, path, path2, path_set, gp, barcode, first, stability_queue);
+                                    goto added; // LM: Boolean done was not a clean way to record whether or not connectivity established.
+                                } 
+                            // Fix_3B: To allow for the case that the conjugate of read 2 lies on the same end-edge as read 1. 
+                            } else if (path.first.edge_at(path.first.size() - 1) == gp.g.conjugate(path2.first.edge_at(path2.first.size() - 1))) {
+                                int path2_conj_end = gp.g.length(path2.first.edge_at(path2.first.size() - 1)) - path2.first.end_pos();
+                                long int distance_between_reads = path2_conj_end - path.first.end_pos();
                                 if(std::abs(distance_between_reads) < cfg::get().barcode_distance && distance_between_reads >= 0){ // LM: Orignally, this was std::abs(distance) for the second term, which would have rendered it always true.
                                     // INFO("Same edge end. This is connection number " << counter); // LM: Testing. To find out how many times each read-read connection was added to the list.
                                     // ++counter; // LM: Testing. Tracking the above.
@@ -282,6 +292,7 @@ namespace debruijn_graph {
                             AddEdge(visited, path, path2, path_set, gp, barcode, first, stability_queue);
                         } else { // LM: Fix_1. Find the reverse complement of the second read, and check it against the set of (reverse complement) reached vertices.
                             endVertex = gp.g.conjugate(gp.g.EdgeEnd(path2.first[i].first)); // This is the start vertex of an edge that the read sits on. IOW, the end vertex of an edge that the read reverse complement sits on.
+                            //  Fix_6: Previously, didn't have gp.g.conjugate() so it wasn't really the conjugate. 
                             if (std::binary_search(reached_vertices.begin(), reached_vertices.end(), endVertex) ||
                                 std::binary_search(conjugate_reached_vertices.begin(), conjugate_reached_vertices.end(), endVertex)) {
                                 // INFO("Different conjugate edge end"); // LM: Testing. To find out how many times each read-read connection was added to the list.
