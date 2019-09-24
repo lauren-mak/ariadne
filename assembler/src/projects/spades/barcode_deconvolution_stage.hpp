@@ -375,11 +375,11 @@ namespace debruijn_graph {
                         current_barcode = GetTenXBarcodeFromRead(paths[0].second.first.first);
                     }
                     // LM: Testing. Skipping the first already-done barcodes so that it doesn't take forever.
-                    if (first_thousand < 920225) {
+                    /* if (first_thousand < 920225) {
                         INFO("Skipping barcodes " << current_barcode  << " number " << first_thousand);
                         paths.clear();
                         continue;
-                    }
+                    } */
                     INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
                     clusterReads(graph_pack, paths, connected_components, current_barcode, stability_queue);
                     stability_queue = writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file, stability_queue);
