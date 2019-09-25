@@ -86,15 +86,6 @@ void assemble_genome() {
         SPAdes.add<debruijn_graph::GenomicInfoFiller>();
 
     VERIFY(!cfg::get().gc.before_raw_simplify || !cfg::get().gc.before_simplify);
-    // LM: Fix_5. Have moved barcode deconvolution to line 123 because further steps involve repeat reconstruction, which requires save-points that are not currently being made.
-    // This change makes unit-testing in CLion possible.
-    // LM: September 24, 2019. Have moved it back here to assemble on the cluster.
-    if (cfg::get().barcode_distance > 0) {
-        INFO("This loop has been reached...");
-        SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
-    }
-    // LM: Testing. So that only the barcode deconvolution stage is added to the run function.
-    /*
     if (cfg::get().gap_closer_enable &&
         cfg::get().gc.before_raw_simplify)
         SPAdes.add<debruijn_graph::GapClosing>("early_gapcloser");
@@ -129,7 +120,15 @@ void assemble_genome() {
     if (cfg::get().correct_mismatches)
         SPAdes.add<debruijn_graph::MismatchCorrection>();
 
-
+    // LM: Fix_5. Have moved barcode deconvolution to line 123 because further steps involve repeat reconstruction, which requires save-points that are not currently being made.
+    // This change makes unit-testing in CLion possible.
+    // LM: September 24, 2019. Have moved it back here to assemble on the cluster.
+    if (cfg::get().barcode_distance > 0) {
+        INFO("This loop has been reached...");
+        SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
+    }
+    // LM: Testing. So that only the barcode deconvolution stage is added to the run function.
+    /*
     if (cfg::get().rr_enable) {
         if (!cfg::get().series_analysis.empty())
             SPAdes.add<debruijn_graph::SeriesAnalysis>();
