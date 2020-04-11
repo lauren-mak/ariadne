@@ -347,50 +347,61 @@ namespace debruijn_graph {
         auto mapper = MapperInstance(graph_pack);
         auto stream = io::paired_easy_reader(lib_10x, false, false);
         io::PairedRead read;
-        std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>> paths;
-        std::queue<path_extend::BidirectionalPath*> stability_queue;
         // INFO("barcode distance: " << cfg::get().barcode_distance);
 
 
-        path_extend::FastqWriter writer2(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
-        std::string file_name = cfg::get().output_dir + std::to_string(cfg::get().barcode_distance) + "extracted.fastq";
+        std::string file_name = cfg::get().output_dir + std::to_string(cfg::get().barcode_distance);
         // INFO("Outputting updated reads with enhanced barcodes to " << file_name);
-        io::OFastqReadStream os_(file_name);
-        std::ofstream statistics_file;
-        statistics_file.open(cfg::get().output_dir + std::to_string(cfg::get().barcode_distance) + "statistics.txt");
+        path_extend::FastqWriter writer2(graph_pack.g, make_shared<path_extend::DefaultContigNameGenerator>());
+        io::OFastqReadStream os_(file_name + ".extracted.fastq");
 
 
         //barcode --> BidirectionalPath
+        std::queue<path_extend::BidirectionalPath*> stability_queue; // LMnew: Moved here so I can see all of the persistent objects.
+        std::vector<std::pair<MappingPath<EdgeId>, std::pair<std::pair<std::string, std::string>, std::string>>> paths; // LMnew: Moved here so I can see all of the persistent objects.
+//        INFO("paths start capacity: " << paths.capacity()); // LMnew: Reports the start size of the persistent paths object.
         std::unordered_map<std::string, std::unordered_map<path_extend::BidirectionalPath*, std::vector<path_extend::BidirectionalPath*>>> connected_components;
-        int first_thousand = 0;
+//        INFO("connected_components start bucket size: " << connected_components.bucket_count()); // LMnew: Reports the start size of the persistent connected_components object.
+        int barcode_count = 0;
         std::string current_barcode = "";
         while(!stream->eof()) {
             *stream >> read;
             std::string barcode_string = GetTenXBarcodeFromRead(read);
             if(barcode_string != ""){
-                // if(first_thousand >= 1000) break;
-                if(barcode_string != current_barcode && !paths.empty()){ //  && first_thousand < 1000
-                    first_thousand++;
+                // if(barcode_count >= 1000) break;
+                if(barcode_string != current_barcode && !paths.empty()){ //  && barcode_count < 1000
+                    barcode_count++;
                     if(current_barcode == ""){
                         current_barcode = GetTenXBarcodeFromRead(paths[0].second.first.first);
                     }
                     // LM: Testing. Skipping the first already-done barcodes so that it doesn't take forever.
-                    /* if (first_thousand < 920225) {
-                        INFO("Skipping barcodes " << current_barcode  << " number " << first_thousand);
+                    /* if (barcode_count < 920225) {
+                        INFO("Skipping barcodes " << current_barcode  << " number " << barcode_count);
                         paths.clear();
                         continue;
                     } */
-                    INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
+                    if(barcode_count % 1000 == 0 ) { // LMnew: Reduce the amount of reporting.
+                        INFO(barcode_count << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
+                    }
                     clusterReads(graph_pack, paths, connected_components, current_barcode, stability_queue);
+                    std::ofstream statistics_file; // LMnew: See if the append function works, and if it cuts down on memory used.
+                    statistics_file.open(file_name + ".statistics.txt", std::ofstream::out | std::ofstream::app);
+                        // LMnew: Since FastQ, statistics file start with the same basename.
                     stability_queue = writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file, stability_queue);
+                    statistics_file.close(); // LMnew: See if the append function works, and if it cuts down on memory used.
+                    std::queue<path_extend::BidirectionalPath*>().swap(stability_queue); // LMnew: Fix has same idea as connected_components and paths. Free up memory allocated to stability_queue for the rest of the program.
+//                    INFO("connected_components full bucket size: " << connected_components.bucket_count()); // LMnew: Reports the start size of the persistent connected_components object after loaded with a barcode of information.
                     int pewpew = connected_components.erase(current_barcode);
+//                    INFO("connected_components cleared bucket size: " << connected_components.bucket_count()); // LMnew: Reports the start size of the persistent connected_components object after clearing.
                     // LM: Testing. Stops unit test after first barcode with >10 reads, which will likely be separated into >5 enhanced barcodes.
                     /* if (paths.size() > 10) {
                         INFO("Should terminate at barcode " << current_barcode);
                         paths.clear();
                         break;
                     } */
+//                    INFO("paths full capacity: " << paths.capacity()); // LMnew: Reports the size of the persistent paths object after loaded with a barcode of information.
                     paths.clear();
+//                    INFO("paths cleared capacity: " << paths.capacity()); // LMnew: Reports the size of the persistent paths object after clearing.
                 }
                 const auto &path1 = mapper->MapRead(read.first());
                 const auto &path2 = mapper->MapRead(read.second());
@@ -404,12 +415,15 @@ namespace debruijn_graph {
             }
             current_barcode = barcode_string;
         }
-        /* if(first_thousand < 1000){
-            first_thousand++;
-            INFO(first_thousand << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
+        /* if(barcode_count < 1000){
+            barcode_count++;
+            INFO(barcode_count << ": Processing barcode " << current_barcode << ": " << paths.size() << "(Number of reads in barcode)");
             clusterReads(graph_pack, paths, connected_components, current_barcode, stability_queue);
         } */
+        std::ofstream statistics_file; // LMnew: See if the append function works, and if it cuts down on memory used.
+        statistics_file.open(file_name + ".statistics.txt", std::ofstream::out | std::ofstream::app);
         stability_queue = writer2.OutputPaths(connected_components[current_barcode], current_barcode, os_, statistics_file, stability_queue);
+        statistics_file.close(); // LMnew: See if the append function works, and if it cuts down on memory used.
         int pewpew = connected_components.erase(current_barcode);
         paths.clear();
     }
