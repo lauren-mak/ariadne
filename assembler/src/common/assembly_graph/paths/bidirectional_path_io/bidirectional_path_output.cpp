@@ -59,7 +59,7 @@ std::string GetUpdatedReadName(std::string& read, size_t& counter) {
     size_t delimeter_size = delimeter.length();
     if (start_pos != string::npos) {
         std::string read_name = 
-            read.substr(0, start_pos) + "-" + std::to_string(counter) + read.substr(start_pos+delimeter_size);
+            read.substr(0, start_pos) + "-" + std::to_string(counter); // + read.substr(start_pos+delimeter_size);
         TRACE(read_name);
         return read_name;
     }

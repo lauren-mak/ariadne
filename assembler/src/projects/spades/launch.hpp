@@ -147,9 +147,9 @@ void assemble_genome() {
                .add<debruijn_graph::RepeatResolution>();
 
     } else {
-    */
         SPAdes.add<debruijn_graph::ContigOutput>(false);
-    // }
+    }
+    */
 
     SPAdes.add<debruijn_graph::ContigOutput>();
 
