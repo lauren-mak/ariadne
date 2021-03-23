@@ -1,6 +1,8 @@
 # Ariadne: Barcoded Read Deconvolution
 
-Linked-reads, however, come with their own challenges. Because multiple long fragments can be associated with the same 3' barcode, linked-read data is algorithmically difficult to deconvolve. The lack of a unique correspondence between a long fragment and a barcode, in conjunction with low sequencing depth, confounds the assignment of linkage between short-reads. 
+De novo assemblies are critical for capturing the genetic composition of complex samples. Linked-read sequencing techniques such as 10x Genomics’ Linked-Reads, UST’s TELL-Seq, Loop Genomics’ LoopSeq, and BGI’s Long Fragment Read (LFR) combines 30 barcoding with standard short-read sequencing to expand the range of linkage resolution from hundreds to tens of thousands of base-pairs. The application of linked-read sequencing to genome assembly has demonstrated that barcoding-based technologies balance the tradeoffs between long-range linkage, per-base coverage, and costs.
+
+Linked-reads come with their own challenges, chief among them the association of multiple long fragments with the same 3' barcode. The lack of a unique correspondence between a long fragment and a barcode, in conjunction with low sequencing depth, confounds the assignment of linkage between short-reads.
 
 Here, we introduce Ariadne, a novel assembly graph-based algorithm, that can be used to deconvolve a large metagenomic linked-read dataset. As demonstrated substantial increases in the largest alignments, contigs, and genomic contiguity, *de novo* assemblies from deconvolved reads represent advancements in terms of completeness and accuracy. Ariadne is intuitive, computationally efficient, and scalable to other large-scale linked-read problems, such as human genome phasing. 
 
@@ -8,7 +10,7 @@ The Ariadne manuscript will be publicly available soon.
 
 ## Installation
 
-Currently, Ariadne is implemented as a module of the SPAdes *de novo* assembly program (version 3.13.1). The following libraries to be pre-installed:
+Currently, Ariadne is implemented as a module of an older version of the cloudSPAdes *de novo* assembly program (version 3.12.1). The following libraries need to be pre-installed:
 
 * g++ (version 5.3.1 or higher)
 * cmake (version 2.8.12 or higher)
@@ -23,13 +25,13 @@ cd Ariadne
 ```
 The installation directory can be set by `PREFIX=<destination_dir>` in the build step. 
 
-In the future, Ariadne will be repackaged as a standalone program.
+In the future, Ariadne will be repackaged as a standalone program, along with a scaffold generator such that deconvolved reads can be directly used to generate *de novo* assemblies without a second cloudSPAdes run.
 
 ## Deconvolving Reads
 
-Use the following command to run barcode deconvolution. `<fastq_name>` should be separate or interleaved fastq file where reads have a `BX` tag designating the barcode (this is the default output of [longranger basic](https://support.10xgenomics.com/genome-exome/software/pipelines/latest/advanced/other-pipelines)). `<max_search_dist>` is the user-specified parameter for the maximum search distance, which should reflect the average length of a genomic fragment. Future versions of Ariadne will allow for the user to specify the barcode identifier. 
+Use the following command to run barcode deconvolution. `<fastq_name>` should be separate or interleaved fastq file where reads have a `BX` tag designating the barcode (this is the default output of [longranger basic](https://support.10xgenomics.com/genome-exome/software/pipelines/latest/advanced/other-pipelines)). `<max_search_dist>` is the user-specified parameter for the maximum search distance, which should be smaller than the average length of a genomic fragment. `<min_cloud_size>` is the user-specified parameter for the minimum cloud size- in terms of number of reads- for which the deconvolution process will be run. By default, these parameters are set to 5 kbp and 6 reads respectively. Future versions of Ariadne will allow for the user to specify the barcode identifier. 
 ```
-spades.py --only-assembler -1 <fastq_name>.read1.fq.gz -2 <fastq_name>.read2.fq.gz --barcode-distance <max_search_dist> -o /path/to/output_dir
+spades.py [--meta] --only-assembler -1 <fastq_name>.R1.fastq -2 <fastq_name>.R2.fastq --search-distance <max_search_dist> --size_cutoff <min_cloud_size> -t <num_threads> -m <mem_in_gb> -o /path/to/output_dir
 ```
 
 For more SPAdes options, refer to the [Spades manual](http://cab.spbu.ru/files/release3.13.1/manual.html) or the command-line options.
@@ -39,7 +41,7 @@ spades.py
 
 ### Output
 
-At the end of the deconvolution procedure, Ariadne outputs an interleaved fastq file with enhanced barcode assignments in the directory `/path/to/output/k55/<max_search_dist>enhanced.fastq`. The original barcode has been augmented with the enhanced grouping number. In this example, the first set of paired reads `@D00547:847:HYHNTBCXX:1:1101:10000:10626` have been assigned to the 13th group out of all reads with the barcode `BX:Z:CCTTCCCTCCTTCAAT`. This fastq can be directly provided as input to a *de novo* assembler or a read aligner.
+At the end of the deconvolution procedure, Ariadne outputs an interleaved fastq file with enhanced barcode assignments in the directory `/path/to/output_dir/K55/<max_search_dist>.R1.fastq`. The original barcode has been augmented with the enhanced grouping number. In this example, the first set of paired reads `@D00547:847:HYHNTBCXX:1:1101:10000:10626` have been assigned to the 13th group out of all reads with the barcode `BX:Z:CCTTCCCTCCTTCAAT`. This fastq can be directly provided as input to a *de novo* assembler or a read mapper optimized for linked-reads.
 
 ```
 $ head /path/to/output/k55/<max_search_dist>enhanced.fastq
@@ -67,7 +69,7 @@ G<..GGGGGGGGA<GGA.<GGGGGAGGG.GGAGAGAGG.AGG<<<..<...AAA<AA<G....<GAGGIGIGAGAG....
 
 ### Performance
 
-A full exploration of performance metrics will be available with the manuscript. For example, for metagenomics-sized dataset such as the full MOCK5 dataset (97 million reads approx., see below), deconvolution at a maximum search distance of 20,000 bp takes 7 hours and 33 minutes, 339 GB RAM, and 30 CPUs. 
+A full exploration of performance metrics will be available with the manuscript. For example, for metagenomics-sized dataset such as the full MOCK5 dataset (97 million reads approx., see below), deconvolution at a maximum search distance of 5 kbp takes 6 hours 20 minutes, 62 GB RAM (in addition to the memory requirements of cloudSPAdes), and 20 CPUs. 
 
 ## Datasets
 
@@ -75,4 +77,4 @@ The MOCK5 dataset used in the paper may be downloaded from [AWS](https://s3.us-e
 
 ## Credits
 
-This algorithm was developed by Waris Barakzai and myself, and tested by myself with help from Dmitrii Meleshko, David Danko, and Iman Hajirasouliha.
+This algorithm was developed by Waris Barakzai and myself, and tested by myself with help from Dmitrii Meleshko, David Danko, Natan Belchikov and Iman Hajirasouliha.
