@@ -123,7 +123,7 @@ void assemble_genome() {
     // LM: Fix_5. Have moved barcode deconvolution to line 123 because further steps involve repeat reconstruction, which requires save-points that are not currently being made.
     // This change makes unit-testing in CLion possible.
     // LM: September 24, 2019. Have moved it back here to assemble on the cluster.
-    if (cfg::get().rr_enable && cfg::get().barcode_distance > 0) {
+    if (cfg::get().rr_enable && cfg::get().search_distance > 0) {
         SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
     }
     // LM: Testing. So that only the barcode deconvolution stage is added to the run function.
