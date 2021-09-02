@@ -13,6 +13,7 @@
 #include <numeric>
 #include <omp.h>
 #include <string>
+#include <ostream>
 #include <sstream>
 #include <stdio.h>
 #include <string.h>
@@ -238,8 +239,8 @@ namespace debruijn_graph {
             }
             master_record.erase(master_record.begin());
         }
-        fastq_stream_forward << fastq_string_forward << flush;
-        fastq_stream_reverse << fastq_string_reverse << flush;
+        fastq_stream_forward << fastq_string_forward << std::flush;
+        fastq_stream_reverse << fastq_string_reverse << std::flush;
     }
 
     int LoadReads(std::vector<std::vector<std::vector<int>>>& connected_reads,
