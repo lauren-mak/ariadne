@@ -20,18 +20,18 @@ Currently, Ariadne is implemented as a module of an older version of the cloudSP
 From source: 
 ```
 git clone <url>   
-cd Ariadne
+cd ariadne/
 ./spades_compile.sh
 ```
-The installation directory can be set by `PREFIX=<destination_dir>` in the build step. 
+The installation directory can be set by `PREFIX=<destination_dir>` in the compile step. 
 
 In the future, Ariadne will be repackaged as a standalone program, along with a scaffold generator such that deconvolved reads can be directly used to generate *de novo* assemblies without a second cloudSPAdes run.
 
 ## Deconvolving Reads
 
-Use the following command to run barcode deconvolution. `<fastq_name>` should be separate or interleaved fastq file where reads have a `BX` tag designating the barcode (this is the default output of [longranger basic](https://support.10xgenomics.com/genome-exome/software/pipelines/latest/advanced/other-pipelines)). `<max_search_dist>` is the user-specified parameter for the maximum search distance, which should be smaller than the average length of a genomic fragment. `<min_cloud_size>` is the user-specified parameter for the minimum cloud size- in terms of number of reads- for which the deconvolution process will be run. By default, these parameters are set to 5 kbp and 6 reads respectively. Future versions of Ariadne will allow for the user to specify the barcode identifier. BayesHammer error correction is turned off because the introduced tags interfere with barcode recognition. BayesHammer may be run separately from the assembly procedure to generate error-corrected reads, as long as the barcode format described in **Input** below is followed as input for the actual cloudSPAdes command. 
+Use the following command to run barcode deconvolution. The option `gemcode` must be set for the main cloudSPAdes modules to recognize barcoded reads. `<fastq_name>` should be separate or interleaved fastq file where reads have a `BX` tag designating the barcode (this is the default output of [longranger basic](https://support.10xgenomics.com/genome-exome/software/pipelines/latest/advanced/other-pipelines)). `<max_search_dist>` is the user-specified parameter for the maximum search distance, which should be smaller than the average length of a genomic fragment. `<min_cloud_size>` is the user-specified parameter for the minimum cloud size- in terms of number of reads- for which the deconvolution process will be run. By default, these parameters are set to 5 kbp and 6 reads respectively. Future versions of Ariadne will allow for the user to specify the barcode identifier. BayesHammer error correction is turned off because the introduced tags interfere with barcode recognition. BayesHammer may be run separately from the assembly procedure to generate error-corrected reads, as long as the barcode format described in **Input** below is followed as input for the actual cloudSPAdes command. 
 ```
-spades.py [--meta] --only-assembler -1 <fastq_name>.R1.fastq -2 <fastq_name>.R2.fastq --search-distance <max_search_dist> --size_cutoff <min_cloud_size> -t <num_threads> -m <mem_in_gb> -o /path/to/output_dir
+spades.py [--meta] --only-assembler --gemcode1-1 <fastq_name>.R1.fastq --gemcode1-2 <fastq_name>.R2.fastq --search-distance <max_search_dist> --size_cutoff <min_cloud_size> -t <num_threads> -m <mem_in_gb> -o /path/to/output_dir
 ```
 
 For more SPAdes options, refer to the [Spades manual](http://cab.spbu.ru/files/release3.13.1/manual.html) or the command-line options.
@@ -52,7 +52,7 @@ sed '1~4s/$/-1/' <fastq_name>.R1.fastq > <fastq_suffixed>.R1.fastq
 At the end of the deconvolution procedure, Ariadne outputs paired FastQ files with enhanced barcode assignments in the directory `/path/to/output_dir/K55/<max_search_dist>.RX.fastq`. The original barcode has been augmented with the enhanced grouping number. In this example, the first set of paired reads `@D00547:847:HYHNTBCXX:1:1101:10000:10626` have been assigned to the 13th group out of all reads with the barcode `BX:Z:CCTTCCCTCCTTCAAT`. This fastq can be directly provided as input to a *de novo* assembler or a read mapper optimized for linked-reads.
 
 ```
-$ head /path/to/output/k55/<max_search_dist>.R1.fastq
+$ head /path/to/output/K55/<max_search_dist>.R1.fastq
 @D00547:847:HYHNTBCXX:1:1101:10000:10626 BX:Z:CCTTCCCTCCTTCAAT-13
 ATGCTGGGGTTTCCGCTGCAATTCTTTGTCCGGTTCTTTAAGAACCACGGCTTGCTGTCGATCAGCAACCGCCCACAGTGGTGCGTGATCGAAGGCGGCTCCAGCAGCTACATCGAGCCGCTGACCC
 +
@@ -73,8 +73,14 @@ A full exploration of performance metrics will be available with the manuscript.
 
 ## Datasets
 
-The MOCK5 dataset used in the paper may be downloaded from [AWS](https://s3.us-east-2.amazonaws.com/readclouds/cloudspades_data.tar.gz).
+The MOCK5 and MOCK20 10x datasets used in the paper may be downloaded from [AWS](https://s3.us-east-2.amazonaws.com/readclouds/cloudspades_data.tar.gz). The MOCK5 LoopSeq and MOCK20 TELL-Seq datasets can be found at https://www.ncbi.nlm.nih.gov/bioproject/PRJNA728470. 
 
-## Credits
+## Credits and Citations
+
+Find the Ariadne preprint [here](https://www.biorxiv.org/content/10.1101/2021.05.09.443255v1). If you've found Ariadne useful, please cite it as:
+
+Ariadne: Barcoded Linked-Read Deconvolution Using de Bruijn Graphs
+Lauren Mak, Dmitry Meleshko, David C. Danko, Waris N. Barakzai, Natan Belchikov, Iman Hajirasouliha
+bioRxiv 2021.05.09.443255; doi: https://doi.org/10.1101/2021.05.09.443255
 
 This algorithm was developed by Waris Barakzai and myself, and tested by myself with help from Dmitrii Meleshko, David Danko, Natan Belchikov and Iman Hajirasouliha.
