@@ -27,6 +27,9 @@
 #include <algorithm>
 #include <fstream>
 #include <cstdio>
+#include "common/barcode_index/barcode_index_builder.hpp"
+#include "common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_storage.hpp"
+#include "common/modules/path_extend/read_cloud_path_extend/fragment_model/distribution_extractor.hpp"
 
 namespace debruijn_graph {
 
@@ -236,7 +239,8 @@ class DataPrinter {
     }
 
     template<class Index>
-    void SavePaired(const string& file_name,
+    void
+    SavePaired(const string& file_name,
                     Index const& paired_index) const {
         FILE* file = fopen((file_name + ".prd").c_str(), "w");
         DEBUG("Saving paired info, " << file_name <<" created");
@@ -284,6 +288,11 @@ class DataPrinter {
                 file << "    " << pos_it[i].contigId << " " << pos_it[i].mr << endl;
             }
         }
+    }
+
+    void SaveScaffoldGraphStorage(const string& file_name, const path_extend::ScaffoldGraphStorage& scaffold_graph_storage) const {
+        string new_file_name = file_name + ".scg";
+        scaffold_graph_storage.Save(new_file_name);
     }
 
   private:
@@ -453,7 +462,7 @@ class DataScanner {
             VERIFY(this->edge_id_map().find(first_real_id) != this->edge_id_map().end())
             EdgeId e1 = this->edge_id_map()[first_real_id];
             EdgeId e2 = this->edge_id_map()[second_real_id];
-            if (e1 == EdgeId() || e2 == EdgeId())
+            if (e1 == EdgeId(NULL) || e2 == EdgeId(NULL))
                 continue;
             TRACE(e1 << " " << e2 << " " << point);
             //Need to prevent doubling of self-conjugate edge pairs
@@ -508,6 +517,46 @@ class DataScanner {
         return true;
     }
 
+    void LoadScaffoldGraphStorage(const string& file_name, path_extend::ScaffoldGraphStorage& scaffold_graph_storage,
+                                  bool force_exists = true) {
+        string new_file_name = file_name + ".scg";
+        INFO("Loading scaffold graph storage from " << new_file_name);
+        bool file_exists = fs::check_existence(new_file_name);
+        if (force_exists) {
+            VERIFY(file_exists);
+        } else if (not file_exists) {
+            WARN(new_file_name << " was not found, skipping");
+        }
+
+        scaffold_graph_storage.Load(new_file_name, this->edge_id_map());
+    }
+
+    void LoadBarcodeIndex(const string &path, shared_ptr<barcode_index::AbstractBarcodeIndex>& barcodeMapper, const Graph &g)  {
+        string file_name = path + ".bmap";
+        ifstream index_file(file_name);
+        INFO("Loading barcode information from " << file_name)
+        if (index_file.peek() == std::ifstream::traits_type::eof()) {
+            return;
+        }
+        barcode_index::FrameMapperBuilder mapper_builder(g, cfg::get().ts_res.edge_tail_len, cfg::get().ts_res.frame_size);
+        mapper_builder.InitialFillMap();
+        auto mapper = std::static_pointer_cast<barcode_index::AbstractBarcodeIndex>(mapper_builder.GetMapper());
+        barcodeMapper.swap(mapper);
+
+        size_t map_size;
+        index_file >> map_size;
+        for (size_t i = 0; i < map_size; ++i) {
+            DeserializeBarcodeMapEntry(index_file, edge_id_map_, barcodeMapper);
+        }
+    }
+
+    inline void DeserializeBarcodeMapEntry(ifstream& file, const std::map <size_t, EdgeId>& edge_map,
+                                           shared_ptr<barcode_index::AbstractBarcodeIndex> barcodeMapper) {
+        size_t edge_id;
+        file >> edge_id;
+        barcodeMapper->ReadEntry(file, edge_map.find(edge_id) -> second);
+    }
+
   private:
     Graph& g_;
     //  int edge_count_;
@@ -553,24 +602,24 @@ public:
     typedef typename Graph::EdgeId EdgeId;
     typedef typename Graph::VertexId VertexId;
 private:
-    size_t GetMaxId(const string& file_name) {
-        std::ifstream max_id_stream(file_name);
-        if (!max_id_stream) {
-            //TODO remove. Here to support compatibility to old saves in tests. 
-            return 1000000000;
-        } else {
-            //VERIFY_MSG(max_id_stream, "Failed to find " << file_name);
-            size_t max;
-            VERIFY_MSG(max_id_stream >> max, "Failed to read max_id");
-            return max;
+    restricted::IdSegmentStorage CreateIdStorage(const string& file_name) {
+        FILE* file = fopen((file_name + ".gid").c_str(), "r");
+        //This is to support compatibility to old saves. Will be removed soon
+        if(file == NULL) {
+            return this->g().GetGraphIdDistributor().ReserveUpTo(1000000000);
         }
+        VERIFY_MSG(file != NULL, "Couldn't find file " << (file_name + ".gid"));
+        size_t max;
+        int flag = fscanf(file, "%zu\n", &max);
+        VERIFY(flag == 1);
+        fclose(file);
+        return this->g().GetGraphIdDistributor().ReserveUpTo(max);
     }
 
   public:
     /*virtual*/
     void LoadGraph(const string& file_name) {
-        auto id_storage = this->g().GetGraphIdDistributor().Reserve(GetMaxId(file_name + ".gid"), 
-                /*force_zero_shift*/true);
+        restricted::IdSegmentStorage id_storage = CreateIdStorage(file_name);
         INFO("Trying to read conjugate de bruijn graph from " << file_name << ".grp");
         FILE* file = fopen((file_name + ".grp").c_str(), "r");
         VERIFY_MSG(file != NULL, "Couldn't find file " << (file_name + ".grp"));
@@ -611,7 +660,7 @@ private:
             VERIFY(edge_count == tmp_edge_count);
         }
 
-        const size_t longstring_size = 1000500; // TODO: O RLY magic constant? => Can't load edges >= 1Mbp
+        const size_t longstring_size = 4000000; // TODO: O RLY magic constant? => Can't load edges >= 1Mbp
         char longstring[longstring_size];
         for (size_t i = 0; i < edge_count; i++) {
             size_t e_real_id, start_id, fin_id, length, conjugate_edge_id;
@@ -655,14 +704,14 @@ inline std::string MakeSingleReadsFileName(const std::string& file_name,
 // todo think how to organize them in the most natural way
 
 template<class Graph>
-void PrintBasicGraph(const std::string& file_name, DataPrinter<Graph>& printer) {
+void PrintBasicGraph(const string& file_name, DataPrinter<Graph>& printer) {
     printer.SaveGraph(file_name);
     printer.SaveEdgeSequences(file_name);
     printer.SaveCoverage(file_name);
 }
 
 template<class graph_pack>
-void PrintGraphPack(const std::string& file_name,
+void PrintGraphPack(const string& file_name,
                     DataPrinter<typename graph_pack::graph_t>& printer,
                     const graph_pack& gp) {
     PrintBasicGraph(file_name, printer);
@@ -785,6 +834,35 @@ void PrintSingleLongReads(const string& file_name, const LongReadContainer<Graph
     }
 }
 
+template <class Graph>
+void PrintBarcodeIndex(const string &path,
+                       const shared_ptr<barcode_index::AbstractBarcodeIndex> &barcodeMapper,
+                       const Graph &g) {
+    const string file_name = path + ".bmap";
+    ofstream index_file(file_name);
+    if (!barcodeMapper or barcodeMapper->IsEmpty()) {
+        return;
+    }
+    index_file << barcodeMapper->size() << std::endl;
+    omnigraph::IterationHelper <Graph, typename Graph::EdgeId> helper(g);
+    for (auto it = helper.begin(); it != helper.end(); ++it) {
+        barcodeMapper->WriteEntry(index_file, *it);
+    }
+}
+
+template <class graph_pack>
+void PrintScaffoldGraphStorage(const string& file_name, DataPrinter<typename graph_pack::graph_t>& printer,
+                               const graph_pack& gp) {
+    printer.SaveScaffoldGraphStorage(file_name, gp.scaffold_graph_storage);
+}
+
+template <class graph_pack>
+void PrintReadCloudDistributions(const string& file_name, const graph_pack& gp) {
+    const string full_name = file_name + ".cldist";
+    ofstream fout(full_name);
+    fout << gp.read_cloud_distribution_pack;
+}
+
 template<class graph_pack>
 void PrintAll(const string& file_name, const graph_pack& gp) {
     ConjugateDataPrinter<typename graph_pack::graph_t> printer(gp.g, gp.g.begin(), gp.g.end());
@@ -793,6 +871,9 @@ void PrintAll(const string& file_name, const graph_pack& gp) {
     PrintClusteredIndices(file_name, printer, gp.clustered_indices);
     PrintScaffoldingIndices(file_name, printer, gp.scaffolding_indices);
     PrintSingleLongReads(file_name, gp.single_long_reads);
+    PrintBarcodeIndex(file_name, gp.barcode_mapper_ptr, gp.g);
+    PrintScaffoldGraphStorage(file_name, printer, gp);
+    PrintReadCloudDistributions(file_name, gp);
     gp.ginfo.Save(file_name + ".ginfo");
 }
 
@@ -928,6 +1009,32 @@ void ScanScaffoldingIndices(const std:: string& file_name, DataScanner<Graph>& s
         ScanScaffoldingIndex(file_name  + "_" + std::to_string(i), scanner, paired_indices[i], force_exists);
 }
 
+template <class Graph>
+void ScanScaffoldGraphStorage(const string& file_name, DataScanner<Graph>& scanner,
+                              path_extend::ScaffoldGraphStorage& scaffold_graph_storage, bool force_exists = true) {
+    scanner.LoadScaffoldGraphStorage(file_name, scaffold_graph_storage, force_exists);
+}
+
+template <class Graph>
+void ScanBarcodeIndex(const string& file_name, DataScanner<Graph>& scanner, const Graph& g,
+                      std::shared_ptr<barcode_index::AbstractBarcodeIndex>& barcode_mapper_ptr) {
+    scanner.LoadBarcodeIndex(file_name, barcode_mapper_ptr, g);
+}
+
+template <class Graph>
+void ScanReadCloudDistributions(const string& file_name, path_extend::cluster_model::DistributionPack &distribution_pack,
+                                const Graph& g, bool force_exists = true) {
+    const string full_file_name = file_name + ".cldist";
+    bool file_exists = fs::check_existence(full_file_name);
+    if (force_exists) {
+        VERIFY(file_exists);
+    } else if (not file_exists) {
+        WARN(file_name << " was not found, skipping");
+    }
+    ifstream fin(full_file_name);
+    fin >> distribution_pack;
+}
+
 template<class Graph>
 void ScanScaffoldIndices(const string& file_name, DataScanner<Graph>& scanner,
         PairedInfoIndicesT<Graph>& scaffold_indices) {
@@ -1021,6 +1128,7 @@ void ScanGraphPack(const string& file_name, graph_pack& gp) {
     ScanGraphPack(file_name, scanner, gp);
 }
 
+
 template<class graph_pack>
 void ScanAll(const std::string& file_name, graph_pack& gp,
              bool force_exists = true) {
@@ -1030,6 +1138,9 @@ void ScanAll(const std::string& file_name, graph_pack& gp,
     ScanClusteredIndices(file_name, scanner, gp.clustered_indices, force_exists);
     ScanScaffoldingIndices(file_name, scanner, gp.scaffolding_indices, force_exists);
     ScanSingleLongReads(file_name,  gp.single_long_reads);
+    ScanBarcodeIndex(file_name, scanner, gp.g, gp.barcode_mapper_ptr);
+    ScanScaffoldGraphStorage(file_name, scanner, gp.scaffold_graph_storage, force_exists);
+    ScanReadCloudDistributions(file_name, gp.read_cloud_distribution_pack, gp.g, force_exists);
     gp.ginfo.Load(file_name + ".ginfo");
 }
 }

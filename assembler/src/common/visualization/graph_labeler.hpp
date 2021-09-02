@@ -8,6 +8,8 @@
 #pragma once
 
 #include "utils/stl_utils.hpp"
+#include <common/barcode_index/barcode_index.hpp>
+#include <common/barcode_index/barcode_info_extractor.hpp>
 #include "utils/standard_base.hpp"
 #include "assembly_graph/handlers/edges_position_handler.hpp"
 
@@ -275,7 +277,7 @@ template<class Graph>
 class DefaultLabeler : public GraphLabeler<Graph> {
 private:
     const Graph &g_;
-    const omnigraph::EdgesPositionHandler<Graph> * const edges_positions_;
+    const omnigraph::EdgesPositionHandler<Graph> &edges_positions_;
 protected:
     typedef GraphLabeler<Graph> super;
     typedef typename super::EdgeId EdgeId;
@@ -283,11 +285,7 @@ protected:
 public:
 
     DefaultLabeler(const Graph &g, const omnigraph::EdgesPositionHandler<Graph> &position_handler) :
-            g_(g), edges_positions_(&position_handler) {
-    }
-
-    explicit DefaultLabeler(const Graph &g) :
-            g_(g), edges_positions_(nullptr) {
+            g_(g), edges_positions_(position_handler) {
     }
 
     virtual std::string label(VertexId vertexId) const {
@@ -297,15 +295,70 @@ public:
     virtual std::string label(EdgeId edgeId) const {
         std::string ret_label;
         ret_label += "Id " + g_.str(edgeId) + "\\n";
-        if (edges_positions_)
-            ret_label += "Positions:\\n" + edges_positions_->str(edgeId);
-
+        ret_label += "Positions:\\n" + edges_positions_.str(edgeId);
         size_t len = g_.length(edgeId);
         double cov = g_.coverage(edgeId);
         ret_label += "Len(cov): " + std::to_string(len) + "(" + std::to_string(cov) + ")";
         return ret_label;
     }
 
+    virtual ~DefaultLabeler() {
+    }
+};
+
+template<class Graph>
+class ReadCloudLabeler : public visualization::graph_labeler::StrGraphLabeler<Graph> {
+    typedef visualization::graph_labeler::StrGraphLabeler <Graph> base;
+    typedef typename Graph::EdgeId EdgeId;
+    typedef typename Graph::VertexId VertexId;
+    typedef barcode_index::FrameBarcodeIndexInfoExtractor extractor_t;
+    typedef std::set <EdgeId> edge_set_t;
+private:
+    shared_ptr<extractor_t> barcode_extractor_ptr_;
+    const size_t barcodes_on_string_;
+    const size_t max_strings_;
+    const size_t too_many_barcodes_;
+public:
+    ReadCloudLabeler(const Graph &g) :
+            base(g), barcodes_on_string_(6), max_strings_(3), too_many_barcodes_(50) {
+
+    }
+
+    //fixme refactor barcode index to avoid this
+    void UpdateExtractor(shared_ptr<barcode_index::AbstractBarcodeIndex> index_ptr, const Graph& g) {
+        barcode_extractor_ptr_ = make_shared<extractor_t>(index_ptr, g);
+    }
+
+    virtual ~ReadCloudLabeler() {
+    }
+
+    std::string label(VertexId) const {
+        return "";
+    }
+
+    std::string label(EdgeId e) const {
+        std::string ret_label;
+        size_t number_of_barcodes = barcode_extractor_ptr_->GetNumberOfBarcodes(e);
+        vector <barcode_index::BarcodeId> barcodes = barcode_extractor_ptr_->GetBarcodes(e);
+        size_t max_barcodes = barcodes_on_string_ * max_strings_;
+        VERIFY(barcodes.size() == number_of_barcodes);
+        ret_label += std::to_string(number_of_barcodes) + " barcodes.";
+        if (number_of_barcodes > too_many_barcodes_) {
+            return ret_label;
+        }
+        for (size_t index = 0; index < barcodes.size(); ++index) {
+            if (index >= max_barcodes) {
+                ret_label += "\\n and " + std::to_string(barcodes.size() - max_barcodes + 1) + " more.";
+                break;
+            }
+            else {
+                if (index % barcodes_on_string_ == 0) ret_label += "\\n";
+                else ret_label += ", ";
+                ret_label += std::to_string(barcodes[index]);
+            }
+        }
+        return ret_label;
+    }
 };
 }
 }

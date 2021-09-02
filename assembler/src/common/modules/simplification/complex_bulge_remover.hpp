@@ -810,7 +810,7 @@ class ComponentProjector {
             }
         }
         VERIFY(false);
-        return EdgeId();
+        return EdgeId(NULL);
     }
 
 public:

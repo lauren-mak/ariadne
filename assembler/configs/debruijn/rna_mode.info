@@ -8,6 +8,7 @@ strand_specificity {
     antisense false
 }
 
+
 contig_output {
     scaffolds_name  transcripts
     ; none  --- do not output broken scaffolds | break_gaps --- break only by N steches | break_all --- break all with overlap < k
@@ -16,9 +17,8 @@ contig_output {
 
 simp
 {
-    ;all topology based erroneous connection removers are off
+    ; enable advanced ec removal algo
     topology_simplif_enabled false
-
     tc
     {
         ; rctc: tip_cov < rctc * not_tip_cov
@@ -28,14 +28,13 @@ simp
 
     dead_end
     {
-        enabled true
         condition  "{ tc_lb 3.5, cb 2 }"
+        enabled true
     }
 
     ; bulge remover:
     br
     {
-        enabled true
         max_additive_length_coefficient 100
         max_coverage            1000000.0
         max_relative_coverage       100000.0 ; bulge_cov < this * not_bulge_cov
@@ -55,28 +54,47 @@ simp
     ; relative coverage erroneous connections remover:
     rcec
     {
-        enabled true
+            enabled true
+            rcec_lb 30
+            rcec_cb 0.5
     }
 
     rcc
     {
         enabled true
         coverage_gap    20.
+        max_length_coeff    2.0
+        max_length_with_tips_coeff   3.0
+        max_vertex_cnt      30
+        max_ec_length_coefficient   30
+        max_coverage_coeff  5.0
+    }
+
+    ;all topology based erroneous connection removers are off
+    ier
+    {
+        enabled                     false
     }
 
     ; hidden ec remover
     her
     {
-        ; TODO NB config also used in special rna mode version (always enabled)
-        enabled                     false
+        enabled                     true
         uniqueness_length           1500
         unreliability_threshold     0.2
         relative_threshold          5
     }
 
-    ier
+    init_clean
     {
-        enabled                     false
+        activation_cov  -1.
+        ier
+        {
+            enabled false
+        }
+
+        tip_condition   ""
+        ec_condition    ""
     }
 
 }

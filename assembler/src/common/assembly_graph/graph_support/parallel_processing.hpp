@@ -168,14 +168,6 @@ public:
         return triggered;
     }
 
-    static size_t RunAlgo(AlgoPtr<Graph> algo_ptr, const string &comment = "",
-                          bool force_primary_launch = false,
-                          double iter_run_progress = 1.) {
-        if (algo_ptr)
-            return RunAlgo(*algo_ptr, comment, force_primary_launch, iter_run_progress);
-        return 0;
-    }
-
     static size_t IterativeThresholdsRun(Algo &algo,
                                          const size_t iteration_cnt = 1,
                                          bool all_primary = false,
@@ -191,7 +183,6 @@ public:
         return total_triggered;
     }
 
-    //TODO use enum instead all_primary/first_primary flags
     static size_t LoopedRun(Algo &algo, size_t min_it_cnt = 1,
                             size_t max_it_cnt = size_t(-1),
                             bool all_primary = false,
@@ -208,18 +199,6 @@ public:
             changed = (algo_triggered > 0);
             triggered += algo_triggered;
         }
-        return triggered;
-    }
-
-    static size_t LoopedRunPrimaryOpening(Algo &algo, size_t primary_cnt,
-                                          size_t max_it_cnt = size_t(-1),
-                                          double iter_run_progress = 1.) {
-        VERIFY(primary_cnt > 0 && max_it_cnt >= primary_cnt);
-        size_t triggered = 0;
-        if (primary_cnt > 1)
-            triggered += LoopedRun(algo, primary_cnt - 1, primary_cnt - 1, true, true, iter_run_progress);
-        //parameter defaults used to get to the last one
-        triggered += LoopedRun(algo, 1, max_it_cnt - primary_cnt + 1, false, true, iter_run_progress);
         return triggered;
     }
 

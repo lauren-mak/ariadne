@@ -1,0 +1,728 @@
+-- The C compiler identification is GNU 6.3.0
+-- The CXX compiler identification is GNU 6.3.0
+-- Check for working C compiler: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-6.3.0-4h22ps2wttqbknmpnjft4h5bd2uvzndl/bin/cc
+-- Check for working C compiler: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-6.3.0-4h22ps2wttqbknmpnjft4h5bd2uvzndl/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-6.3.0-4h22ps2wttqbknmpnjft4h5bd2uvzndl/bin/c++
+-- Check for working CXX compiler: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-6.3.0-4h22ps2wttqbknmpnjft4h5bd2uvzndl/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenMP_C: -fopenmp (found version "4.5") 
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Found ZLIB: /usr/lib64/libz.so (found version "1.2.7") 
+-- Found BZip2: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-6.3.0/bzip2-1.0.6-ikn3syj2vtwcbna4lykyinhp6ydvs7lv/lib/libbz2.so (found version "1.0.6") 
+-- Looking for BZ2_bzCompressInit
+-- Looking for BZ2_bzCompressInit - found
+-- Could NOT find readline (missing: READLINE_INCLUDE_DIR READLINE_LIBRARY) 
+-- Boost version: 1.63.0
+-- Looking for include file features.h
+-- Looking for include file features.h - found
+-- Looking for include file sys/cdefs.h
+-- Looking for include file sys/cdefs.h - found
+-- Looking for atomic_fetchadd_long
+-- Looking for atomic_fetchadd_long - not found
+-- Looking for OSAtomicAdd64
+-- Looking for OSAtomicAdd64 - not found
+-- Looking for OSSpinLockLock
+-- Looking for OSSpinLockLock - not found
+-- Looking for _malloc_thread_cleanup
+-- Looking for _malloc_thread_cleanup - not found
+-- Looking for _pthread_mutex_init_calloc_cb,
+-- Looking for _pthread_mutex_init_calloc_cb, - not found
+-- Looking for sbrk
+-- Looking for sbrk - found
+-- Performing Test JEMALLOC_TLS_MODEL_SUPPORTED
+-- Performing Test JEMALLOC_TLS_MODEL_SUPPORTED - Success
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Check size of void*
+-- Check size of void* - done
+-- Performing Test JEMALLOC_TLS
+-- Performing Test JEMALLOC_TLS - Success
+-- Looking for memalign
+-- Looking for memalign - found
+-- Looking for valloc
+-- Looking for valloc - found
+-- Check size of int
+-- Check size of int - done
+-- Check size of long
+-- Check size of long - done
+-- Check size of intmax_t
+-- Check size of intmax_t - done
+-- Looking for open
+-- Looking for open - found
+-- Looking for include file execinfo.h
+-- Looking for include file execinfo.h - found
+-- Looking for include file signal.h
+-- Looking for include file signal.h - found
+-- Looking for include file sys/stat.h
+-- Looking for include file sys/stat.h - found
+-- Looking for include file cxxabi.h
+-- Looking for include file cxxabi.h - not found
+-- Looking for include file dlfcn.h
+-- Looking for include file dlfcn.h - found
+-- Looking for include file mach/mach.h
+-- Looking for include file mach/mach.h - not found
+-- Looking for include file link.h
+-- Looking for include file link.h - found
+-- Looking for backtrace
+-- Looking for backtrace - found
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Looking for pthread_create
+-- Looking for pthread_create - found
+-- Found Threads: TRUE  
+-- Looking for shm_open
+-- Looking for shm_open - not found
+-- Looking for shm_open in rt
+-- Looking for shm_open in rt - found
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dmm2017/cloudSPAdes-dev/build_spades
+Scanning dependencies of target getopt_pp
+Scanning dependencies of target cityhash
+Scanning dependencies of target ssw
+Scanning dependencies of target format
+[  1%] Building CXX object ext/cityhash/CMakeFiles/cityhash.dir/city.cc.o
+[  2%] Building CXX object ext/getopt_pp/CMakeFiles/getopt_pp.dir/getopt_pp.cpp.o
+[  3%] Building C object ext/ssw/CMakeFiles/ssw.dir/ssw.c.o
+[  3%] Building CXX object ext/cppformat/CMakeFiles/format.dir/format.cc.o
+Scanning dependencies of target nlopt
+[  4%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/api/general.c.o
+Scanning dependencies of target BamTools
+Scanning dependencies of target jemalloc
+[  4%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/BamAlignment.cpp.o
+[  5%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/arena.c.o
+[  5%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/api/optimize.c.o
+[  5%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/api/options.c.o
+[  5%] Building CXX object ext/ssw/CMakeFiles/ssw.dir/ssw_cpp.cpp.o
+[  5%] Linking CXX static library libcityhash.a
+[  5%] Built target cityhash
+[  5%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/api/deprecated.c.o
+[  5%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/base.c.o
+[  6%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/auglag/auglag.c.o
+[  6%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/bobyqa/bobyqa.c.o
+[  6%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/chunk.c.o
+Scanning dependencies of target ConsensusCore
+[  6%] Linking CXX static library libssw.a
+[  6%] Built target ssw
+[  6%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/BamMultiReader.cpp.o
+[  7%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/chunk_mmap.c.o
+[  8%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/AffineAlignment.cpp.o
+Scanning dependencies of target llvm-support
+[  8%] Linking CXX static library libgetopt_pp.a
+[  8%] Built target getopt_pp
+[  8%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Atomic.cpp.o
+[  8%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/ErrorHandling.cpp.o
+Scanning dependencies of target hattrie
+[  8%] Building C object ext/htrie/CMakeFiles/hattrie.dir/ahtable.c.o
+[  8%] Building CXX object ext/cppformat/CMakeFiles/format.dir/posix.cc.o
+[  8%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Hashing.cpp.o
+[  8%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/cdirect/cdirect.c.o
+[  8%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/ctl.c.o
+[  8%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/BamReader.cpp.o
+[  8%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Coverage.cpp.o
+[  8%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/cdirect/hybrid.c.o
+[  8%] Linking CXX static library libformat.a
+[  9%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/cobyla/cobyla.c.o
+[ 10%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/BamWriter.cpp.o
+[ 10%] Built target format
+[ 10%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamHeader.cpp.o
+Scanning dependencies of target bwa
+[ 11%] Building C object ext/bwa/CMakeFiles/bwa.dir/utils.c.o
+[ 13%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/LineIterator.cpp.o
+[ 13%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamProgram.cpp.o
+[ 13%] Building C object ext/htrie/CMakeFiles/hattrie.dir/hat-trie.c.o
+[ 13%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Mutation.cpp.o
+[ 14%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/PairwiseAlignment.cpp.o
+[ 14%] Building C object ext/bwa/CMakeFiles/bwa.dir/kthread.c.o
+[ 14%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/crs/crs.c.o
+[ 14%] Building C object ext/bwa/CMakeFiles/bwa.dir/ksw.c.o
+[ 14%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/esch/esch.c.o
+[ 14%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/MemoryBuffer.cpp.o
+[ 15%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/isres/isres.c.o
+[ 15%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwt.c.o
+[ 15%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/mma/mma.c.o
+[ 16%] Building C object ext/bwa/CMakeFiles/bwa.dir/bntseq.c.o
+[ 16%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/mma/ccsa_quadratic.c.o
+[ 16%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/mlsl/mlsl.c.o
+[ 16%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwa.c.o
+[ 16%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Mutex.cpp.o
+[ 16%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Path.cpp.o
+[ 17%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/neldermead/nldrmd.c.o
+[ 17%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/neldermead/sbplx.c.o
+[ 17%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwamem.c.o
+[ 17%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/newuoa/newuoa.c.o
+[ 17%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamProgramChain.cpp.o
+Scanning dependencies of target gqf
+[ 18%] Building C object ext/gqf/CMakeFiles/gqf.dir/gqf.c.o
+[ 19%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamReadGroup.cpp.o
+[ 19%] Linking C static library libgqf.a
+[ 19%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamReadGroupDictionary.cpp.o
+[ 19%] Built target gqf
+[ 19%] Building C object ext/htrie/CMakeFiles/hattrie.dir/misc.c.o
+[ 19%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Sequence.cpp.o
+[ 20%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Regex.cpp.o
+[ 20%] Building C object ext/htrie/CMakeFiles/hattrie.dir/murmurhash3.c.o
+[ 20%] Linking C static library libhattrie.a
+[ 20%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/praxis/praxis.c.o
+[ 20%] Built target hattrie
+[ 20%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Utils.cpp.o
+[ 20%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/hash.c.o
+[ 20%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/jemalloc.c.o
+Scanning dependencies of target edlib
+[ 20%] Building CXX object ext/edlib/CMakeFiles/edlib.dir/edlib.cpp.o
+[ 20%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Signals.cpp.o
+[ 21%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/redblack.c.o
+Scanning dependencies of target gfa1
+[ 21%] Building C object ext/gfa1/CMakeFiles/gfa1.dir/gfa.c.o
+[ 21%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Version.cpp.o
+[ 21%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/rescale.c.o
+[ 21%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/stop.c.o
+[ 22%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwamem_pair.c.o
+[ 23%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/timer.c.o
+[ 23%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/qsort_r.c.o
+[ 24%] Linking CXX static library libedlib.a
+[ 24%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/sobolseq.c.o
+[ 24%] Built target edlib
+[ 24%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/mt19937ar.c.o
+[ 25%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/mutex.c.o
+[ 26%] Linking C static library libnlopt.a
+[ 26%] Built target nlopt
+[ 26%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/quarantine.c.o
+[ 26%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamSequence.cpp.o
+[ 26%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwamem_extra.c.o
+[ 26%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/stats.c.o
+[ 26%] Building C object ext/bwa/CMakeFiles/bwa.dir/malloc_wrap.c.o
+[ 27%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Matrix/DenseMatrix.cpp.o
+[ 27%] Building C object ext/bwa/CMakeFiles/bwa.dir/is.c.o
+[ 27%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Matrix/SparseMatrix.cpp.o
+[ 27%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/SmallVector.cpp.o
+[ 27%] Linking C static library libgfa1.a
+[ 27%] Built target gfa1
+[ 27%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamSequenceDictionary.cpp.o
+[ 28%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwtindex.c.o
+[ 29%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamHeader_p.cpp.o
+[ 29%] Building C object ext/bwa/CMakeFiles/bwa.dir/rope.c.o
+[ 30%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/SourceMgr.cpp.o
+[ 30%] Building C object ext/bwa/CMakeFiles/bwa.dir/rle.c.o
+Scanning dependencies of target spades-bwa
+[ 30%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/StringMap.cpp.o
+[ 30%] Linking C static library libbwa.a
+[ 30%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/tsd.c.o
+[ 30%] Built target bwa
+[ 30%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bamlite.c.o
+[ 30%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwa.c.o
+[ 30%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamMultiReader_p.cpp.o
+[ 30%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/StringRef.cpp.o
+[ 31%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/atomic.c.o
+[ 31%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/bitmap.c.o
+[ 31%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwamem.c.o
+Scanning dependencies of target coverage_model
+[ 32%] Building CXX object common/modules/coverage_model/CMakeFiles/coverage_model.dir/kmer_coverage_model.cpp.o
+[ 32%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/chunk_dss.c.o
+Scanning dependencies of target sequence
+[ 32%] Building CXX object common/sequence/CMakeFiles/sequence.dir/sequence_tools.cpp.o
+[ 32%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/ckh.c.o
+[ 32%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Poa/PoaConfig.cpp.o
+[ 32%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Twine.cpp.o
+[ 32%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Poa/PoaConsensus.cpp.o
+[ 33%] Linking CXX static library libsequence.a
+[ 34%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/YAMLParser.cpp.o
+[ 34%] Built target sequence
+[ 35%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/extent.c.o
+[ 35%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/YAMLTraits.cpp.o
+Scanning dependencies of target assembly_graph
+[ 36%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Poa/PoaGraph.cpp.o
+[ 36%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamRandomAccessController_p.cpp.o
+[ 36%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/huge.c.o
+[ 36%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/mb.c.o
+[ 37%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/prof.c.o
+[ 38%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamReader_p.cpp.o
+[ 38%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/rtree.c.o
+[ 38%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/tcache.c.o
+[ 38%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/util.c.o
+[ 39%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/raw_ostream.cpp.o
+[ 39%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwase.c.o
+[ 39%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamWriter_p.cpp.o
+[ 40%] Linking C static library libjemalloc.a
+[ 40%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/components/connected_component.cpp.o
+[ 40%] Built target jemalloc
+[ 40%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regcomp.c.o
+Scanning dependencies of target modules
+[ 40%] Building CXX object common/modules/CMakeFiles/modules.dir/genome_consistance_checker.cpp.o
+[ 40%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwashm.c.o
+[ 40%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/index/BamIndexFactory_p.cpp.o
+[ 41%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regerror.c.o
+[ 41%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/paths/bidirectional_path.cpp.o
+[ 41%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/index/BamStandardIndex_p.cpp.o
+[ 41%] Linking CXX static library libcoverage_model.a
+[ 41%] Built target coverage_model
+[ 41%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regexec.c.o
+[ 42%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/paths/bidirectional_path_io/io_support.cpp.o
+Scanning dependencies of target paired_info
+[ 43%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/index/BamToolsIndex_p.cpp.o
+[ 43%] Building CXX object common/paired_info/CMakeFiles/paired_info.dir/distance_estimation.cpp.o
+[ 43%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regfree.c.o
+[ 43%] Building CXX object common/paired_info/CMakeFiles/paired_info.dir/weighted_distance_estimation.cpp.o
+[ 43%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtaln.c.o
+[ 44%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtgap.c.o
+[ 44%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtindex.c.o
+[ 44%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwt_lite.c.o
+[ 44%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_aux.c.o
+[ 45%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_core.c.o
+[ 45%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regstrlcpy.c.o
+[ 45%] Building CXX object common/paired_info/CMakeFiles/paired_info.dir/smoothing_distance_estimation.cpp.o
+[ 45%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/BamDeviceFactory_p.cpp.o
+[ 46%] Linking CXX static library libllvm-support.a
+[ 46%] Built target llvm-support
+[ 46%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/BamFile_p.cpp.o
+[ 46%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_pair.c.o
+[ 46%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/fastmap.c.o
+[ 46%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/paths/bidirectional_path_io/bidirectional_path_output.cpp.o
+[ 46%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/BgzfStream_p.cpp.o
+[ 46%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/kstring.c.o
+[ 47%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/main.c.o
+[ 47%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/utils.c.o
+[ 48%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/ByteArray_p.cpp.o
+[ 48%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bntseq.c.o
+[ 48%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/ILocalIODevice_p.cpp.o
+[ 49%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwape.c.o
+[ 49%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/ParallelBgzfStream_p.cpp.o
+[ 49%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwaseqio.c.o
+[ 49%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/RollingBuffer_p.cpp.o
+[ 49%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwt.c.o
+[ 49%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwt_gen.c.o
+[ 50%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/SerialBgzfStream_p.cpp.o
+[ 50%] Linking CXX static library libConsensusCore.a
+[ 51%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_chain.c.o
+[ 51%] Built target ConsensusCore
+[ 51%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_main.c.o
+[ 51%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/bgzf.c.o
+[ 51%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/is.c.o
+[ 51%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/ksw.c.o
+[ 52%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/pemerge.c.o
+[ 52%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/knetfile.c.o
+[ 52%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/graph_support/scaff_supplementary.cpp.o
+[ 52%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/QSufSort.c.o
+[ 52%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/kopen.c.o
+[ 52%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwamem_extra.c.o
+[ 53%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/block.c.o
+[ 54%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/__/modules/alignment/edge_index_refiller.cpp.o
+[ 54%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/consumer.c.o
+[ 54%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/pbgzf.c.o
+[ 54%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/queue.c.o
+[ 55%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/reader.c.o
+[ 55%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/util.c.o
+[ 55%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/writer.c.o
+[ 55%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/sam/SamFormatParser_p.cpp.o
+[ 56%] Linking CXX static library libpaired_info.a
+[ 56%] Built target paired_info
+[ 56%] Building CXX object common/modules/CMakeFiles/modules.dir/alignment/gap_info.cpp.o
+[ 57%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/sam/SamFormatPrinter_p.cpp.o
+[ 58%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwamem_pair.c.o
+[ 58%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/sam/SamHeaderValidator_p.cpp.o
+[ 58%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/kthread.c.o
+Scanning dependencies of target stages
+[ 58%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/malloc_wrap.c.o
+[ 58%] Building CXX object common/stages/CMakeFiles/stages.dir/construction.cpp.o
+[ 59%] Linking C executable ../../bin/spades-bwa
+[ 59%] Built target spades-bwa
+[ 60%] Building CXX object common/modules/CMakeFiles/modules.dir/alignment/bwa_index.cpp.o
+[ 61%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/utils/BamException_p.cpp.o
+[ 61%] Building CXX object common/stages/CMakeFiles/stages.dir/simplification.cpp.o
+[ 61%] Linking CXX static library libBamTools.a
+[ 61%] Built target BamTools
+[ 61%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/graph_support/coverage_uniformity_analyzer.cpp.o
+Scanning dependencies of target utils
+[ 61%] Building CXX object common/utils/CMakeFiles/utils.dir/memory_limit.cpp.o
+[ 61%] Building CXX object common/utils/CMakeFiles/utils.dir/filesystem/copy_file.cpp.o
+[ 61%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/contracted_graph.cpp.o
+[ 61%] Linking CXX static library libmodules.a
+[ 61%] Built target modules
+[ 61%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/contracted_graph_builder.cpp.o
+Scanning dependencies of target mph_index
+[ 61%] Building CXX object common/utils/kmer_mph/CMakeFiles/mph_index.dir/1.cpp.o
+[ 61%] Linking CXX static library libmph_index.a
+[ 61%] Built target mph_index
+[ 62%] Building CXX object common/utils/CMakeFiles/utils.dir/filesystem/path_helper.cpp.o
+[ 63%] Building CXX object common/utils/CMakeFiles/utils.dir/filesystem/temporary.cpp.o
+[ 63%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/contracted_graph_helper.cpp.o
+Scanning dependencies of target graphio
+[ 63%] Building CXX object common/io/graph/CMakeFiles/graphio.dir/gfa_reader.cpp.o
+[ 64%] Building CXX object common/io/graph/CMakeFiles/graphio.dir/gfa_writer.cpp.o
+[ 64%] Building CXX object common/io/graph/CMakeFiles/graphio.dir/fastg_writer.cpp.o
+[ 64%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/graph_condensation.cpp.o
+[ 64%] Building CXX object common/utils/CMakeFiles/utils.dir/logger/logger_impl.cpp.o
+[ 64%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/contracted_statistics.cpp.o
+[ 64%] Linking CXX static library libgraphio.a
+[ 64%] Built target graphio
+Scanning dependencies of target samtools
+[ 65%] Building C object ext/samtools/CMakeFiles/samtools.dir/kstring.c.o
+[ 65%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_aux.c.o
+[ 65%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam.c.o
+[ 65%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_import.c.o
+[ 66%] Building C object ext/samtools/CMakeFiles/samtools.dir/sam.c.o
+[ 66%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_index.c.o
+[ 66%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_pileup.c.o
+[ 66%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_lpileup.c.o
+[ 67%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_md.c.o
+[ 68%] Linking CXX static library libutils.a
+[ 68%] Building C object ext/samtools/CMakeFiles/samtools.dir/razf.c.o
+[ 68%] Built target utils
+[ 68%] Building C object ext/samtools/CMakeFiles/samtools.dir/faidx.c.o
+[ 69%] Building C object ext/samtools/CMakeFiles/samtools.dir/bedidx.c.o
+[ 69%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_sort.c.o
+[ 69%] Building C object ext/samtools/CMakeFiles/samtools.dir/sam_header.c.o
+[ 69%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_reheader.c.o
+[ 70%] Building C object ext/samtools/CMakeFiles/samtools.dir/kprobaln.c.o
+[ 70%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_cat.c.o
+[ 70%] Linking CXX static library libsamtools.a
+[ 70%] Built target samtools
+Scanning dependencies of target input
+[ 71%] Building CXX object common/io/CMakeFiles/input.dir/sam/read.cpp.o
+[ 71%] Building CXX object common/io/CMakeFiles/input.dir/sam/sam_reader.cpp.o
+[ 71%] Building CXX object common/io/CMakeFiles/input.dir/reads/parser.cpp.o
+[ 71%] Linking CXX static library libinput.a
+[ 71%] Built target input
+Scanning dependencies of target pipeline
+[ 71%] Building CXX object common/pipeline/CMakeFiles/pipeline.dir/stage.cpp.o
+[ 72%] Building CXX object common/pipeline/CMakeFiles/pipeline.dir/genomic_info_filler.cpp.o
+[ 72%] Building CXX object common/pipeline/CMakeFiles/pipeline.dir/config_struct.cpp.o
+[ 72%] Building CXX object common/pipeline/CMakeFiles/pipeline.dir/library.cpp.o
+[ 72%] Linking CXX static library libassembly_graph.a
+[ 72%] Built target assembly_graph
+Scanning dependencies of target path_extend
+[ 72%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/pe_config_struct.cpp.o
+[ 72%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/pipeline/launch_support.cpp.o
+[ 72%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/pipeline/launcher.cpp.o
+[ 73%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/pipeline/extenders_logic.cpp.o
+[ 73%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/extension_chooser2015.cpp.o
+[ 73%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/scaffold_graph.cpp.o
+[ 74%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/scaffold_graph_constructor.cpp.o
+[ 74%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/scaffold_graph_visualizer.cpp.o
+[ 74%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/connection_condition2015.cpp.o
+[ 74%] Linking CXX static library libpipeline.a
+[ 74%] Built target pipeline
+[ 74%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/path_polisher.cpp.o
+Scanning dependencies of target spades-hammer
+[ 75%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/main.cpp.o
+Scanning dependencies of target spades-ionhammer
+[ 75%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/kmer_data.cpp.o
+[ 75%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/hammer_tools.cpp.o
+[ 75%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/hamcluster.cpp.o
+[ 75%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/subcluster.cpp.o
+[ 75%] Linking CXX static library libstages.a
+[ 75%] Built target stages
+[ 75%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/kmer_cluster.cpp.o
+[ 76%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/scaffold_vertex.cpp.o
+[ 76%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/err_helper_table.cpp.o
+[ 77%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/kmer_data.cpp.o
+[ 77%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/read_cloud_connection_conditions.cpp.o
+[ 77%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp.o
+[ 78%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/config_struct.cpp.o
+[ 78%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/kmer_helpers.cpp.o
+[ 78%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_storage.cpp.o
+[ 78%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/config_struct_hammer.cpp.o
+[ 79%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/seqeval/BaseHypothesisEvaluator.cpp.o
+[ 79%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/scaffold_graph_validation.cpp.o
+[ 79%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/read_corrector.cpp.o
+[ 79%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/expander.cpp.o
+[ 79%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/transition_extractor.cpp.o
+[ 80%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/seqeval/TreephaserLite.cpp.o
+[ 80%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_extractor.cpp.o
+[ 81%] Linking CXX executable ../../bin/spades-hammer
+[ 81%] Built target spades-hammer
+[ 81%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/main.cpp.o
+[ 81%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/scaffold_graph_polisher.cpp.o
+[ 81%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/reference.cpp.o
+[ 82%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/transitions/transitions.cpp.o
+[ 82%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/quality_metrics.cpp.o
+[ 83%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/quality_thresholds_estimator.cpp.o
+[ 83%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/scaffold_vertex_predicates.cpp.o
+[ 83%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/hamcluster_1.cpp.o
+[ 83%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/path_cluster_helper.cpp.o
+[ 83%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/gamma_poisson_model.cpp.o
+[ 83%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/normal_quality_model.cpp.o
+[ 84%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/pe_extraction.cpp.o
+[ 84%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/predicate_builders.cpp.o
+[ 84%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/path_scaffolder.cpp.o
+[ 84%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/containment_index_threshold_finder.cpp.o
+[ 85%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/read_cloud_polisher_support.cpp.o
+[ 86%] Linking CXX executable ../../bin/spades-ionhammer
+[ 86%] Built target spades-ionhammer
+[ 86%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/construction_callers.cpp.o
+[ 86%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_storage_constructor.cpp.o
+[ 86%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_gap_closer/cloud_scaffold_graph_gap_closer.cpp.o
+[ 87%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_gap_closer/scaffold_graph_gap_closer.cpp.o
+[ 87%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/fragment_model/secondary_stats_estimators.cpp.o
+[ 87%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/extender_support/candidate_selectors.cpp.o
+[ 87%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/extender_support/entry_collectors.cpp.o
+[ 88%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/path_cluster_statistics.cpp.o
+[ 88%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/transition_subgraph_validation.cpp.o
+[ 88%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/scaffold_graph_path_cleaner.cpp.o
+[ 89%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/reference_path_index.cpp.o
+[ 89%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/path_cluster_validation.cpp.o
+[ 89%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/cloud_check_statistics.cpp.o
+[ 89%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/component_validation.cpp.o
+[ 90%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/long_edge_dataset.cpp.o
+[ 90%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/perfect_transitions.cpp.o
+[ 90%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/perfect_clouds.cpp.o
+[ 90%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/coverage_break_analysis.cpp.o
+[ 91%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/path_scaffolder_analyzer.cpp.o
+[ 91%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/contracted_graph_scaffolding/contracted_graph_scaffolder.cpp.o
+[ 91%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/contracted_graph_scaffolding/contracted_gfa_writer.cpp.o
+[ 91%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/short_edge_dataset.cpp.o
+[ 92%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/split_index_statistics.cpp.o
+[ 92%] Linking CXX static library libpath_extend.a
+[ 92%] Built target path_extend
+Scanning dependencies of target common_modules
+[ 92%] Building CXX object common/CMakeFiles/common_modules.dir/empty.cpp.o
+[ 92%] Linking CXX static library libcommon_modules.a
+[ 92%] Built target common_modules
+Scanning dependencies of target spades-kmercount
+[ 92%] Building CXX object projects/kmercount/CMakeFiles/spades-kmercount.dir/main.cpp.o
+Scanning dependencies of target spades-read-filter
+Scanning dependencies of target spades-gbuilder
+[ 92%] Building CXX object projects/kmercount/CMakeFiles/spades-read-filter.dir/read_filter.cpp.o
+[ 92%] Building CXX object projects/gbuilder/CMakeFiles/spades-gbuilder.dir/main.cpp.o
+Scanning dependencies of target spades-truseq-scfcorrection
+Scanning dependencies of target spades-corrector-core
+[ 92%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/positional_read.cpp.o
+[ 92%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/interesting_pos_processor.cpp.o
+[ 92%] Building CXX object projects/scaffold_correction/CMakeFiles/spades-truseq-scfcorrection.dir/main.cpp.o
+Scanning dependencies of target spades-dipspades-core
+[ 92%] Building CXX object projects/dipspades/CMakeFiles/spades-dipspades-core.dir/dipspades_config.cpp.o
+Scanning dependencies of target spades-core
+[ 93%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/contig_processor.cpp.o
+[ 93%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/main.cpp.o
+[ 93%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/dataset_processor.cpp.o
+[ 93%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/gap_closer.cpp.o
+[ 93%] Linking CXX executable ../../bin/spades-kmercount
+[ 93%] Built target spades-kmercount
+[ 93%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/config_struct.cpp.o
+[ 93%] Building CXX object projects/dipspades/CMakeFiles/spades-dipspades-core.dir/utils/files_utils.cpp.o
+[ 93%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/main.cpp.o
+[ 93%] Building CXX object projects/dipspades/CMakeFiles/spades-dipspades-core.dir/main.cpp.o
+[ 93%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/mismatch_correction.cpp.o
+[ 93%] Linking CXX executable ../../bin/spades-truseq-scfcorrection
+[ 94%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/pair_info_count.cpp.o
+[ 95%] Linking CXX executable ../../bin/spades-read-filter
+[ 95%] Built target spades-truseq-scfcorrection
+[ 95%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/second_phase_setup.cpp.o
+[ 95%] Built target spades-read-filter
+[ 95%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/distance_estimation.cpp.o
+[ 96%] Linking CXX executable ../../bin/spades-corrector-core
+[ 96%] Built target spades-corrector-core
+[ 96%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/repeat_resolving.cpp.o
+[ 96%] Linking CXX executable ../../bin/spades-gbuilder
+[ 96%] Built target spades-gbuilder
+[ 97%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/contig_output_stage.cpp.o
+[ 97%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/hybrid_aligning.cpp.o
+[ 97%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/chromosome_removal.cpp.o
+[ 97%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/barcode_index_construction.cpp.o
+[ 98%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/scaffold_graph_construction_stage.cpp.o
+[ 98%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/scaffolder_analysis_stage.cpp.o
+[ 98%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/series_analysis.cpp.o
+[ 99%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/__/mts/contig_abundance.cpp.o
+[ 99%] Linking CXX executable ../../bin/spades-core
+[ 99%] Built target spades-core
+[100%] Linking CXX executable ../../bin/spades-dipspades-core
+[100%] Built target spades-dipspades-core
+[  7%] Built target jemalloc
+[ 15%] Built target nlopt
+[ 19%] Built target ConsensusCore
+[ 29%] Built target BamTools
+[ 34%] Built target samtools
+[ 34%] Built target format
+[ 35%] Built target ssw
+[ 36%] Built target cityhash
+[ 37%] Built target getopt_pp
+[ 43%] Built target llvm-support
+[ 44%] Built target hattrie
+[ 48%] Built target bwa
+[ 49%] Built target gqf
+[ 50%] Built target edlib
+[ 50%] Built target gfa1
+[ 59%] Built target spades-bwa
+[ 60%] Built target coverage_model
+[ 61%] Built target input
+[ 62%] Built target pipeline
+[ 63%] Built target sequence
+[ 66%] Built target assembly_graph
+[ 79%] Built target path_extend
+[ 80%] Built target modules
+[ 81%] Built target paired_info
+[ 82%] Built target stages
+[ 84%] Built target utils
+[ 84%] Built target mph_index
+[ 84%] Built target common_modules
+[ 85%] Built target graphio
+[ 89%] Built target spades-core
+[ 92%] Built target spades-hammer
+[ 96%] Built target spades-ionhammer
+[ 97%] Built target spades-dipspades-core
+[ 99%] Built target spades-corrector-core
+[ 99%] Built target spades-truseq-scfcorrection
+[100%] Built target spades-read-filter
+[100%] Built target spades-kmercount
+[100%] Built target spades-gbuilder
+Install the project...
+-- Install configuration: "RelWithAsserts"
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/spades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/dipspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/metaspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/plasmidspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/rnaspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/truspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/spades_init.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/VERSION
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/ecoli_1K_1.fq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/ecoli_1K_2.fq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/genes_1K.gff
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/genes_1K.txt
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/operons_1K.gff
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/operons_1K.txt
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/reference_1K.fa.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades/A_R1.fastq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades/A_R2.fastq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades/B_R1.fastq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades/B_R2.fastq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_plasmid
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_plasmid/pl1.fq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_plasmid/pl2.fq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/manual.html
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/dipspades_manual.html
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/truspades_manual.html
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/rnaspades_manual.html
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/LICENSE
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/GPLv2.txt
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/__init__.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/disk.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/format_stack.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/func_inspect.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/functools.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/hashing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/logger.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/memory.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/my_exceptions.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/numpy_pickle.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/parallel.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/testing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/__init__.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/disk.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/format_stack.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/func_inspect.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/_compat.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/hashing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/logger.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/memory.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/my_exceptions.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/numpy_pickle.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/parallel.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/testing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/_memory_helpers.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/_multiprocessing_helpers.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/pool.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/__init__.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/composer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/constructor.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/cyaml.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/dumper.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/emitter.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/error.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/events.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/loader.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/nodes.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/parser.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/reader.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/representer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/resolver.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/scanner.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/serializer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/tokens.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/__init__.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/composer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/constructor.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/cyaml.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/dumper.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/emitter.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/error.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/events.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/loader.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/nodes.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/parser.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/reader.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/representer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/resolver.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/scanner.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/serializer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/tokens.py
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-bwa
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-core
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/diploid_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/tslr_resolver.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/careful_mda_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/careful_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/config.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/construction.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/detail_info_printer.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/distance_estimation.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/large_genome_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/mda_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/meta_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/moleculo_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/pe_params.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/plasmid_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/rna_fast_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/rna_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/simplification.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/toy.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/tsa.info
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-hammer
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/hammer
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/hammer/config.info
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-ionhammer
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/ionhammer
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/ionhammer/ionhammer.cfg
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-dipspades-core
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/dipspades
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/dipspades/config.info
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-corrector-core
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/corrector
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/corrector/corrector.info
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-truseq-scfcorrection
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/hammer_logic.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/process_cfg.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/spades_logic.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/dipspades_logic.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/corrector_logic.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/support.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/options_storage.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/lucigen_nxmate.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/reference_construction.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/moleculo_filter_contigs.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/break_by_coverage.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/moleculo_postprocessing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/barcode_extraction.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/generate_quality.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/id_generation.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/launch_options.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/string_dist_utils.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/alignment.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/parallel_launcher.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/sam_parser.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/SeqIO.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/__init__.py

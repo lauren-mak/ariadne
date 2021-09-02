@@ -104,7 +104,9 @@ class OFastqReadStream {
 public:
     typedef SingleRead ReadT;
 
-    OFastqReadStream(const std::string& fn) : os_(fn) {}
+    OFastqReadStream(const std::string& fn) :
+            os_(fn) {
+    }
 
     OFastqReadStream& operator<<(const SingleRead& read) {
         os_ << "@" << read.name() << std::endl;

@@ -22,16 +22,18 @@
 #include "hybrid_aligning.hpp"
 #include "chromosome_removal.hpp"
 #include "series_analysis.hpp"
+#include "barcode_index_construction.hpp"
 #include "pipeline/stage.hpp"
 #include "contig_output_stage.hpp"
+#include "scaffold_graph_construction_stage.hpp"
+#include "scaffolder_analysis_stage.hpp"
 #include "barcode_deconvolution_stage.hpp"
-// #include "molecule_extraction_stage.cpp"
 
 namespace spades {
 
 inline bool MetaCompatibleLibraries() {
     const auto& libs = cfg::get().ds.reads;
-    if (libs[0].type() != io::LibraryType::PairedEnd)
+    if (not (libs[0].is_paired()) or libs[0].is_mate_pair())
         return false;
     if (libs.lib_count() > 2)
         return false;
@@ -59,17 +61,20 @@ void assemble_genome() {
 
     INFO("Starting from stage: " << cfg::get().entry_point);
 
+    bool two_step_rr = cfg::get().two_step_rr && cfg::get().rr_enable;
+    INFO("Two-step RR enabled: " << two_step_rr);
+
     StageManager SPAdes({cfg::get().developer_mode,
                          cfg::get().load_from,
                          cfg::get().output_saves});
 
-    bool two_step_rr = cfg::get().two_step_rr && cfg::get().rr_enable;
-    INFO("Two-step RR enabled: " << two_step_rr);
+    size_t read_index_cnt = cfg::get().ds.reads.lib_count();
+    if (two_step_rr)
+        read_index_cnt++;
 
     debruijn_graph::conj_graph_pack conj_gp(cfg::get().K,
                                             cfg::get().tmp_dir,
-                                            two_step_rr ? cfg::get().ds.reads.lib_count() + 1
-                                                        : cfg::get().ds.reads.lib_count(),
+                                            read_index_cnt,
                                             cfg::get().ds.reference_genome,
                                             cfg::get().flanking_range,
                                             cfg::get().pos.max_mapping_gap,
@@ -78,57 +83,36 @@ void assemble_genome() {
         INFO("Will need read mapping, kmer mapper will be attached");
         conj_gp.kmer_mapper.Attach();
     }
-
     // Build the pipeline
-    SPAdes.add<debruijn_graph::Construction>();
-
-    if (cfg::get().mode != debruijn_graph::config::pipeline_type::meta)
-        SPAdes.add<debruijn_graph::GenomicInfoFiller>();
-
-    VERIFY(!cfg::get().gc.before_raw_simplify || !cfg::get().gc.before_simplify);
-    if (cfg::get().gap_closer_enable &&
-        cfg::get().gc.before_raw_simplify)
+    SPAdes.add<debruijn_graph::Construction>()
+          .add<debruijn_graph::GenomicInfoFiller>();
+    if (cfg::get().gap_closer_enable && cfg::get().gc.before_simplify)
         SPAdes.add<debruijn_graph::GapClosing>("early_gapcloser");
 
-    //Using two_step_rr is hacky here. Fix soon!
-    SPAdes.add<debruijn_graph::RawSimplification>(two_step_rr);
-
-    if (cfg::get().gap_closer_enable &&
-            cfg::get().gc.before_simplify)
-        SPAdes.add<debruijn_graph::GapClosing>("early_gapcloser");
-
-    if (two_step_rr) {
-        SPAdes.add<debruijn_graph::Simplification>(true);
-        if (cfg::get().gap_closer_enable && cfg::get().gc.after_simplify)
-            SPAdes.add<debruijn_graph::GapClosing>("prelim_gapcloser");
-        if (cfg::get().use_intermediate_contigs) {
-            SPAdes.add<debruijn_graph::PairInfoCount>(true)
-                    .add<debruijn_graph::DistanceEstimation>(true)
-                    .add<debruijn_graph::RepeatResolution>(true)
-                    .add<debruijn_graph::ContigOutput>()
-                    .add<debruijn_graph::SecondPhaseSetup>();
-        }
-    }
-
-    SPAdes.add<debruijn_graph::Simplification>();
+    SPAdes.add<debruijn_graph::Simplification>(two_step_rr);
 
     if (cfg::get().gap_closer_enable && cfg::get().gc.after_simplify)
         SPAdes.add<debruijn_graph::GapClosing>("late_gapcloser");
 
     SPAdes.add<debruijn_graph::SimplificationCleanup>();
-
-    if (cfg::get().correct_mismatches)
+    //currently cannot be used with two step rr
+    if (cfg::get().correct_mismatches && !cfg::get().two_step_rr)
         SPAdes.add<debruijn_graph::MismatchCorrection>();
-
-    // LM: Fix_5. Have moved barcode deconvolution to line 123 because further steps involve repeat reconstruction, which requires save-points that are not currently being made.
-    // This change makes unit-testing in CLion possible.
-    // LM: September 24, 2019. Have moved it back here to assemble on the cluster.
-    if (cfg::get().rr_enable && cfg::get().search_distance > 0) {
-        SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
-    }
-    // LM: Testing. So that only the barcode deconvolution stage is added to the run function.
-
     if (cfg::get().rr_enable) {
+        if (cfg::get().search_distance > 0) {
+            SPAdes.add<debruijn_graph::BarcodeDeconvolutionStage>();
+        }
+        if (two_step_rr) {
+            if (cfg::get().use_intermediate_contigs)
+                SPAdes.add<debruijn_graph::PairInfoCount>(true)
+                       .add<debruijn_graph::DistanceEstimation>(true)
+                       .add<debruijn_graph::RepeatResolution>(true)
+                       .add<debruijn_graph::ContigOutput>()
+                       .add<debruijn_graph::SecondPhaseSetup>();
+
+            SPAdes.add<debruijn_graph::Simplification>();
+        }
+
         if (!cfg::get().series_analysis.empty())
             SPAdes.add<debruijn_graph::SeriesAnalysis>();
 
@@ -141,10 +125,12 @@ void assemble_genome() {
         //No graph modification allowed after HybridLibrariesAligning stage!
 
         SPAdes.add<debruijn_graph::ContigOutput>(false, "intermediate_contigs")
+            .add<debruijn_graph::BarcodeMapConstructionStage>()
                .add<debruijn_graph::PairInfoCount>()
                .add<debruijn_graph::DistanceEstimation>()
+               .add<debruijn_graph::ScaffoldGraphConstructionStage>()
+               .add<debruijn_graph::ScaffolderAnalysisStage>()
                .add<debruijn_graph::RepeatResolution>();
-
     } else {
         SPAdes.add<debruijn_graph::ContigOutput>(false);
     }

@@ -99,20 +99,22 @@ namespace online_visualization {
 
   bool CheckVertexExists(const GraphElementFinder<Graph>& finder, size_t vertex_id) {
     VertexId vertex = finder.ReturnVertexId(vertex_id);
-    if (vertex == VertexId()) {
+    if (vertex == VertexId(NULL)) {
       FireVertexDoesNotExist(vertex_id);
       return false;
-    } else {
+    }
+    else {
       return true;
     }
   }
 
   bool CheckEdgeExists(const GraphElementFinder<Graph>& finder, size_t edge_id) {
     EdgeId edge = finder.ReturnEdgeId(edge_id);
-    if (edge == EdgeId()) {
+    if (edge == EdgeId(NULL)) {
       FireEdgeDoesNotExist(edge_id);
       return false;
-    } else {
+    }
+    else {
       return true;
     }
   }

@@ -1,0 +1,1056 @@
+-- The C compiler identification is GNU 6.3.0
+-- The CXX compiler identification is GNU 6.3.0
+-- Check for working C compiler: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-6.3.0-4h22ps2wttqbknmpnjft4h5bd2uvzndl/bin/cc
+-- Check for working C compiler: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-6.3.0-4h22ps2wttqbknmpnjft4h5bd2uvzndl/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-6.3.0-4h22ps2wttqbknmpnjft4h5bd2uvzndl/bin/c++
+-- Check for working CXX compiler: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-4.8.5/gcc-6.3.0-4h22ps2wttqbknmpnjft4h5bd2uvzndl/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+Setting default build configuration: RelWithAsserts
+CMake Warning (dev) at /pbtech_mounts/softlib001/apps/EL6/spack/opt/spack/linux-rhel6-x86_64/gcc-6.3.0/cmake-3.9.4-v3w54bykdxdf23psa6qe3yxyiwhchbob/share/cmake-3.9/Modules/FindOpenMP.cmake:200 (if):
+  Policy CMP0054 is not set: Only interpret if() arguments as variables or
+  keywords when unquoted.  Run "cmake --help-policy CMP0054" for policy
+  details.  Use the cmake_policy command to set the policy and suppress this
+  warning.
+
+  Quoted variables like "c" will no longer be dereferenced when the policy is
+  set to NEW.  Since the policy is not set the OLD behavior will be used.
+Call Stack (most recent call first):
+  /pbtech_mounts/softlib001/apps/EL6/spack/opt/spack/linux-rhel6-x86_64/gcc-6.3.0/cmake-3.9.4-v3w54bykdxdf23psa6qe3yxyiwhchbob/share/cmake-3.9/Modules/FindOpenMP.cmake:324 (_OPENMP_GET_FLAGS)
+  cmake/deps.cmake:16 (find_package)
+  CMakeLists.txt:52 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Found OpenMP_C: -fopenmp (found version "4.5") 
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Found ZLIB: /usr/lib64/libz.so (found version "1.2.7") 
+-- Found BZip2: /pbtech_mounts/softlib001/apps/EL7/spack/opt/spack/linux-centos7-x86_64/gcc-6.3.0/bzip2-1.0.6-ikn3syj2vtwcbna4lykyinhp6ydvs7lv/lib/libbz2.so (found version "1.0.6") 
+-- Looking for BZ2_bzCompressInit
+-- Looking for BZ2_bzCompressInit - found
+-- Could NOT find readline (missing: READLINE_INCLUDE_DIR READLINE_LIBRARY) 
+-- Boost version: 1.63.0
+Making Release Configuration...
+Building SPAdes from N/A, sha: N/A
+-- Looking for include file features.h
+-- Looking for include file features.h - found
+-- Looking for include file sys/cdefs.h
+-- Looking for include file sys/cdefs.h - found
+-- Looking for atomic_fetchadd_long
+-- Looking for atomic_fetchadd_long - not found
+-- Looking for OSAtomicAdd64
+-- Looking for OSAtomicAdd64 - not found
+-- Looking for OSSpinLockLock
+-- Looking for OSSpinLockLock - not found
+-- Looking for _malloc_thread_cleanup
+-- Looking for _malloc_thread_cleanup - not found
+-- Looking for _pthread_mutex_init_calloc_cb,
+-- Looking for _pthread_mutex_init_calloc_cb, - not found
+-- Looking for sbrk
+-- Looking for sbrk - found
+-- Performing Test JEMALLOC_TLS_MODEL_SUPPORTED
+-- Performing Test JEMALLOC_TLS_MODEL_SUPPORTED - Success
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Check size of void*
+-- Check size of void* - done
+-- Performing Test JEMALLOC_TLS
+-- Performing Test JEMALLOC_TLS - Success
+-- Looking for memalign
+-- Looking for memalign - found
+-- Looking for valloc
+-- Looking for valloc - found
+-- Check size of int
+-- Check size of int - done
+-- Check size of long
+-- Check size of long - done
+-- Check size of intmax_t
+-- Check size of intmax_t - done
+-- Looking for open
+-- Looking for open - found
+-- Looking for include file execinfo.h
+-- Looking for include file execinfo.h - found
+-- Looking for include file signal.h
+-- Looking for include file signal.h - found
+-- Looking for include file sys/stat.h
+-- Looking for include file sys/stat.h - found
+-- Looking for include file cxxabi.h
+-- Looking for include file cxxabi.h - not found
+-- Looking for include file dlfcn.h
+-- Looking for include file dlfcn.h - found
+-- Looking for include file mach/mach.h
+-- Looking for include file mach/mach.h - not found
+-- Looking for include file link.h
+-- Looking for include file link.h - found
+-- Looking for backtrace
+-- Looking for backtrace - found
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Looking for pthread_create
+-- Looking for pthread_create - found
+-- Found Threads: TRUE  
+-- Looking for shm_open
+-- Looking for shm_open - not found
+-- Looking for shm_open in rt
+-- Looking for shm_open in rt - found
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dmm2017/cloudSPAdes-dev/build_spades
+Scanning dependencies of target cityhash
+Scanning dependencies of target getopt_pp
+Scanning dependencies of target ssw
+Scanning dependencies of target format
+[  1%] Building CXX object ext/cityhash/CMakeFiles/cityhash.dir/city.cc.o
+[  2%] Building CXX object ext/getopt_pp/CMakeFiles/getopt_pp.dir/getopt_pp.cpp.o
+[  3%] Building CXX object ext/cppformat/CMakeFiles/format.dir/format.cc.o
+[  3%] Building C object ext/ssw/CMakeFiles/ssw.dir/ssw.c.o
+Scanning dependencies of target nlopt
+[  4%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/api/general.c.o
+Scanning dependencies of target jemalloc
+Scanning dependencies of target BamTools
+[  4%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/BamAlignment.cpp.o
+[  5%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/arena.c.o
+[  5%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/api/optimize.c.o
+[  5%] Linking CXX static library libcityhash.a
+[  5%] Building CXX object ext/ssw/CMakeFiles/ssw.dir/ssw_cpp.cpp.o
+[  5%] Built target cityhash
+[  5%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/api/options.c.o
+[  5%] Building CXX object ext/cppformat/CMakeFiles/format.dir/posix.cc.o
+[  5%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/api/deprecated.c.o
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/api/deprecated.c: In function ‘nlopt_minimize_constrained’:
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/api/deprecated.c:149:6: warning: ‘nlopt_minimize_econstrained’ is deprecated [-Wdeprecated-declarations]
+      return nlopt_minimize_econstrained(
+      ^~~~~~
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/api/deprecated.c:23:0:
+/home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/nlopt.h:350:28: note: declared here
+ NLOPT_EXTERN(nlopt_result) nlopt_minimize_econstrained(
+                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/api/deprecated.c: In function ‘nlopt_minimize’:
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/api/deprecated.c:167:6: warning: ‘nlopt_minimize_constrained’ is deprecated [-Wdeprecated-declarations]
+      return nlopt_minimize_constrained(
+      ^~~~~~
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/api/deprecated.c:23:0:
+/home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/nlopt.h:339:28: note: declared here
+ NLOPT_EXTERN(nlopt_result) nlopt_minimize_constrained(
+                            ^~~~~~~~~~~~~~~~~~~~~~~~~~
+[  6%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/auglag/auglag.c.o
+[  6%] Linking CXX static library libgetopt_pp.a
+[  6%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/bobyqa/bobyqa.c.o
+Scanning dependencies of target ConsensusCore
+[  6%] Linking CXX static library libssw.a
+[  6%] Built target getopt_pp
+[  6%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/BamMultiReader.cpp.o
+[  6%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/base.c.o
+Scanning dependencies of target llvm-support
+[  6%] Built target ssw
+[  6%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/cdirect/cdirect.c.o
+[  6%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Atomic.cpp.o
+[  7%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/AffineAlignment.cpp.o
+[  7%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/ErrorHandling.cpp.o
+[  7%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Coverage.cpp.o
+[  7%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Hashing.cpp.o
+Scanning dependencies of target hattrie
+[  7%] Building C object ext/htrie/CMakeFiles/hattrie.dir/ahtable.c.o
+[  7%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/BamReader.cpp.o
+[  8%] Building C object ext/htrie/CMakeFiles/hattrie.dir/hat-trie.c.o
+[  9%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/LineIterator.cpp.o
+[  9%] Linking CXX static library libformat.a
+[  9%] Building C object ext/htrie/CMakeFiles/hattrie.dir/misc.c.o
+[  9%] Built target format
+[  9%] Building C object ext/htrie/CMakeFiles/hattrie.dir/murmurhash3.c.o
+Scanning dependencies of target bwa
+[  9%] Linking C static library libhattrie.a
+[ 10%] Building C object ext/bwa/CMakeFiles/bwa.dir/utils.c.o
+[ 10%] Built target hattrie
+[ 10%] Building C object ext/bwa/CMakeFiles/bwa.dir/kthread.c.o
+[ 11%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/BamWriter.cpp.o
+Scanning dependencies of target gqf
+[ 12%] Building C object ext/gqf/CMakeFiles/gqf.dir/gqf.c.o
+[ 12%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/MemoryBuffer.cpp.o
+[ 12%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamHeader.cpp.o
+[ 12%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Mutation.cpp.o
+[ 12%] Linking C static library libgqf.a
+[ 12%] Built target gqf
+[ 12%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/cdirect/hybrid.c.o
+[ 12%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Mutex.cpp.o
+[ 12%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Path.cpp.o
+[ 12%] Building C object ext/bwa/CMakeFiles/bwa.dir/ksw.c.o
+[ 12%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/chunk.c.o
+[ 13%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/PairwiseAlignment.cpp.o
+[ 13%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamProgram.cpp.o
+[ 13%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwt.c.o
+[ 14%] Building C object ext/bwa/CMakeFiles/bwa.dir/bntseq.c.o
+[ 14%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamProgramChain.cpp.o
+[ 15%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/cobyla/cobyla.c.o
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/cdirect/hybrid.c: In function ‘optimize_rect’:
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/cdirect/hybrid.c:91:6: warning: ‘nlopt_minimize’ is deprecated [-Wdeprecated-declarations]
+      ret = nlopt_minimize(p->local_alg, n, fcount, p,
+      ^~~
+In file included from /home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/nlopt-util.h:29:0,
+                 from /home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/cdirect/hybrid.c:27:
+/home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/nlopt.h:329:28: note: declared here
+ NLOPT_EXTERN(nlopt_result) nlopt_minimize(
+                            ^~~~~~~~~~~~~~
+[ 15%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/crs/crs.c.o
+[ 15%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwa.c.o
+[ 16%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Regex.cpp.o
+[ 16%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwamem.c.o
+[ 16%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/esch/esch.c.o
+[ 16%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Signals.cpp.o
+[ 17%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/isres/isres.c.o
+[ 18%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamReadGroup.cpp.o
+Scanning dependencies of target edlib
+[ 18%] Building CXX object ext/edlib/CMakeFiles/edlib.dir/edlib.cpp.o
+[ 18%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/mma/mma.c.o
+[ 18%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamReadGroupDictionary.cpp.o
+[ 18%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/mma/ccsa_quadratic.c.o
+[ 18%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamSequence.cpp.o
+[ 18%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/mlsl/mlsl.c.o
+[ 19%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/neldermead/nldrmd.c.o
+[ 20%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwamem_pair.c.o
+[ 20%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/SmallVector.cpp.o
+[ 21%] Linking CXX static library libedlib.a
+[ 21%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/SamSequenceDictionary.cpp.o
+[ 21%] Built target edlib
+[ 21%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/neldermead/sbplx.c.o
+[ 21%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwamem_extra.c.o
+[ 22%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Sequence.cpp.o
+[ 22%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/chunk_mmap.c.o
+[ 22%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/newuoa/newuoa.c.o
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/newuoa/newuoa.c: In function ‘trsapp_’:
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/newuoa/newuoa.c:184:3: warning: ‘nlopt_minimize_constrained’ is deprecated [-Wdeprecated-declarations]
+   ret = nlopt_minimize_constrained(NLOPT_LD_MMA, *n, quad_model, &qmd,
+   ^~~
+In file included from /home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/nlopt-util.h:29:0,
+                 from /home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/newuoa.h:4,
+                 from /home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/newuoa/newuoa.c:33:
+/home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/nlopt.h:339:28: note: declared here
+ NLOPT_EXTERN(nlopt_result) nlopt_minimize_constrained(
+                            ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/newuoa/newuoa.c: In function ‘biglag_’:
+/home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/newuoa/newuoa.c:1241:3: warning: ‘nlopt_minimize_constrained’ is deprecated [-Wdeprecated-declarations]
+   return nlopt_minimize_constrained(NLOPT_LD_MMA, *n, lag, &ld,
+   ^~~~~~
+In file included from /home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/nlopt-util.h:29:0,
+                 from /home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/newuoa.h:4,
+                 from /home/dmm2017/cloudSPAdes-dev/ext/src/nlopt/newuoa/newuoa.c:33:
+/home/dmm2017/cloudSPAdes-dev/src/../ext/include/nlopt/nlopt.h:339:28: note: declared here
+ NLOPT_EXTERN(nlopt_result) nlopt_minimize_constrained(
+                            ^~~~~~~~~~~~~~~~~~~~~~~~~~
+[ 22%] Building C object ext/bwa/CMakeFiles/bwa.dir/malloc_wrap.c.o
+[ 23%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/SourceMgr.cpp.o
+[ 23%] Building C object ext/bwa/CMakeFiles/bwa.dir/is.c.o
+[ 23%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/ctl.c.o
+[ 23%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/StringMap.cpp.o
+[ 23%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Utils.cpp.o
+[ 24%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamHeader_p.cpp.o
+[ 25%] Building C object ext/bwa/CMakeFiles/bwa.dir/bwtindex.c.o
+[ 25%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/praxis/praxis.c.o
+[ 25%] Building C object ext/bwa/CMakeFiles/bwa.dir/rope.c.o
+[ 25%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/StringRef.cpp.o
+[ 25%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamMultiReader_p.cpp.o
+[ 25%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Version.cpp.o
+[ 25%] Building C object ext/bwa/CMakeFiles/bwa.dir/rle.c.o
+[ 26%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/redblack.c.o
+[ 26%] Linking C static library libbwa.a
+[ 26%] Built target bwa
+[ 26%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/Twine.cpp.o
+[ 27%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/YAMLParser.cpp.o
+Scanning dependencies of target gfa1
+[ 27%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/hash.c.o
+[ 27%] Building C object ext/gfa1/CMakeFiles/gfa1.dir/gfa.c.o
+[ 27%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/jemalloc.c.o
+[ 28%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Matrix/DenseMatrix.cpp.o
+[ 28%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamRandomAccessController_p.cpp.o
+Scanning dependencies of target spades-bwa
+[ 28%] Linking C static library libgfa1.a
+[ 28%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bamlite.c.o
+[ 28%] Built target gfa1
+Scanning dependencies of target sequence
+[ 28%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwa.c.o
+[ 28%] Building CXX object common/sequence/CMakeFiles/sequence.dir/sequence_tools.cpp.o
+[ 29%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/mutex.c.o
+[ 29%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/quarantine.c.o
+[ 29%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwamem.c.o
+[ 30%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamReader_p.cpp.o
+[ 30%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/stats.c.o
+[ 30%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Matrix/SparseMatrix.cpp.o
+[ 30%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/tsd.c.o
+[ 31%] Linking CXX static library libsequence.a
+[ 31%] Built target sequence
+[ 31%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/rescale.c.o
+[ 31%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Poa/PoaConfig.cpp.o
+[ 31%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/stop.c.o
+[ 31%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/YAMLTraits.cpp.o
+[ 32%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/timer.c.o
+[ 32%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/qsort_r.c.o
+[ 32%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/sobolseq.c.o
+[ 32%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/bam/BamWriter_p.cpp.o
+Scanning dependencies of target modules
+[ 32%] Building C object ext/nlopt/CMakeFiles/nlopt.dir/util/mt19937ar.c.o
+[ 32%] Building CXX object common/modules/CMakeFiles/modules.dir/genome_consistance_checker.cpp.o
+[ 32%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Poa/PoaConsensus.cpp.o
+[ 33%] Linking C static library libnlopt.a
+[ 33%] Built target nlopt
+Scanning dependencies of target assembly_graph
+[ 33%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/components/connected_component.cpp.o
+Scanning dependencies of target paired_info
+[ 33%] Building CXX object common/paired_info/CMakeFiles/paired_info.dir/distance_estimation.cpp.o
+[ 33%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/index/BamIndexFactory_p.cpp.o
+[ 34%] Building CXX object ext/ConsensusCore/CMakeFiles/ConsensusCore.dir/Poa/PoaGraph.cpp.o
+[ 34%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/index/BamStandardIndex_p.cpp.o
+[ 35%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwase.c.o
+[ 35%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwashm.c.o
+[ 35%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtaln.c.o
+[ 36%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtgap.c.o
+[ 36%] Building CXX object ext/llvm/CMakeFiles/llvm-support.dir/raw_ostream.cpp.o
+[ 36%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtindex.c.o
+[ 36%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwt_lite.c.o
+[ 36%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_aux.c.o
+[ 36%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regcomp.c.o
+[ 37%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/index/BamToolsIndex_p.cpp.o
+[ 38%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_core.c.o
+[ 38%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/paths/bidirectional_path.cpp.o
+[ 39%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regerror.c.o
+[ 39%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regexec.c.o
+[ 39%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_pair.c.o
+[ 39%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regfree.c.o
+[ 39%] Building C object ext/llvm/CMakeFiles/llvm-support.dir/regstrlcpy.c.o
+[ 40%] Linking CXX static library libllvm-support.a
+[ 40%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/fastmap.c.o
+[ 40%] Built target llvm-support
+[ 40%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/kstring.c.o
+[ 40%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/BamDeviceFactory_p.cpp.o
+[ 41%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/main.c.o
+[ 42%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/paths/bidirectional_path_io/io_support.cpp.o
+[ 42%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/utils.c.o
+[ 42%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/BamFile_p.cpp.o
+[ 42%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bntseq.c.o
+[ 42%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/BgzfStream_p.cpp.o
+[ 43%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwape.c.o
+[ 44%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/ByteArray_p.cpp.o
+[ 44%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwaseqio.c.o
+[ 44%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/ILocalIODevice_p.cpp.o
+[ 44%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwt.c.o
+Scanning dependencies of target stages
+[ 44%] Building CXX object common/stages/CMakeFiles/stages.dir/construction.cpp.o
+[ 44%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/ParallelBgzfStream_p.cpp.o
+[ 44%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwt_gen.c.o
+[ 44%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/RollingBuffer_p.cpp.o
+[ 45%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_chain.c.o
+[ 45%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwtsw2_main.c.o
+[ 45%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/is.c.o
+[ 45%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/ksw.c.o
+[ 46%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/SerialBgzfStream_p.cpp.o
+[ 47%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/pemerge.c.o
+[ 47%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/QSufSort.c.o
+[ 47%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/kopen.c.o
+[ 47%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwamem_extra.c.o
+[ 47%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/bgzf.c.o
+[ 48%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/bwamem_pair.c.o
+[ 48%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/knetfile.c.o
+[ 49%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/block.c.o
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/block.c:5:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:8:1: warning: inline function ‘safe_mutex_unlock’ declared but never defined
+ safe_mutex_unlock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:5:1: warning: inline function ‘safe_mutex_lock’ declared but never defined
+ safe_mutex_lock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/block.c:4:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/bgzf.h:240:11: warning: inline function ‘unpackInt16’ declared but never defined
+           unpackInt16(const uint8_t* buffer);
+           ^~~~~~~~~~~
+[ 49%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/consumer.c.o
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/consumer.c:12:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:8:1: warning: inline function ‘safe_mutex_unlock’ declared but never defined
+ safe_mutex_unlock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:5:1: warning: inline function ‘safe_mutex_lock’ declared but never defined
+ safe_mutex_lock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/consumer.c:11:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/bgzf.h:240:11: warning: inline function ‘unpackInt16’ declared but never defined
+           unpackInt16(const uint8_t* buffer);
+           ^~~~~~~~~~~
+[ 49%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/kthread.c.o
+[ 49%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/pbgzf.c.o
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/pbgzf.c:14:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:8:1: warning: inline function ‘safe_mutex_unlock’ declared but never defined
+ safe_mutex_unlock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:5:1: warning: inline function ‘safe_mutex_lock’ declared but never defined
+ safe_mutex_lock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/pbgzf.c:13:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/bgzf.h:240:11: warning: inline function ‘unpackInt16’ declared but never defined
+           unpackInt16(const uint8_t* buffer);
+           ^~~~~~~~~~~
+[ 49%] Building C object ext_tools/bwa-0.7.12/CMakeFiles/spades-bwa.dir/malloc_wrap.c.o
+[ 50%] Linking C executable ../../bin/spades-bwa
+[ 50%] Built target spades-bwa
+[ 51%] Building CXX object common/stages/CMakeFiles/stages.dir/simplification.cpp.o
+[ 51%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/queue.c.o
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/queue.c:6:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:8:1: warning: inline function ‘safe_mutex_unlock’ declared but never defined
+ safe_mutex_unlock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:5:1: warning: inline function ‘safe_mutex_lock’ declared but never defined
+ safe_mutex_lock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~
+[ 52%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/reader.c.o
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/reader.c:8:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:8:1: warning: inline function ‘safe_mutex_unlock’ declared but never defined
+ safe_mutex_unlock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:5:1: warning: inline function ‘safe_mutex_lock’ declared but never defined
+ safe_mutex_lock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/reader.c:7:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/bgzf.h:240:11: warning: inline function ‘unpackInt16’ declared but never defined
+           unpackInt16(const uint8_t* buffer);
+           ^~~~~~~~~~~
+[ 52%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/util.c.o
+[ 52%] Building C object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/io/pbgzf/writer.c.o
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/pbgzf.h:11:0,
+                 from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/writer.c:10:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:8:1: warning: inline function ‘safe_mutex_unlock’ declared but never defined
+ safe_mutex_unlock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/util.h:5:1: warning: inline function ‘safe_mutex_lock’ declared but never defined
+ safe_mutex_lock(pthread_mutex_t *mutex);
+ ^~~~~~~~~~~~~~~
+In file included from /home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/writer.c:7:0:
+/home/dmm2017/cloudSPAdes-dev/ext/src/bamtools/api/internal/io/pbgzf/bgzf.h:240:11: warning: inline function ‘unpackInt16’ declared but never defined
+           unpackInt16(const uint8_t* buffer);
+           ^~~~~~~~~~~
+[ 52%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/sam/SamFormatParser_p.cpp.o
+[ 53%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/sam/SamFormatPrinter_p.cpp.o
+[ 53%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/sam/SamHeaderValidator_p.cpp.o
+[ 53%] Linking CXX static library libConsensusCore.a
+[ 53%] Built target ConsensusCore
+[ 54%] Building CXX object ext/bamtools/api/CMakeFiles/BamTools.dir/internal/utils/BamException_p.cpp.o
+[ 54%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/atomic.c.o
+[ 54%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/paths/bidirectional_path_io/bidirectional_path_output.cpp.o
+[ 54%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/bitmap.c.o
+[ 54%] Linking CXX static library libBamTools.a
+[ 54%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/chunk_dss.c.o
+[ 54%] Built target BamTools
+[ 54%] Building CXX object common/paired_info/CMakeFiles/paired_info.dir/weighted_distance_estimation.cpp.o
+[ 54%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/graph_support/scaff_supplementary.cpp.o
+[ 54%] Building CXX object common/modules/CMakeFiles/modules.dir/alignment/gap_info.cpp.o
+[ 55%] Building CXX object common/modules/CMakeFiles/modules.dir/alignment/bwa_index.cpp.o
+[ 55%] Building CXX object common/paired_info/CMakeFiles/paired_info.dir/smoothing_distance_estimation.cpp.o
+[ 55%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/ckh.c.o
+Scanning dependencies of target utils
+[ 55%] Building CXX object common/utils/CMakeFiles/utils.dir/memory_limit.cpp.o
+[ 55%] Building CXX object common/utils/CMakeFiles/utils.dir/filesystem/copy_file.cpp.o
+[ 55%] Linking CXX static library libmodules.a
+[ 55%] Built target modules
+[ 56%] Building CXX object common/utils/CMakeFiles/utils.dir/filesystem/path_helper.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/assembly_graph/graph_support/scaff_supplementary.cpp: In member function ‘bool path_extend::ScaffoldingUniqueEdgeAnalyzer::ConservativeByPaths(path_extend::EdgeId, const path_extend::GraphCoverageMap&, const path_extend::pe_config::LongReads&, int) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/assembly_graph/graph_support/scaff_supplementary.cpp:130:63: warning: conversion to ‘double’ from ‘size_t {aka long unsigned int}’ may alter its value [-Wconversion]
+         if (maxx < lr_config.unique_edge_priority * double(alt)) {
+                                                               ^
+[ 56%] Building CXX object common/utils/CMakeFiles/utils.dir/filesystem/temporary.cpp.o
+[ 56%] Building CXX object common/utils/CMakeFiles/utils.dir/logger/logger_impl.cpp.o
+[ 57%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/extent.c.o
+[ 58%] Linking CXX static library libpaired_info.a
+[ 58%] Built target paired_info
+Scanning dependencies of target mph_index
+[ 58%] Building CXX object common/utils/kmer_mph/CMakeFiles/mph_index.dir/1.cpp.o
+[ 58%] Linking CXX static library libmph_index.a
+[ 58%] Built target mph_index
+[ 58%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/huge.c.o
+[ 58%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/mb.c.o
+Scanning dependencies of target graphio
+[ 59%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/prof.c.o
+[ 59%] Building CXX object common/io/graph/CMakeFiles/graphio.dir/gfa_reader.cpp.o
+[ 60%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/__/modules/alignment/edge_index_refiller.cpp.o
+[ 60%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/rtree.c.o
+[ 60%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/graph_support/coverage_uniformity_analyzer.cpp.o
+[ 60%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/tcache.c.o
+[ 60%] Building C object ext/jemalloc/CMakeFiles/jemalloc.dir/util.c.o
+[ 60%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/contracted_graph.cpp.o
+[ 61%] Linking C static library libjemalloc.a
+[ 62%] Linking CXX static library libutils.a
+[ 62%] Built target jemalloc
+[ 62%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/contracted_graph_builder.cpp.o
+[ 62%] Built target utils
+[ 63%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/contracted_graph_helper.cpp.o
+[ 63%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/graph_condensation.cpp.o
+[ 63%] Building CXX object common/assembly_graph/CMakeFiles/assembly_graph.dir/contracted_graph/contracted_statistics.cpp.o
+[ 64%] Building CXX object common/io/graph/CMakeFiles/graphio.dir/fastg_writer.cpp.o
+[ 64%] Building CXX object common/io/graph/CMakeFiles/graphio.dir/gfa_writer.cpp.o
+Scanning dependencies of target samtools
+[ 65%] Building C object ext/samtools/CMakeFiles/samtools.dir/kstring.c.o
+[ 65%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_aux.c.o
+[ 65%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam.c.o
+[ 65%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_import.c.o
+[ 66%] Building C object ext/samtools/CMakeFiles/samtools.dir/sam.c.o
+[ 66%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_index.c.o
+[ 66%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_pileup.c.o
+[ 66%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_lpileup.c.o
+[ 67%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_md.c.o
+[ 67%] Building C object ext/samtools/CMakeFiles/samtools.dir/razf.c.o
+[ 67%] Linking CXX static library libgraphio.a
+[ 67%] Building C object ext/samtools/CMakeFiles/samtools.dir/faidx.c.o
+[ 67%] Built target graphio
+[ 68%] Building C object ext/samtools/CMakeFiles/samtools.dir/bedidx.c.o
+Scanning dependencies of target coverage_model
+[ 68%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_sort.c.o
+[ 68%] Building C object ext/samtools/CMakeFiles/samtools.dir/sam_header.c.o
+[ 69%] Building CXX object common/modules/coverage_model/CMakeFiles/coverage_model.dir/kmer_coverage_model.cpp.o
+[ 69%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_reheader.c.o
+[ 70%] Building C object ext/samtools/CMakeFiles/samtools.dir/kprobaln.c.o
+[ 70%] Building C object ext/samtools/CMakeFiles/samtools.dir/bam_cat.c.o
+[ 70%] Linking CXX static library libsamtools.a
+[ 70%] Built target samtools
+Scanning dependencies of target input
+[ 71%] Building CXX object common/io/CMakeFiles/input.dir/reads/parser.cpp.o
+[ 71%] Building CXX object common/io/CMakeFiles/input.dir/sam/read.cpp.o
+[ 71%] Building CXX object common/io/CMakeFiles/input.dir/sam/sam_reader.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/coverage_model/kmer_coverage_model.cpp: In member function ‘void coverage_model::KMerCoverageModel::Fit()’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/coverage_model/kmer_coverage_model.cpp:325:23: warning: conversion to ‘__gnu_cxx::__alloc_traits<std::allocator<double> >::value_type {aka double}’ from ‘size_t {aka long unsigned int}’ may alter its value [-Wconversion]
+     if (converged_ && Valley_ > x[2] && x[2] > 2) {
+                       ^~~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/coverage_model/kmer_coverage_model.cpp:359:28: warning: conversion to ‘double’ from ‘size_t {aka long unsigned int}’ may alter its value [-Wconversion]
+         ErrorThreshold_ = (Valley_ < mean_coverage_ ?
+                            ^~~~~~~
+[ 71%] Linking CXX static library libassembly_graph.a
+[ 71%] Linking CXX static library libinput.a
+[ 71%] Built target assembly_graph
+[ 71%] Built target input
+Scanning dependencies of target pipeline
+[ 71%] Building CXX object common/pipeline/CMakeFiles/pipeline.dir/stage.cpp.o
+[ 72%] Building CXX object common/pipeline/CMakeFiles/pipeline.dir/genomic_info_filler.cpp.o
+[ 72%] Building CXX object common/pipeline/CMakeFiles/pipeline.dir/library.cpp.o
+[ 72%] Building CXX object common/pipeline/CMakeFiles/pipeline.dir/config_struct.cpp.o
+Scanning dependencies of target path_extend
+[ 72%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/pe_config_struct.cpp.o
+[ 72%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/pipeline/launch_support.cpp.o
+[ 72%] Linking CXX static library libcoverage_model.a
+[ 72%] Built target coverage_model
+[ 72%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/pipeline/launcher.cpp.o
+[ 73%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/pipeline/extenders_logic.cpp.o
+In file included from /home/dmm2017/cloudSPAdes-dev/src/common/pipeline/stage.cpp:9:0:
+/home/dmm2017/cloudSPAdes-dev/src/common/pipeline/graphio.hpp: In instantiation of ‘void debruijn_graph::graphio::ScanReadCloudDistributions(const string&, path_extend::cluster_model::DistributionPack&, const Graph&, bool) [with Graph = debruijn_graph::DeBruijnGraph; std::__cxx11::string = std::__cxx11::basic_string<char>]’:
+/home/dmm2017/cloudSPAdes-dev/src/common/pipeline/graphio.hpp:1143:31:   required from ‘void debruijn_graph::graphio::ScanAll(const string&, graph_pack&, bool) [with graph_pack = debruijn_graph::graph_pack<debruijn_graph::DeBruijnGraph>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+/home/dmm2017/cloudSPAdes-dev/src/common/pipeline/stage.cpp:24:50:   required from here
+/home/dmm2017/cloudSPAdes-dev/src/common/pipeline/graphio.hpp:1026:46: warning: unused parameter ‘g’ [-Wunused-parameter]
+                                 const Graph& g, bool force_exists = true) {
+                                              ^
+[ 73%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/extension_chooser2015.cpp.o
+[ 73%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/scaffold_graph.cpp.o
+[ 74%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/scaffold_graph_constructor.cpp.o
+[ 74%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/scaffold_graph_visualizer.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/scaffolder2015/extension_chooser2015.cpp: In member function ‘path_extend::ExtensionChooser::EdgeContainer path_extend::ExtensionChooser2015::FindNextUniqueEdge(path_extend::EdgeId) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/scaffolder2015/extension_chooser2015.cpp:29:19: warning: conversion to ‘double’ from ‘long unsigned int’ may alter its value [-Wconversion]
+         if (sum < absolute_weight_threshold_) {
+                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+[ 74%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/connection_condition2015.cpp.o
+[ 74%] Linking CXX static library libstages.a
+[ 74%] Built target stages
+[ 74%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/path_polisher.cpp.o
+[ 75%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/scaffolder2015/scaffold_vertex.cpp.o
+[ 75%] Linking CXX static library libpipeline.a
+[ 75%] Built target pipeline
+[ 75%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/read_cloud_connection_conditions.cpp.o
+[ 75%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/scaffolder2015/connection_condition2015.cpp: In member function ‘virtual std::map<restricted::pure_pointer<omnigraph::PairedEdge<debruijn_graph::DeBruijnDataMaster> >, double> path_extend::LongReadsLibConnectionCondition::ConnectedWith(path_extend::EdgeId, const path_extend::ScaffoldingUniqueEdgeStorage&) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/scaffolder2015/connection_condition2015.cpp:105:28: warning: conversion to ‘double’ from ‘long unsigned int’ may alter its value [-Wconversion]
+         if (iter->second < min_read_count_){
+                            ^~~~~~~~~~~~~~~
+[ 75%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_storage.cpp.o
+[ 76%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/scaffold_graph_validation.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp: In member function ‘path_extend::LongEdgePairGapCloserParams path_extend::ScaffolderParamsConstructor::ConstructGapCloserParamsFromMainParams(const path_extend::ScaffolderParams&, const Graph&, std::shared_ptr<barcode_index::FrameBarcodeIndexInfoExtractor>, size_t, size_t) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp:43:33: warning: unused parameter ‘params’ [-Wunused-parameter]
+         const ScaffolderParams &params,
+                                 ^~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp:44:22: warning: unused parameter ‘g’ [-Wunused-parameter]
+         const Graph &g,
+                      ^
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp:45:67: warning: unused parameter ‘barcode_extractor’ [-Wunused-parameter]
+         shared_ptr<barcode_index::FrameBarcodeIndexInfoExtractor> barcode_extractor,
+                                                                   ^~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp:46:16: warning: unused parameter ‘unique_edge_length’ [-Wunused-parameter]
+         size_t unique_edge_length,
+                ^~~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp:47:16: warning: unused parameter ‘max_threads’ [-Wunused-parameter]
+         size_t max_threads) const {
+                ^~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp: In member function ‘path_extend::ScaffolderParams::ScoreEstimationParams path_extend::ScaffolderParamsConstructor::GetScoreEstimationParams(const Graph&, path_extend::cluster_model::ClusterStatisticsExtractor, double, double, size_t) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_construction_pipeline.cpp:75:22: warning: unused parameter ‘g’ [-Wunused-parameter]
+         const Graph &g, cluster_model::ClusterStatisticsExtractor cluster_statistics_extractor,
+                      ^
+[ 76%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/transition_extractor.cpp.o
+[ 76%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_extractor.cpp.o
+[ 76%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/scaffold_graph_polisher.cpp.o
+[ 77%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/transitions/transitions.cpp.o
+[ 77%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/scaffold_vertex_predicates.cpp.o
+Scanning dependencies of target spades-hammer
+[ 78%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/main.cpp.o
+[ 78%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/hammer_tools.cpp.o
+[ 78%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/hamcluster.cpp.o
+[ 78%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/kmer_cluster.cpp.o
+In file included from /home/dmm2017/miniconda2/include/boost/numeric/ublas/io.hpp:19:0,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/hammer/kmer_cluster.cpp:16:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp: In member function ‘void boost::numeric::ublas::matrix_binary<E1, E2, F>::const_iterator1::increment(boost::numeric::ublas::sparse_bidirectional_iterator_tag)’:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp:2224:17: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+                 if (it2_ != it2_end_)
+                 ^~
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp:2227:21: note: ...this statement, but the latter is misleadingly indented as if it is guarded by the ‘if’
+                     if (it2_ != it2_end_) {
+                     ^~
+/home/dmm2017/cloudSPAdes-dev/src/projects/hammer/kmer_cluster.cpp: In member function ‘size_t KMerClustering::SubClusterSingle(const std::vector<long unsigned int>&, std::vector<std::vector<long unsigned int> >&)’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/hammer/kmer_cluster.cpp:356:9: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+         for (uint32_t j=0; j<K; ++j) std::cout << std::setw(3) << (unsigned)getQual(kms, j) << " "; std::cout << "\n";
+         ^~~
+/home/dmm2017/cloudSPAdes-dev/src/projects/hammer/kmer_cluster.cpp:356:101: note: ...this statement, but the latter is misleadingly indented as if it is guarded by the ‘for’
+         for (uint32_t j=0; j<K; ++j) std::cout << std::setw(3) << (unsigned)getQual(kms, j) << " "; std::cout << "\n";
+                                                                                                     ^~~
+In file included from /home/dmm2017/miniconda2/include/boost/numeric/ublas/expression_types.hpp:16:0,
+                 from /home/dmm2017/miniconda2/include/boost/numeric/ublas/vector_expression.hpp:16,
+                 from /home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp:16,
+                 from /home/dmm2017/miniconda2/include/boost/numeric/ublas/io.hpp:19,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/hammer/kmer_cluster.cpp:16:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/functional.hpp: In instantiation of ‘static void boost::numeric::ublas::scalar_assign<T1, T2>::apply(boost::numeric::ublas::scalar_assign<T1, T2>::argument1_type, boost::numeric::ublas::scalar_assign<T1, T2>::argument2_type) [with T1 = long unsigned int&; T2 = double; boost::numeric::ublas::scalar_assign<T1, T2>::argument1_type = long unsigned int&; boost::numeric::ublas::scalar_assign<T1, T2>::argument2_type = const double&]’:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/detail/matrix_assign.hpp:589:37:   required from ‘void boost::numeric::ublas::indexing_matrix_assign(M&, const boost::numeric::ublas::matrix_expression<E2>&, boost::numeric::ublas::row_major_tag) [with F = boost::numeric::ublas::scalar_assign; M = boost::numeric::ublas::matrix<long unsigned int>; E = boost::numeric::ublas::matrix<double>]’
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/detail/matrix_assign.hpp:622:35:   required from ‘void boost::numeric::ublas::matrix_assign(M&, const boost::numeric::ublas::matrix_expression<E>&, boost::numeric::ublas::dense_proxy_tag, C) [with F = boost::numeric::ublas::scalar_assign; R = boost::numeric::ublas::basic_full<>; M = boost::numeric::ublas::matrix<long unsigned int>; E = boost::numeric::ublas::matrix<double>; C = boost::numeric::ublas::row_major_tag]’
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/detail/matrix_assign.hpp:1224:40:   required from ‘void boost::numeric::ublas::matrix_assign(M&, const boost::numeric::ublas::matrix_expression<E2>&) [with F = boost::numeric::ublas::scalar_assign; M = boost::numeric::ublas::matrix<long unsigned int>; E = boost::numeric::ublas::matrix<double>]’
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix.hpp:172:42:   required from ‘boost::numeric::ublas::matrix<T, L, A>::matrix(const boost::numeric::ublas::matrix_expression<E1>&) [with AE = boost::numeric::ublas::matrix<double>; T = long unsigned int; L = boost::numeric::ublas::basic_row_major<>; A = boost::numeric::ublas::unbounded_array<long unsigned int>]’
+/home/dmm2017/cloudSPAdes-dev/src/projects/hammer/kmer_cluster.cpp:602:93:   required from here
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/functional.hpp:201:16: warning: conversion to ‘long unsigned int’ from ‘boost::numeric::ublas::type_traits<double>::value_type {aka double}’ may alter its value [-Wfloat-conversion]
+             t1 = t2;
+             ~~~^~~~
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/functional.hpp: In instantiation of ‘static boost::numeric::ublas::matrix_matrix_prod<M1, M2, TV>::result_type boost::numeric::ublas::matrix_matrix_prod<M1, M2, TV>::apply(const boost::numeric::ublas::matrix_expression<E1>&, const boost::numeric::ublas::matrix_expression<E2>&, boost::numeric::ublas::matrix_matrix_prod<M1, M2, TV>::size_type, boost::numeric::ublas::matrix_matrix_prod<M1, M2, TV>::size_type) [with E1 = boost::numeric::ublas::matrix_reference<const boost::numeric::ublas::matrix<long unsigned int> >; E2 = boost::numeric::ublas::matrix_reference<const boost::numeric::ublas::scalar_matrix<double> >; M1 = boost::numeric::ublas::matrix<long unsigned int>; M2 = boost::numeric::ublas::scalar_matrix<double>; TV = double; boost::numeric::ublas::matrix_matrix_prod<M1, M2, TV>::result_type = double; boost::numeric::ublas::matrix_matrix_prod<M1, M2, TV>::size_type = long unsigned int]’:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp:4832:40:   required from ‘boost::numeric::ublas::matrix_matrix_binary<E1, E2, F>::const_reference boost::numeric::ublas::matrix_matrix_binary<E1, E2, F>::operator()(boost::numeric::ublas::matrix_matrix_binary<E1, E2, F>::size_type, boost::numeric::ublas::matrix_matrix_binary<E1, E2, F>::size_type) const [with E1 = boost::numeric::ublas::matrix<long unsigned int>; E2 = boost::numeric::ublas::scalar_matrix<double>; F = boost::numeric::ublas::matrix_matrix_prod<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, double>; boost::numeric::ublas::matrix_matrix_binary<E1, E2, F>::const_reference = double; boost::numeric::ublas::matrix_matrix_binary<E1, E2, F>::size_type = long unsigned int]’
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/detail/matrix_assign.hpp:589:53:   required from ‘void boost::numeric::ublas::indexing_matrix_assign(M&, const boost::numeric::ublas::matrix_expression<E2>&, boost::numeric::ublas::row_major_tag) [with F = boost::numeric::ublas::scalar_assign; M = boost::numeric::ublas::matrix<long unsigned int>; E = boost::numeric::ublas::matrix_matrix_binary<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, boost::numeric::ublas::matrix_matrix_prod<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, double> >]’
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/detail/matrix_assign.hpp:622:35:   required from ‘void boost::numeric::ublas::matrix_assign(M&, const boost::numeric::ublas::matrix_expression<E>&, boost::numeric::ublas::dense_proxy_tag, C) [with F = boost::numeric::ublas::scalar_assign; R = boost::numeric::ublas::basic_full<>; M = boost::numeric::ublas::matrix<long unsigned int>; E = boost::numeric::ublas::matrix_matrix_binary<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, boost::numeric::ublas::matrix_matrix_prod<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, double> >; C = boost::numeric::ublas::row_major_tag]’
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/detail/matrix_assign.hpp:1224:40:   required from ‘void boost::numeric::ublas::matrix_assign(M&, const boost::numeric::ublas::matrix_expression<E2>&) [with F = boost::numeric::ublas::scalar_assign; M = boost::numeric::ublas::matrix<long unsigned int>; E = boost::numeric::ublas::matrix_matrix_binary<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, boost::numeric::ublas::matrix_matrix_prod<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, double> >]’
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix.hpp:172:42:   required from ‘boost::numeric::ublas::matrix<T, L, A>::matrix(const boost::numeric::ublas::matrix_expression<E1>&) [with AE = boost::numeric::ublas::matrix_matrix_binary<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, boost::numeric::ublas::matrix_matrix_prod<boost::numeric::ublas::matrix<long unsigned int>, boost::numeric::ublas::scalar_matrix<double>, double> >; T = long unsigned int; L = boost::numeric::ublas::basic_row_major<>; A = boost::numeric::ublas::unbounded_array<long unsigned int>]’
+/home/dmm2017/cloudSPAdes-dev/src/projects/hammer/kmer_cluster.cpp:643:92:   required from here
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/functional.hpp:1179:35: warning: conversion to ‘double’ from ‘long unsigned int’ may alter its value [-Wconversion]
+                 t += e1 () (i, k) * e2 () (k, j);
+                      ~~~~~~~~~~~~~^~~~~~~~~~~~~~
+[ 79%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/kmer_data.cpp.o
+[ 79%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/config_struct_hammer.cpp.o
+[ 79%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/read_corrector.cpp.o
+[ 79%] Building CXX object projects/hammer/CMakeFiles/spades-hammer.dir/expander.cpp.o
+[ 80%] Linking CXX executable ../../bin/spades-hammer
+[ 80%] Built target spades-hammer
+Scanning dependencies of target spades-ionhammer
+[ 80%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/kmer_data.cpp.o
+[ 80%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/subcluster.cpp.o
+In file included from /home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix.hpp:19:0,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/consensus.hpp:13,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/subcluster.cpp:10:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp: In member function ‘void boost::numeric::ublas::matrix_binary<E1, E2, F>::const_iterator1::increment(boost::numeric::ublas::sparse_bidirectional_iterator_tag)’:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp:2224:17: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+                 if (it2_ != it2_end_)
+                 ^~
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp:2227:21: note: ...this statement, but the latter is misleadingly indented as if it is guarded by the ‘if’
+                     if (it2_ != it2_end_) {
+                     ^~
+[ 80%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/err_helper_table.cpp.o
+[ 81%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/config_struct.cpp.o
+[ 81%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/kmer_helpers.cpp.o
+[ 81%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/seqeval/BaseHypothesisEvaluator.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/BaseHypothesisEvaluator.cpp: In function ‘void BaseHypothesisEvaluator(BamTools::BamAlignment&, const string&, const string&, float&, float&, int)’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/BaseHypothesisEvaluator.cpp:26:56: warning: conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+     if (not GetBamTags(alignment, flow_order_str.length(), measurements, phase_params, start_flow))
+                                   ~~~~~~~~~~~~~~~~~~~~~^~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/BaseHypothesisEvaluator.cpp:28:34: warning: conversion to ‘int’ from ‘std::vector<float>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+     num_flows = measurements.size();
+                 ~~~~~~~~~~~~~~~~~^~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/BaseHypothesisEvaluator.cpp:46:57: warning: conversion to ‘unsigned int’ from ‘std::vector<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+     unsigned int prefix_size = master_read.sequence.size();
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~^~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/BaseHypothesisEvaluator.cpp: In function ‘void RevComplementInPlace(std::__cxx11::string&)’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/BaseHypothesisEvaluator.cpp:292:32: warning: conversion to ‘int’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+   int backward_idx = seq.size()-1;
+                      ~~~~~~~~~~^~
+[ 82%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/seqeval/TreephaserLite.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp: In member function ‘void TreephaserLite::SetModelParameters(double, double, double)’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp:85:76: warning: conversion to ‘__gnu_cxx::__alloc_traits<std::allocator<float> >::value_type {aka float}’ from ‘double’ may alter its value [-Wfloat-conversion]
+       transition_base_[nuc][flow] = nuc_avaliability[nuc] * (1-droop_rate) * (1-incomplete_extension_rate);
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp:86:63: warning: conversion to ‘__gnu_cxx::__alloc_traits<std::allocator<float> >::value_type {aka float}’ from ‘double’ may alter its value [-Wfloat-conversion]
+       transition_flow_[nuc][flow] = (1-nuc_avaliability[nuc]) + nuc_avaliability[nuc] * (1-droop_rate) * incomplete_extension_rate;
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp: In member function ‘void TreephaserLite::WindowedNormalize(BasecallerRead&, int, int) const’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp:97:45: warning: conversion to ‘int’ from ‘std::vector<float>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+   int num_flows = read.raw_measurements.size();
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp:127:52: warning: conversion to ‘float’ from ‘int’ may alter its value [-Wconversion]
+     float delta = (next_normalizer - normalizer) / window_size;
+                                                    ^~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp:166:52: warning: conversion to ‘float’ from ‘int’ may alter its value [-Wconversion]
+     float delta = (next_normalizer - normalizer) / window_size;
+                                                    ^~~~~~~~~~~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp: In member function ‘void TreephaserLite::Solve(BasecallerRead&, int, int)’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp:350:38: warning: conversion to ‘float’ alters ‘double’ constant value [-Wfloat-conversion]
+   float sum_of_squares_upper_bound = 1e20;  //max_flows; // Squared distance of solution to measurements
+                                      ^~~~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp:409:36: warning: conversion to ‘float’ alters ‘double’ constant value [-Wfloat-conversion]
+       float max_per_flow_metric = -0.1;
+                                    ^~~
+/home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/seqeval/TreephaserLite.cpp:514:72: warning: conversion to ‘float’ from ‘double’ may alter its value [-Wfloat-conversion]
+         child->per_flow_metric = (child->path_metric + 0.5 * penalty1) / child->flow;
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+[ 82%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/main.cpp.o
+In file included from /home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix.hpp:19:0,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/consensus.hpp:13,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/io_read_corrector.hpp:13,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/ionhammer/main.cpp:24:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp: In member function ‘void boost::numeric::ublas::matrix_binary<E1, E2, F>::const_iterator1::increment(boost::numeric::ublas::sparse_bidirectional_iterator_tag)’:
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp:2224:17: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+                 if (it2_ != it2_end_)
+                 ^~
+/home/dmm2017/miniconda2/include/boost/numeric/ublas/matrix_expression.hpp:2227:21: note: ...this statement, but the latter is misleadingly indented as if it is guarded by the ‘if’
+                     if (it2_ != it2_end_) {
+                     ^~
+[ 82%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/reference.cpp.o
+[ 82%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/quality_metrics.cpp.o
+[ 83%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/quality_thresholds_estimator.cpp.o
+[ 83%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/hamcluster_1.cpp.o
+[ 83%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/gamma_poisson_model.cpp.o
+[ 83%] Building CXX object projects/ionhammer/CMakeFiles/spades-ionhammer.dir/normal_quality_model.cpp.o
+[ 84%] Linking CXX executable ../../bin/spades-ionhammer
+[ 84%] Built target spades-ionhammer
+[ 84%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/path_cluster_helper.cpp.o
+[ 85%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/predicate_builders.cpp.o
+[ 85%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/pe_extraction.cpp.o
+[ 85%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/path_scaffolder.cpp.o
+[ 85%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/containment_index_threshold_finder.cpp.o
+[ 86%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/read_cloud_polisher_support.cpp.o
+[ 86%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/construction_callers.cpp.o
+[ 86%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_construction/scaffold_graph_storage_constructor.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/path_scaffolder.cpp: In member function ‘void path_extend::PathScaffolder::MergePaths(const path_extend::PathContainer&) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/path_scaffolder.cpp:48:33: warning: unused variable ‘scaffold_graph_serializer’ [-Wunused-variable]
+         ScaffoldGraphSerializer scaffold_graph_serializer;
+                                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+[ 86%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_gap_closer/cloud_scaffold_graph_gap_closer.cpp.o
+[ 87%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/scaffold_graph_gap_closer/scaffold_graph_gap_closer.cpp.o
+[ 87%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/fragment_model/secondary_stats_estimators.cpp.o
+[ 87%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/extender_support/candidate_selectors.cpp.o
+[ 87%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/extender_support/entry_collectors.cpp.o
+[ 88%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/transition_subgraph_validation.cpp.o
+[ 88%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/path_cluster_statistics.cpp.o
+[ 88%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/intermediate_scaffolding/scaffold_graph_path_cleaner.cpp.o
+[ 89%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/reference_path_index.cpp.o
+[ 89%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/validation/path_cluster_validation.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/statistics/path_cluster_statistics.cpp: In member function ‘path_extend::PathClusterStatisticsExtractor::IdMap path_extend::PathClusterStatisticsExtractor::GetIdMap(const SimpleTransitionGraph&, const std::vector<path_extend::scaffold_graph::ScaffoldVertex>&) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/statistics/path_cluster_statistics.cpp:187:71: warning: unused parameter ‘correct_path’ [-Wunused-parameter]
+         const vector<PathClusterStatisticsExtractor::ScaffoldVertex> &correct_path) const {
+                                                                       ^~~~~~~~~~~~
+[ 89%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/cloud_check_statistics.cpp.o
+[ 89%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/component_validation.cpp.o
+[ 90%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/long_edge_dataset.cpp.o
+[ 90%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/perfect_transitions.cpp.o
+[ 90%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/perfect_clouds.cpp.o
+[ 90%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/coverage_break_analysis.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/statistics/component_validation.cpp: In member function ‘std::vector<path_extend::SimpleGraph<path_extend::scaffold_graph::ScaffoldVertex> > path_extend::ScaffoldGraphComponentExtractor::GetConnectedComponents(const ScaffoldGraph&) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/statistics/component_validation.cpp:38:12: warning: unused variable ‘trivial_components’ [-Wunused-variable]
+     size_t trivial_components = 0;
+            ^~~~~~~~~~~~~~~~~~
+[ 91%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/path_scaffolder_analyzer.cpp.o
+[ 91%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/contracted_graph_scaffolding/contracted_graph_scaffolder.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/statistics/perfect_transitions.cpp: In member function ‘path_extend::scaffold_graph::ScaffoldGraph path_extend::PerfectScaffoldGraphConstructor::ConstuctPerfectGraph(const std::vector<std::vector<path_extend::validation::EdgeWithMapping> >&, size_t) const’:
+/home/dmm2017/cloudSPAdes-dev/src/common/modules/path_extend/read_cloud_path_extend/statistics/perfect_transitions.cpp:32:77: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             for (auto it2 = std::next(it1); it2 != path.end() and it2 - it1 <= next_edges; ++it2) {
+                                                                   ~~~~~~~~~~^~~~~~~~~~~~~
+[ 91%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/contracted_graph_scaffolding/contracted_gfa_writer.cpp.o
+[ 91%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/short_edge_dataset.cpp.o
+[ 92%] Building CXX object common/modules/path_extend/CMakeFiles/path_extend.dir/read_cloud_path_extend/statistics/split_index_statistics.cpp.o
+[ 92%] Linking CXX static library libpath_extend.a
+[ 92%] Built target path_extend
+Scanning dependencies of target common_modules
+[ 92%] Building CXX object common/CMakeFiles/common_modules.dir/empty.cpp.o
+[ 92%] Linking CXX static library libcommon_modules.a
+[ 92%] Built target common_modules
+Scanning dependencies of target spades-kmercount
+[ 92%] Building CXX object projects/kmercount/CMakeFiles/spades-kmercount.dir/main.cpp.o
+Scanning dependencies of target spades-read-filter
+Scanning dependencies of target spades-gbuilder
+[ 92%] Building CXX object projects/kmercount/CMakeFiles/spades-read-filter.dir/read_filter.cpp.o
+[ 92%] Building CXX object projects/gbuilder/CMakeFiles/spades-gbuilder.dir/main.cpp.o
+Scanning dependencies of target spades-corrector-core
+Scanning dependencies of target spades-truseq-scfcorrection
+[ 92%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/positional_read.cpp.o
+[ 92%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/interesting_pos_processor.cpp.o
+[ 92%] Building CXX object projects/scaffold_correction/CMakeFiles/spades-truseq-scfcorrection.dir/main.cpp.o
+Scanning dependencies of target spades-dipspades-core
+[ 92%] Building CXX object projects/dipspades/CMakeFiles/spades-dipspades-core.dir/dipspades_config.cpp.o
+Scanning dependencies of target spades-core
+[ 92%] Building CXX object projects/dipspades/CMakeFiles/spades-dipspades-core.dir/utils/files_utils.cpp.o
+[ 92%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/main.cpp.o
+[ 93%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/contig_processor.cpp.o
+[ 93%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/gap_closer.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/projects/corrector/contig_processor.cpp: In member function ‘bool corrector::ContigProcessor::CountPositions(const sam_reader::SingleSamRead&, std::unordered_map<long unsigned int, corrector::position_description>&) const’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/corrector/contig_processor.cpp:165:94: warning: conversion to ‘double’ from ‘size_t {aka long unsigned int}’ may alter its value [-Wconversion]
+     if ((aligned_length < min(read_len_double * 0.4, 40.0)) && (position > read_len_double / 2) && (contig_.length() > read_len_double / 2 + (double) position)) {
+                                                                                              ^
+/home/dmm2017/cloudSPAdes-dev/src/projects/corrector/contig_processor.cpp:165:115: warning: conversion to ‘double’ from ‘std::__cxx11::basic_string<char>::size_type {aka long unsigned int}’ may alter its value [-Wconversion]
+     if ((aligned_length < min(read_len_double * 0.4, 40.0)) && (position > read_len_double / 2) && (contig_.length() > read_len_double / 2 + (double) position)) {
+                                                                                                     ~~~~~~~~~~~~~~^~
+[ 93%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/dataset_processor.cpp.o
+[ 93%] Linking CXX executable ../../bin/spades-kmercount
+[ 93%] Built target spades-kmercount
+[ 93%] Building CXX object projects/dipspades/CMakeFiles/spades-dipspades-core.dir/main.cpp.o
+[ 93%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/mismatch_correction.cpp.o
+[ 93%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/config_struct.cpp.o
+[ 93%] Building CXX object projects/corrector/CMakeFiles/spades-corrector-core.dir/main.cpp.o
+[ 94%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/pair_info_count.cpp.o
+[ 95%] Linking CXX executable ../../bin/spades-read-filter
+[ 95%] Linking CXX executable ../../bin/spades-truseq-scfcorrection
+[ 95%] Built target spades-read-filter
+[ 95%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/second_phase_setup.cpp.o
+[ 95%] Built target spades-truseq-scfcorrection
+[ 95%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/distance_estimation.cpp.o
+[ 96%] Linking CXX executable ../../bin/spades-corrector-core
+[ 96%] Built target spades-corrector-core
+[ 96%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/repeat_resolving.cpp.o
+/home/dmm2017/cloudSPAdes-dev/src/projects/spades/pair_info_count.cpp: In function ‘bool debruijn_graph::CollectLibInformation(const conj_graph_pack&, size_t&, size_t, size_t)’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/spades/pair_info_count.cpp:224:46: warning: conversion to ‘double’ from ‘long unsigned int’ may alter its value [-Wconversion]
+     if (data.median_insert_size < gp.k_value + 2)
+                                   ~~~~~~~~~~~^~~
+In file included from /home/dmm2017/cloudSPAdes-dev/src/projects/dipspades/polymorphic_bulge_remover/complex_bulge_remover.hpp:11:0,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/dipspades/polymorphic_bulge_remover/polymorphic_bulge_remover.hpp:11,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/dipspades/dipspades.hpp:16,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/dipspades/main.cpp:22:
+/home/dmm2017/cloudSPAdes-dev/src/common/pipeline/graphio.hpp: In instantiation of ‘void debruijn_graph::graphio::ScanReadCloudDistributions(const string&, path_extend::cluster_model::DistributionPack&, const Graph&, bool) [with Graph = debruijn_graph::DeBruijnGraph; std::__cxx11::string = std::__cxx11::basic_string<char>]’:
+/home/dmm2017/cloudSPAdes-dev/src/common/pipeline/graphio.hpp:1143:31:   required from ‘void debruijn_graph::graphio::ScanAll(const string&, graph_pack&, bool) [with graph_pack = debruijn_graph::graph_pack<debruijn_graph::DeBruijnGraph>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+/home/dmm2017/cloudSPAdes-dev/src/projects/dipspades/dipspades.hpp:92:54:   required from here
+/home/dmm2017/cloudSPAdes-dev/src/common/pipeline/graphio.hpp:1026:46: warning: unused parameter ‘g’ [-Wunused-parameter]
+                                 const Graph& g, bool force_exists = true) {
+                                              ^
+In file included from /home/dmm2017/cloudSPAdes-dev/src/common/paired_info/insert_size_refiner.hpp:12:0,
+                 from /home/dmm2017/cloudSPAdes-dev/src/common/paired_info/is_counter.hpp:12,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/spades/pair_info_count.cpp:8:
+/home/dmm2017/cloudSPAdes-dev/src/common/assembly_graph/stats/picture_dump.hpp: In instantiation of ‘size_t debruijn_graph::stats::Nx(Graph&, double) [with Graph = debruijn_graph::DeBruijnGraph; size_t = long unsigned int]’:
+/home/dmm2017/cloudSPAdes-dev/src/projects/spades/pair_info_count.cpp:319:109:   required from here
+/home/dmm2017/cloudSPAdes-dev/src/common/assembly_graph/stats/picture_dump.hpp:457:24: warning: conversion to ‘double’ from ‘__gnu_cxx::__alloc_traits<std::allocator<long unsigned int> >::value_type {aka long unsigned int}’ may alter its value [-Wconversion]
+         if (lengths[i] >= len_perc)
+                         
+In file included from /home/dmm2017/cloudSPAdes-dev/src/common/utils/standard_base.hpp:135:0,
+                 from /home/dmm2017/cloudSPAdes-dev/src/common/paired_info/insert_size_refiner.hpp:10,
+                 from /home/dmm2017/cloudSPAdes-dev/src/common/paired_info/is_counter.hpp:12,
+                 from /home/dmm2017/cloudSPAdes-dev/src/projects/spades/pair_info_count.cpp:8:
+/home/dmm2017/cloudSPAdes-dev/src/common/math/xmath.h: In instantiation of ‘bool math::ls(T, U) [with T = int; U = omnigraph::de::DEWeight]’:
+/home/dmm2017/cloudSPAdes-dev/src/common/math/xmath.h:314:34:   required from ‘bool math::gr(T, U) [with T = omnigraph::de::DEWeight; U = int]’
+/home/dmm2017/cloudSPAdes-dev/src/common/paired_info/pair_info_filler.hpp:75:39:   required from here
+/home/dmm2017/cloudSPAdes-dev/src/common/math/xmath.h:303:21: warning: conversion to ‘float’ from ‘int’ may alter its value [-Wconversion]
+         return (lhs < rhs);
+                ~~~~~^~~~~~
+[ 96%] Linking CXX executable ../../bin/spades-gbuilder
+[ 96%] Built target spades-gbuilder
+[ 97%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/contig_output_stage.cpp.o
+[ 97%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/hybrid_aligning.cpp.o
+[ 97%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/chromosome_removal.cpp.o
+[ 97%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/barcode_index_construction.cpp.o
+[ 98%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/scaffold_graph_construction_stage.cpp.o
+[ 98%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/scaffolder_analysis_stage.cpp.o
+[ 98%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/series_analysis.cpp.o
+[ 99%] Building CXX object projects/spades/CMakeFiles/spades-core.dir/__/mts/contig_abundance.cpp.o
+[ 99%] Linking CXX executable ../../bin/spades-core
+[ 99%] Built target spades-core
+[100%] Linking CXX executable ../../bin/spades-dipspades-core
+[100%] Built target spades-dipspades-core
+[  7%] Built target jemalloc
+[ 15%] Built target nlopt
+[ 19%] Built target ConsensusCore
+[ 29%] Built target BamTools
+[ 34%] Built target samtools
+[ 34%] Built target format
+[ 35%] Built target ssw
+[ 36%] Built target cityhash
+[ 37%] Built target getopt_pp
+[ 43%] Built target llvm-support
+[ 44%] Built target hattrie
+[ 48%] Built target bwa
+[ 49%] Built target gqf
+[ 50%] Built target edlib
+[ 50%] Built target gfa1
+[ 59%] Built target spades-bwa
+[ 60%] Built target coverage_model
+[ 61%] Built target input
+[ 62%] Built target pipeline
+[ 63%] Built target sequence
+[ 66%] Built target assembly_graph
+[ 79%] Built target path_extend
+[ 80%] Built target modules
+[ 81%] Built target paired_info
+[ 82%] Built target stages
+[ 84%] Built target utils
+[ 84%] Built target mph_index
+[ 84%] Built target common_modules
+[ 85%] Built target graphio
+[ 89%] Built target spades-core
+[ 92%] Built target spades-hammer
+[ 96%] Built target spades-ionhammer
+[ 97%] Built target spades-dipspades-core
+[ 99%] Built target spades-corrector-core
+[ 99%] Built target spades-truseq-scfcorrection
+[100%] Built target spades-read-filter
+[100%] Built target spades-kmercount
+[100%] Built target spades-gbuilder
+Install the project...
+-- Install configuration: "RelWithAsserts"
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/spades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/dipspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/metaspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/plasmidspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/rnaspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/truspades.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/bin/spades_init.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/VERSION
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/ecoli_1K_1.fq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/ecoli_1K_2.fq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/genes_1K.gff
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/genes_1K.txt
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/operons_1K.gff
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/operons_1K.txt
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset/reference_1K.fa.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades/A_R1.fastq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades/A_R2.fastq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades/B_R1.fastq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_truspades/B_R2.fastq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_plasmid
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_plasmid/pl1.fq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/test_dataset_plasmid/pl2.fq.gz
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/manual.html
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/dipspades_manual.html
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/truspades_manual.html
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/rnaspades_manual.html
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/LICENSE
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/GPLv2.txt
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/__init__.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/disk.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/format_stack.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/func_inspect.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/functools.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/hashing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/logger.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/memory.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/my_exceptions.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/numpy_pickle.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/parallel.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib2/testing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/__init__.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/disk.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/format_stack.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/func_inspect.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/_compat.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/hashing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/logger.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/memory.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/my_exceptions.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/numpy_pickle.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/parallel.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/testing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/_memory_helpers.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/_multiprocessing_helpers.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/joblib3/pool.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/__init__.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/composer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/constructor.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/cyaml.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/dumper.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/emitter.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/error.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/events.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/loader.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/nodes.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/parser.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/reader.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/representer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/resolver.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/scanner.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/serializer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml2/tokens.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/__init__.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/composer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/constructor.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/cyaml.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/dumper.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/emitter.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/error.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/events.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/loader.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/nodes.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/parser.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/reader.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/representer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/resolver.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/scanner.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/serializer.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/pyyaml3/tokens.py
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-bwa
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-core
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/diploid_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/tslr_resolver.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/careful_mda_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/careful_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/config.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/construction.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/detail_info_printer.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/distance_estimation.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/large_genome_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/mda_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/meta_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/moleculo_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/pe_params.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/plasmid_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/rna_fast_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/rna_mode.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/simplification.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/toy.info
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/debruijn/tsa.info
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-hammer
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/hammer
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/hammer/config.info
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-ionhammer
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/ionhammer
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/ionhammer/ionhammer.cfg
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-dipspades-core
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/dipspades
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/dipspades/config.info
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-corrector-core
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/corrector
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/configs/corrector/corrector.info
+-- Installing: /home/dmm2017/cloudSPAdes-dev/bin/spades-truseq-scfcorrection
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/hammer_logic.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/process_cfg.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/spades_logic.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/dipspades_logic.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/corrector_logic.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/support.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/options_storage.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/lucigen_nxmate.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/reference_construction.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/moleculo_filter_contigs.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/break_by_coverage.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/moleculo_postprocessing.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/barcode_extraction.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/generate_quality.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/id_generation.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/launch_options.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/truspades/string_dist_utils.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/alignment.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/parallel_launcher.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/sam_parser.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/SeqIO.py
+-- Up-to-date: /home/dmm2017/cloudSPAdes-dev/share/spades/spades_pipeline/common/__init__.py

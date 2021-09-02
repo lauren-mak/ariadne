@@ -61,7 +61,6 @@ private:
 
     size_t max_length_bound_;
     double max_coverage_bound_;
-    int requested_iterations_;
 
     string ReadNext() {
         if (!tokenized_input_.empty()) {
@@ -117,21 +116,12 @@ private:
         } else if (next_token_ == "rlmk") {
             //Read length minus k
             VERIFY_MSG(settings_.read_length() > g_.k(), "Read length was shorter than K");
-            double length_coeff = std::stod(ReadNext());
-            DEBUG("Creating (rl - k) bound. Multiplicative coefficient: " << length_coeff);
-            size_t length_bound = size_t(math::round(length_coeff * double(settings_.read_length() - g_.k())));
+            DEBUG("Creating (rl - k) bound");
+            size_t length_bound = settings_.read_length() - g_.k();
             RelaxMin(min_length_bound, length_bound);
             DEBUG("Min length bound - " << min_length_bound);
             return LengthUpperBound<Graph>(g_, length_bound);
-        } else if (next_token_ == "rl") {
-            //Read length
-            VERIFY_MSG(settings_.read_length() > 0, "Read was zero");
-            double length_coeff = std::stod(ReadNext());
-            DEBUG("Creating rl bound. Multiplicative coefficient: " << length_coeff);
-            size_t length_bound = size_t(math::round(length_coeff * double(settings_.read_length())));
-            RelaxMin(min_length_bound, length_bound);
-            DEBUG("Min length bound - " << min_length_bound);
-            return LengthUpperBound<Graph>(g_, length_bound);
+
         } else if (next_token_ == "to_ec_lb") {
             double length_coeff = std::stod(ReadNext());
 
@@ -192,7 +182,7 @@ private:
         } else if (next_token_ == "mmm") {
             ReadNext();
             DEBUG("Creating max mismatches cond " << next_token_);
-            return MismatchTipCondition<Graph>(g_, std::stod(next_token_));
+            return MismatchTipCondition<Graph>(g_, std::stoll(next_token_));
         } else {
             VERIFY(false);
             return func::AlwaysTrue<EdgeId>();
@@ -223,14 +213,14 @@ public:
               iter_run_progress_(iter_run_progress),
               //iter_run_progress_((double) (curr_iteration + 1) / (double) iteration_cnt),
               max_length_bound_(0),
-              max_coverage_bound_(0.),
-              requested_iterations_(1) {
+              max_coverage_bound_(0.) {
         DEBUG("Creating parser for string " << input);
         using namespace boost;
         vector<string> tmp_tokenized_input;
         boost::split(tmp_tokenized_input, input_, boost::is_any_of(" ,;"), boost::token_compress_on);
-        for (const auto &s : tmp_tokenized_input) {
-            tokenized_input_.push(s);
+        for (auto it = tmp_tokenized_input.begin();
+             it != tmp_tokenized_input.end(); ++it) {
+            tokenized_input_.push(*it);
         }
         ReadNext();
     }
@@ -238,11 +228,6 @@ public:
     func::TypedPredicate<EdgeId> operator()() {
         DEBUG("Parsing");
         func::TypedPredicate<EdgeId> answer = func::AlwaysFalse<EdgeId>();
-        if (next_token_ == "loop") {
-            requested_iterations_ = std::stoi(ReadNext());
-            ReadNext();
-        }
-
         VERIFY_MSG(next_token_ == "{", "Expected \"{\", but next token was " << next_token_);
         while (next_token_ == "{") {
             size_t min_length_bound = numeric_limits<size_t>::max();
@@ -262,10 +247,6 @@ public:
 
     double max_coverage_bound() const {
         return max_coverage_bound_;
-    }
-
-    int requested_iterations() const {
-        return requested_iterations_;
     }
 
 private:
@@ -453,16 +434,10 @@ AlgoPtr<Graph> RelativelyLowCoverageDisconnectorInstance(Graph &g,
         INFO("Disconnection of relatively low covered edges disabled");
         return nullptr;
     }
-    using Condition=omnigraph::simplification::relative_coverage::RelativeCovDisconnectionCondition<Graph>;
-
-    func::TypedPredicate<EdgeId> condition = Condition(g, flanking_cov, rced_config.diff_mult, rced_config.edge_sum);
-
-    if (math::gr(rced_config.unconditional_diff_mult, 0.)) {
-        condition = func::Or(Condition(g, flanking_cov, rced_config.unconditional_diff_mult, 0), condition);
-    }
 
     return std::make_shared<omnigraph::DisconnectionAlgorithm<Graph>>(g,
-            condition,
+            omnigraph::simplification::relative_coverage::
+            RelativeCovDisconnectionCondition<Graph>(g, flanking_cov, rced_config.diff_mult, rced_config.edge_sum),
             info.chunk_cnt(),
             nullptr);
 }
@@ -577,14 +552,7 @@ AlgoPtr<Graph> TipClipperInstance(Graph &g,
 
     ConditionParser<Graph> parser(g, tc_config.condition, info);
     auto condition = parser();
-    auto algo = TipClipperInstance(g, condition, info, removal_handler);
-    VERIFY_MSG(parser.requested_iterations() != 0, "To disable tip clipper pass empty string");
-    if (parser.requested_iterations() == 1) {
-        return algo;
-    } else {
-        return make_shared<LoopedAlgorithm<Graph>>(g, algo, 1, size_t(parser.requested_iterations()),
-                /*force primary for all*/ true);
-    }
+    return TipClipperInstance(g, condition, info, removal_handler, /*track changes*/true);
 }
 
 template<class Graph>
@@ -696,15 +664,18 @@ template<class Graph>
 bool RemoveHiddenLoopEC(Graph &g,
                         const FlankingCoverage<Graph> &flanking_cov,
                         double determined_coverage_threshold,
-                        double relative_threshold,
+                        config::debruijn_config::simplification::hidden_ec_remover her_config,
                         EdgeRemovalHandlerF<Graph> removal_handler) {
-    INFO("Removing loops and rc loops with erroneous connections");
-    ECLoopRemover<Graph> hc(g, flanking_cov,
-                            determined_coverage_threshold,
-                            relative_threshold, removal_handler);
-    bool res = hc.Run();
-    hc.PrintLoopStats();
-    return res;
+    if (her_config.enabled) {
+        INFO("Removing loops and rc loops with erroneous connections");
+        ECLoopRemover<Graph> hc(g, flanking_cov,
+                                determined_coverage_threshold,
+                                her_config.relative_threshold, removal_handler);
+        bool res = hc.Run();
+        hc.PrintLoopStats();
+        return res;
+    }
+    return false;
 }
 
 }

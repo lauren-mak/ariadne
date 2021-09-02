@@ -221,18 +221,6 @@ public:
         return v_size() == 0;
     }
 
-    size_t VertexInDegree(VertexId v) const {
-        return graph_.IncomingEdgeCount(v);
-    }
-
-    size_t VertexOutDegree(VertexId v) const {
-        return graph_.OutgoingEdgeCount(v);
-    }
-
-    std::vector<EdgeId> IncidentEdges(VertexId v) const {
-        return graph_.IncidentEdges(v);
-    }
-
 };
 
 }

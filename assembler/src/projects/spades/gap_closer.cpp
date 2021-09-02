@@ -231,8 +231,8 @@ class GapCloser {
     }
 
     bool MatchesEnd(const Sequence &long_seq, const Sequence &short_seq, bool from_begin) const {
-        return from_begin ? long_seq.First(short_seq.size()) == short_seq
-                          : long_seq.Last(short_seq.size()) == short_seq;
+        return from_begin ? long_seq.Subseq(0, short_seq.size()) == short_seq
+                          : long_seq.Subseq(long_seq.size() - short_seq.size()) == short_seq;
     }
 
     void CorrectLeft(EdgeId first, EdgeId second, int overlap, const vector<size_t> &diff_pos) {
@@ -418,7 +418,8 @@ void GapClosing::run(conj_graph_pack &gp, const char *) {
 
     bool pe_exist = false;
     for (size_t i = 0; i < cfg::get().ds.reads.lib_count(); ++i) {
-        if (cfg::get().ds.reads[i].type() == io::LibraryType::PairedEnd) {
+        auto lib = cfg::get().ds.reads[i];
+        if (lib.is_paired() and not lib.is_mate_pair()) {
             pe_exist = true;
             break;
         }
@@ -431,7 +432,8 @@ void GapClosing::run(conj_graph_pack &gp, const char *) {
 
     auto& dataset = cfg::get_writable().ds;
     for (size_t i = 0; i < dataset.reads.lib_count(); ++i) {
-        if (dataset.reads[i].type() == io::LibraryType::PairedEnd) {
+        auto lib = cfg::get().ds.reads[i];
+        if (lib.is_paired() and not lib.is_mate_pair()) {
             auto streams = paired_binary_readers(dataset.reads[i], false, 0, false);
             CloseGaps(gp, streams);
         }

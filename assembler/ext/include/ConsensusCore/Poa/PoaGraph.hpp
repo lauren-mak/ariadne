@@ -42,8 +42,8 @@
 #include <utility>
 #include <tuple>
 
-#include "ConsensusCore/Types.hpp"
-#include "ConsensusCore/Mutation.hpp"
+#include "Types.hpp"
+#include "Mutation.hpp"
 
 namespace ConsensusCore
 {

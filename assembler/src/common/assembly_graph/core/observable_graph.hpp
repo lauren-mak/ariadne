@@ -178,7 +178,7 @@ typename ObservableGraph<DataMaster>::VertexId ObservableGraph<DataMaster>::AddV
 template<class DataMaster>
 void ObservableGraph<DataMaster>::DeleteVertex(VertexId v) {
     VERIFY(base::IsDeadEnd(v) && base::IsDeadStart(v));
-    VERIFY(v != VertexId());
+    VERIFY(v != VertexId(NULL));
     FireDeleteVertex(v);
     base::HiddenDeleteVertex(v);
 }
@@ -474,7 +474,7 @@ std::pair<typename ObservableGraph<DataMaster>::EdgeId, typename ObservableGraph
     FireAddEdge(new_edge1);
     FireAddEdge(new_edge2);
     base::HiddenDeleteEdge(edge);
-    return std::make_pair(new_edge1, new_edge2);
+    return make_pair(new_edge1, new_edge2);
 }
 
 template<class DataMaster>

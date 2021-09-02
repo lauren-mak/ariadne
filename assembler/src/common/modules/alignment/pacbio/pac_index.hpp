@@ -8,25 +8,20 @@
 #pragma once
 
 #include "assembly_graph/index/edge_multi_index.hpp"
-#include "assembly_graph/graph_support/basic_vertex_conditions.hpp"
-#include "assembly_graph/paths/path_utils.hpp"
-#include "assembly_graph/dijkstra/dijkstra_helper.hpp"
-#include "assembly_graph/paths/mapping_path.hpp"
-#include "assembly_graph/paths/path_processor.hpp"
-
 #include "modules/alignment/edge_index_refiller.hpp"
 #include "modules/alignment/bwa_sequence_mapper.hpp"
-#include "modules/alignment/gap_info.hpp"
-
-#include "pipeline/configs/aligner_config.hpp"
-
-#include "sequence/sequence_tools.hpp"
-
+#include "assembly_graph/paths/mapping_path.hpp"
+#include "common/modules/alignment/gap_info.hpp"
+#include "assembly_graph/paths/path_processor.hpp"
+// FIXME: Layering violation, get rid of this
+#include "pipeline/config_struct.hpp"
 #include "pacbio_read_structures.hpp"
+#include "assembly_graph/graph_support/basic_vertex_conditions.hpp"
 
 #include <algorithm>
-#include <vector>
-#include <set>
+#include "assembly_graph/paths/path_utils.hpp"
+#include "assembly_graph/dijkstra/dijkstra_helper.hpp"
+#include "sequence/sequence_tools.hpp"
 
 namespace pacbio {
 enum {
@@ -35,17 +30,19 @@ enum {
 };
 
 struct OneReadMapping {
-    std::vector<std::vector<debruijn_graph::EdgeId>> main_storage;
-    std::vector<GapDescription> gaps;
-    OneReadMapping(const std::vector<std::vector<debruijn_graph::EdgeId>>& main_storage_,
-                   const std::vector<GapDescription>& gaps_)
-            :  main_storage(main_storage_), gaps(gaps_) {}
+    vector<vector<debruijn_graph::EdgeId>> main_storage;
+    vector<GapDescription> gaps;
+    OneReadMapping(const vector<vector<debruijn_graph::EdgeId>>& main_storage_,
+                   const vector<GapDescription>& gaps_) :
+            main_storage(main_storage_), gaps(gaps_){
+    }
+
 };
 
 template<class Graph>
 class PacBioMappingIndex {
 public:
-    typedef std::set<KmerCluster<Graph>> ClustersSet;
+    typedef set<KmerCluster<Graph>> ClustersSet;
     typedef typename Graph::VertexId VertexId;
     typedef typename Graph::EdgeId EdgeId;
 
@@ -56,26 +53,26 @@ private:
 
     static const int LONG_ALIGNMENT_OVERLAP = 300;
     static const size_t SHORT_SPURIOUS_LENGTH = 500;
-    mutable std::map<std::pair<VertexId, VertexId>, size_t> distance_cashed_;
+    mutable map<pair<VertexId, VertexId>, size_t> distance_cashed_;
     size_t read_count_;
-    debruijn_graph::config::pacbio_processor pb_config_;
+    debruijn_graph::config::debruijn_config::pacbio_processor pb_config_;
 
     alignment::BWAReadMapper<Graph> bwa_mapper_;
 
 public:
 
     PacBioMappingIndex(const Graph &g,
-                       debruijn_graph::config::pacbio_processor pb_config, alignment::BWAIndex::AlignmentMode mode)
+                        debruijn_graph::config::debruijn_config::pacbio_processor pb_config, alignment::BWAIndex::AlignmentMode mode)
             : g_(g),
               pb_config_(pb_config),
-              bwa_mapper_(g, mode, pb_config.bwa_length_cutoff) {
+              bwa_mapper_(g, mode, pb_config.bwa_length_cutoff){
         DEBUG("PB Mapping Index construction started");
         DEBUG("Index constructed");
         read_count_ = 0;
     }
 
     bool similar_in_graph(const MappingInstance &a, const MappingInstance &b,
-                          int shift = 0) const {
+                 int shift = 0) const {
         if (b.read_position + shift < a.read_position) {
             return similar_in_graph(b, a, -shift);
         } else if (b.read_position == a.read_position) {
@@ -123,9 +120,9 @@ public:
     ClustersSet GetBWAClusters(const Sequence &s) const {
         DEBUG("BWA started")
         ClustersSet res;
-        if (s.size() < g_.k())
+        if (s.size() < g_.k()){
             return res;
-
+        }
         omnigraph::MappingPath<EdgeId> mapped_path = FilterSpuriousAlignments(bwa_mapper_.MapSequence(s), s.size());
         TRACE(read_count_ << " read_count_");
         TRACE("BWA ended")
@@ -152,7 +149,7 @@ public:
     }
 
     std::string DebugEmptyBestScoredPath(VertexId start_v, VertexId end_v, EdgeId prev_edge, EdgeId cur_edge,
-                                         size_t prev_last_edge_position, size_t cur_first_edge_position, int seq_len) const {
+            size_t prev_last_edge_position, size_t cur_first_edge_position, int seq_len) const{
         size_t result = GetDistance(start_v, end_v, /*update cache*/false);
         std::ostringstream ss;
         ss << "Tangled region between edges " << g_.int_id(prev_edge) << " " << g_.int_id(cur_edge) <<  " is not closed, additions from edges: "
@@ -165,11 +162,11 @@ public:
                                      const Sequence &s) const {
         vector<EdgeId> cur_sorted;
         vector<vector<EdgeId>> res;
-        EdgeId prev_edge = EdgeId();
+        EdgeId prev_edge = EdgeId(0);
 
         for (auto iter = cur_cluster.begin(); iter != cur_cluster.end();) {
             EdgeId cur_edge = (*iter)->edgeId;
-            if (prev_edge != EdgeId()) {
+            if (prev_edge != EdgeId(0)) {
 //Need to find sequence of edges between clusters
                 VertexId start_v = g_.EdgeEnd(prev_edge);
                 VertexId end_v = g_.EdgeStart(cur_edge);
@@ -205,7 +202,7 @@ public:
                         DEBUG ("Failed to find Path limits");
                         res.push_back(cur_sorted);
                         cur_sorted.clear();
-                        prev_edge = EdgeId();
+                        prev_edge = EdgeId(0);
                         continue;
                     }
                     
@@ -215,7 +212,7 @@ public:
                                       prev_last_index.edge_position, cur_first_index.edge_position, seq_end - seq_start));
                         res.push_back(cur_sorted);
                         cur_sorted.clear();
-                        prev_edge = EdgeId();
+                        prev_edge = EdgeId(0);
                         continue;
                     }
                     for (EdgeId edge: intermediate_path) {
@@ -240,10 +237,10 @@ public:
         return res;
     }
 
-    std::vector<std::vector<bool>> FillConnectionsTable(const ClustersSet &mapping_descr) const {
+    vector<vector<bool>> FillConnectionsTable(const ClustersSet &mapping_descr) const {
         size_t len =  mapping_descr.size();
         TRACE("getting colors, table size "<< len);
-        std::vector<std::vector<bool>> cons_table(len);
+        vector<vector<bool>> cons_table(len);
         for (size_t i = 0; i < len; i++) {
             cons_table[i].resize(len);
             cons_table[i][i] = 0;
@@ -262,18 +259,18 @@ public:
         return cons_table;
     }
 
-    std::vector<int> GetWeightedColors(const ClustersSet &mapping_descr) const {
+    vector<int> GetWeightedColors(const ClustersSet &mapping_descr) const {
         size_t len = mapping_descr.size();
-        std::vector<int> colors(len, UNDEF_COLOR);
-        std::vector<int> cluster_size(len);
+        vector<int> colors(len, UNDEF_COLOR);
+        vector<int> cluster_size(len);
         size_t ii = 0;
         for (const auto &cl : mapping_descr) {
             cluster_size[ii++] = cl.size;
         }
         const auto cons_table = FillConnectionsTable(mapping_descr);
 
-        std::vector<int> max_size(len);
-        std::vector<size_t> prev(len);
+        vector<int> max_size(len);
+        vector<size_t> prev(len);
 
         int cur_color = 0;
         while (true) {
@@ -324,10 +321,10 @@ public:
 
     OneReadMapping AddGapDescriptions(const vector<typename ClustersSet::iterator> &start_clusters,
                                       const vector<typename ClustersSet::iterator> &end_clusters,
-                                      const std::vector<vector<EdgeId>> &sorted_edges, const Sequence &s,
-                                      const std::vector<bool> &block_gap_closer) const {
+                                      const vector<vector<EdgeId>> &sorted_edges, const Sequence &s,
+                                      const vector<bool> &block_gap_closer) const {
         DEBUG("adding gaps between subreads");
-        std::vector<GapDescription> illumina_gaps;
+        vector<GapDescription> illumina_gaps;
         for (size_t i = 0; i + 1 < sorted_edges.size() ; i++) {
             if (block_gap_closer[i])
                 continue;
@@ -361,15 +358,15 @@ public:
     }
 
     void ProcessCluster(const Sequence &s,
-                        std::vector<typename ClustersSet::iterator> &cur_cluster,
-                        std::vector<typename ClustersSet::iterator> &start_clusters,
-                        std::vector<typename ClustersSet::iterator> &end_clusters,
-                        std::vector<std::vector<EdgeId>> &sorted_edges,
-                        std::vector<bool> &block_gap_closer) const {
-        std::sort(cur_cluster.begin(), cur_cluster.end(),
-                  [](const typename ClustersSet::iterator& a, const typename ClustersSet::iterator& b) {
-                      return (a->average_read_position < b->average_read_position);
-                  });
+                        vector<typename ClustersSet::iterator> &cur_cluster,
+                        vector<typename ClustersSet::iterator> &start_clusters,
+                        vector<typename ClustersSet::iterator> &end_clusters,
+                        vector<vector<EdgeId>> &sorted_edges,
+                        vector<bool> &block_gap_closer) const {
+        sort(cur_cluster.begin(), cur_cluster.end(),
+             [](const typename ClustersSet::iterator& a, const typename ClustersSet::iterator& b) {
+            return (a->average_read_position < b->average_read_position);
+        });
         VERIFY(cur_cluster.size() > 0);
         auto cur_cluster_start = cur_cluster.begin();
         for (auto iter = cur_cluster.begin(); iter != cur_cluster.end(); ++iter) {
@@ -493,7 +490,7 @@ public:
     }
 
     bool IsConsistent(const KmerCluster<Graph> &a,
-                      const KmerCluster<Graph> &b) const {
+                     const KmerCluster<Graph> &b) const {
         EdgeId a_edge = a.edgeId;
         EdgeId b_edge = b.edgeId;
         DEBUG("clusters on " << g_.int_id(a_edge) << " and " << g_.int_id(b_edge));
@@ -529,35 +526,35 @@ public:
         return true;
     }
 
-    std::string PathToString(const vector<EdgeId>& path) const {
-        std::string res = "";
+    string PathToString(const vector<EdgeId>& path) const {
+        string res = "";
         for (auto iter = path.begin(); iter != path.end(); iter++) {
             size_t len = g_.length(*iter);
-            std::string tmp = g_.EdgeNucls(*iter).First(len).str();
+            string tmp = g_.EdgeNucls(*iter).First(len).str();
             res = res + tmp;
         }
         return res;
     }
 
-    std::vector<EdgeId> BestScoredPath(const Sequence &s, VertexId start_v, VertexId end_v,
-                                       int path_min_length, int path_max_length,
-                                       int start_pos, int end_pos,
-                                       std::string &s_add, std::string &e_add) const {
+    vector<EdgeId> BestScoredPath(const Sequence &s, VertexId start_v, VertexId end_v,
+                                  int path_min_length, int path_max_length,
+                                  int start_pos, int end_pos, string &s_add,
+                                  string &e_add) const {
         TRACE(" Traversing tangled region. Start and end vertices resp: " << g_.int_id(start_v) <<" " << g_.int_id(end_v));
         omnigraph::PathStorageCallback<Graph> callback(g_);
         int pres = ProcessPaths(g_,
-                                path_min_length, path_max_length,
-                                start_v, end_v,
-                                callback);
+                    path_min_length, path_max_length,
+                    start_v, end_v,
+                    callback);
         DEBUG("PathProcessor result: " << pres << " limits " << path_min_length << " " << path_max_length);
-        std::vector<std::vector<EdgeId> > paths = callback.paths();
+        vector<vector<EdgeId> > paths = callback.paths();
         TRACE("taking subseq" << start_pos <<" "<< end_pos <<" " << s.size());
         int s_len = int(s.size());
         if (end_pos < start_pos) {
             DEBUG ("modifying limits because of some bullshit magic, seq length 0")
             end_pos = start_pos;
         }
-        std::string seq_string = s.Subseq(start_pos, min(end_pos + 1, s_len)).str();
+        string seq_string = s.Subseq(start_pos, min(end_pos + 1, s_len)).str();
         size_t best_path_ind = paths.size();
         int best_score = std::numeric_limits<int>::max();
         if (paths.size() == 0) {
@@ -576,7 +573,7 @@ public:
             if (paths[i].size() == 0) {
                 DEBUG ("Pathprocessor returns path with size = 0")
             }
-            std::string cur_string = s_add + PathToString(paths[i]) + e_add;
+            string cur_string = s_add + PathToString(paths[i]) + e_add;
             TRACE("cur_string: " << cur_string <<"\n seq_string " << seq_string);
             int cur_score = StringDistance(cur_string, seq_string);
             //DEBUG only
@@ -603,7 +600,7 @@ public:
                 }
             }
             DEBUG (paths.size() << " paths available");
-            return std::vector<EdgeId>(0);
+            return vector<EdgeId>(0);
         }
         if (additional_debug) {
             TRACE("best score found! Path " <<best_path_ind <<" score "<< best_score);

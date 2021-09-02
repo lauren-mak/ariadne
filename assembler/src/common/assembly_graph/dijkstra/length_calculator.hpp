@@ -14,59 +14,53 @@ template<class Graph, typename distance_t = size_t>
 class LengthCalculator {
     typedef typename Graph::VertexId VertexId;
     typedef typename Graph::EdgeId EdgeId;
-
+protected:
     const Graph &graph_;
 public:
     LengthCalculator(const Graph &graph) : graph_(graph) { }
-
-    distance_t GetLength(EdgeId edge) const {
+    virtual distance_t GetLength(EdgeId edge) const{
         return distance_t(graph_.length(edge));
     }
+    virtual ~LengthCalculator() { }
 };
 
 template<class Graph, typename distance_t = size_t>
-class ComponentLenCalculator {
+class ComponentLenCalculator : public LengthCalculator<Graph, distance_t> {
     typedef typename Graph::VertexId VertexId;
     typedef typename Graph::EdgeId EdgeId;
-
-    const Graph &graph_;
     set<EdgeId> &component_;
 public:
     ComponentLenCalculator(const Graph &graph, set<EdgeId> &component) :
-        graph_(graph), component_(component) { }
+        LengthCalculator<Graph, distance_t>(graph), component_(component) { }
 
     distance_t GetLength(EdgeId edge) const{
         if (component_.count(edge) != 0)
             return 0;
-        return graph_.length(edge);
+        return this->graph_.length(edge);
     }
 };
 
 template<class Graph, typename distance_t = size_t>
-class BoundedEdgeLenCalculator {
+class BoundedEdgeLenCalculator : public LengthCalculator<Graph, distance_t> {
     typedef typename Graph::VertexId VertexId;
     typedef typename Graph::EdgeId EdgeId;
-
-    const Graph &graph_;
     distance_t bound_;
 public:
     BoundedEdgeLenCalculator(const Graph &graph, distance_t bound) :
-        graph_(graph), bound_(bound) { }
+        LengthCalculator<Graph, distance_t>(graph), bound_(bound) { }
 
     distance_t GetLength(EdgeId edge) const{
-        if(graph_.length(edge) <= bound_)
+        if(this->graph_.length(edge) <= bound_)
             return 0;
         return 1;
     }
 };
 
 template<class Graph, typename distance_t = size_t>
-class AlongPathLengthCalculator {
+class AlongPathLengthCalculator : public LengthCalculator<Graph, distance_t> {
     typedef LengthCalculator<Graph, distance_t> base;
     typedef typename Graph::VertexId VertexId;
     typedef typename Graph::EdgeId EdgeId;
-
-    const Graph &graph_;
     set<VertexId> vertex_path_;
     distance_t bound_;
 
@@ -81,39 +75,38 @@ class AlongPathLengthCalculator {
 
 public:
     AlongPathLengthCalculator(const Graph &graph, vector<EdgeId> &edge_path, distance_t bound) :
-        graph_(graph),
+        LengthCalculator<Graph, distance_t>(graph),
         vertex_path_(CollectVertices(edge_path)),
         bound_(bound) { }
 
     distance_t GetLength(EdgeId edge) const{
         if (vertex_path_.count(this->graph_.EdgeStart(edge))
                 && vertex_path_.count(this->graph_.EdgeEnd(edge)))
-            return min(int(graph_.length(edge)), 200);
-        return graph_.length(edge);
+            return min(int(base::GetLength(edge)), 200);
+        return base::GetLength(edge);
     }
 };
 
 template<class Graph, typename distance_t = size_t>
-class PathIgnoringLengthCalculator {
+class PathIgnoringLengthCalculator : public LengthCalculator<Graph, distance_t> {
     typedef LengthCalculator<Graph, distance_t> base;
     typedef typename Graph::VertexId VertexId;
     typedef typename Graph::EdgeId EdgeId;
-
-    const Graph &graph_;
     set<EdgeId> path_;
+    distance_t bound_;
 
 public:
     PathIgnoringLengthCalculator(const Graph &graph, const vector<EdgeId> &edge_path) :
-            graph_(graph),
-            path_(edge_path.begin(), edge_path.end())
+            LengthCalculator<Graph, distance_t>(graph), path_(edge_path.begin(), edge_path.end())
             { }
 
     distance_t GetLength(EdgeId edge) const {
         if (path_.find(edge) != path_.end()) {
             return 0;
         }
-        return distance_t(graph_.length(edge));
+        return base::GetLength(edge);
     }
 };
+
 
 }

@@ -11,8 +11,6 @@
 #include "modules/path_extend/pe_config_struct.hpp"
 #include "pipeline/library.hpp"
 
-#include "configs/aligner_config.hpp"
-
 #include <boost/optional.hpp>
 #include "math/xmath.h"
 
@@ -21,7 +19,6 @@ namespace config {
 
 enum class info_printer_pos : char {
     default_pos = 0,
-    before_raw_simplification,
     before_first_gap_closer,
     before_simplification,
     before_post_simplification,
@@ -58,6 +55,16 @@ enum class construction_mode : char {
 };
 
 std::vector<std::string> ConstructionModeNames();
+
+enum class estimation_mode : char {
+    simple = 0,
+    weighted,
+    smoothing,
+
+    total
+};
+
+std::vector<std::string> EstimationModeNames();
 
 enum class resolving_mode : char {
     none = 0,
@@ -165,6 +172,7 @@ struct dataset {
 
 // struct for debruijn project's configuration file
 struct debruijn_config {
+
     pipeline_type mode;
     bool uneven_depth;
 
@@ -282,7 +290,6 @@ struct debruijn_config {
             bool enabled;
             double diff_mult;
             size_t edge_sum;
-            double unconditional_diff_mult;
         };
 
         struct relative_coverage_comp_remover {
@@ -308,6 +315,7 @@ struct debruijn_config {
 
         size_t cycle_iter_count;
 
+        bool post_simplif_enabled;
         bool topology_simplif_enabled;
         tip_clipper tc;
         dead_end_clipper dead_end;
@@ -317,7 +325,7 @@ struct debruijn_config {
         erroneous_connections_remover ec;
         relative_coverage_ec_remover rcec;
         relative_coverage_comp_remover rcc;
-        relative_coverage_edge_disconnector red;
+        relative_coverage_edge_disconnector relative_ed;
         topology_based_ec_remover tec;
         tr_based_ec_remover trec;
         interstrand_ec_remover isec;
@@ -353,6 +361,10 @@ struct debruijn_config {
 
     simplification simp;
     boost::optional<simplification> preliminary_simp;
+
+    struct sensitive_mapper {
+        size_t k;
+    };
 
     struct distance_estimator {
         double linkage_distance_coeff;
@@ -392,6 +404,20 @@ struct debruijn_config {
         size_t min_isolated_length;
     };
 
+    struct pacbio_processor {
+        size_t bwa_length_cutoff; //500
+        double compression_cutoff; // 0.6
+        double path_limit_stretching; //1.3
+        double path_limit_pressing;//0.7
+        size_t max_path_in_dijkstra; //15000
+        size_t max_vertex_in_dijkstra; //2000
+//gap_closer
+        size_t long_seq_limit; //400
+        size_t pacbio_min_gap_quantity; //2
+        size_t contigs_min_gap_quantity; //1
+        size_t max_contigs_gap_length; // 10000
+    };
+
     struct position_handler {
         size_t max_mapping_gap;
         size_t max_gap_diff;
@@ -403,8 +429,8 @@ struct debruijn_config {
 
     struct gap_closer {
         int minimal_intersection;
-        bool before_raw_simplify;
         bool before_simplify;
+        bool in_simplify;
         bool after_simplify;
         double weight_threshold;
     };
@@ -437,6 +463,10 @@ struct debruijn_config {
         double strong_probability_threshold;
         double coverage_threshold;
         bool use_coverage_threshold;
+    };
+
+    struct bwa_aligner {
+        size_t min_contig_len;
     };
 
     typedef std::map<info_printer_pos, info_printer> info_printers_t;
@@ -483,8 +513,69 @@ struct debruijn_config {
 
     contig_output co;
 
+    struct read_cloud_resolver {
+        std::string tslr_dataset;
+
+        size_t edge_tail_len;
+        size_t frame_size;
+
+        bool read_cloud_gap_closer_on;
+        bool read_cloud_resolution_on;
+
+        size_t long_edge_length_min_upper_bound;
+        size_t long_edge_length_max_upper_bound;
+        size_t long_edge_length_lower_bound;
+
+        double gap_closer_connection_score_threshold;
+        double gap_closer_relative_coverage_threshold;
+        size_t gap_closer_connection_length_threshold;
+
+        size_t min_training_edges;
+        size_t min_training_total_length;
+        size_t optimal_training_total_length;
+
+        struct scaffold_graph_construction {
+          double score_percentile;
+          double cluster_length_percentile;
+          size_t count_threshold;
+          double relative_coverage_threshold;
+          size_t connection_length_threshold;
+          size_t connection_count_threshold;
+          double split_procedure_strictness;
+          size_t transitive_distance_threshold;
+          size_t path_scaffolder_tail_threshold;
+          size_t path_scaffolder_count_threshold;
+          size_t min_edge_length_for_barcode_collection;
+        };
+
+        scaffold_graph_construction scaff_con;
+
+        struct scaffold_polisher {
+          size_t max_scaffold_dijkstra_distance;
+          double share_threshold;
+          size_t read_count_threshold;
+          size_t path_cluster_linkage_distance;
+          double path_cluster_relative_threshold;
+          size_t path_cluster_min_reads;
+        };
+
+        scaffold_polisher scaff_pol;
+
+        struct stats {
+            std::string genome_path;
+            std::string base_contigs_path;
+            std::string cloud_contigs_path;
+        };
+
+        stats statistics;
+
+        bool path_scaffolding_on;
+        bool debug_mode;
+    };
+
     boost::optional<scaffold_correction> sc_cor;
     truseq_analysis tsa;
+    read_cloud_resolver ts_res;
     std::string load_from;
 
     std::string entry_point;
@@ -514,15 +605,17 @@ struct debruijn_config {
 
     bool main_iteration;
 
-    unsigned max_threads;
+    size_t max_threads;
     size_t max_memory;
 
+    estimation_mode est_mode;
     resolving_mode rm;
     path_extend::pe_config::MainPEParamsT pe_params;
     boost::optional<path_extend::pe_config::MainPEParamsT> prelim_pe_params;
     bool avoid_rc_connections;
 
     construction con;
+    sensitive_mapper sensitive_map;
     distance_estimator de;
     smoothing_distance_estimator ade;
     ambiguous_distance_estimator amb_de;

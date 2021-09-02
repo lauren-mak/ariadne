@@ -78,7 +78,6 @@ vector<string> CheckedNames(const vector<pair<string, mode_t>>& mapping, mode_t 
 vector<string> InfoPrinterPosNames() {
     return CheckedNames<info_printer_pos>({
                     {"default", info_printer_pos::default_pos},
-                    {"before_raw_simplification", info_printer_pos::before_raw_simplification},
                     {"before_first_gap_closer", info_printer_pos::before_first_gap_closer},
                     {"before_simplification", info_printer_pos::before_simplification},
                     {"before_post_simplification", info_printer_pos::before_post_simplification},
@@ -106,6 +105,14 @@ vector<string> ConstructionModeNames() {
                     {"old", construction_mode::old},
                     {"extension", construction_mode::extention}}, construction_mode::total);
 }
+
+vector<string> EstimationModeNames() {
+    return CheckedNames<estimation_mode>({
+                    {"simple", estimation_mode::simple},
+                    {"weighted", estimation_mode::weighted},
+                    {"smoothing", estimation_mode::smoothing}}, estimation_mode::total);
+}
+
 
 vector<string> ResolveModeNames() {
     return CheckedNames<resolving_mode>({
@@ -153,16 +160,16 @@ void write_lib_data(const std::string& prefix) {
 }
 
 void load(debruijn_config::simplification::tip_clipper &tc,
-          boost::property_tree::ptree const &pt, bool complete) {
+          boost::property_tree::ptree const &pt, bool /*complete*/) {
     using config_common::load;
-    load(tc.condition, pt, "condition", complete);
+    load(tc.condition, pt, "condition");
 }
 
 void load(debruijn_config::simplification::dead_end_clipper& dead_end,
           boost::property_tree::ptree const &pt,
-          bool complete) {
+          bool /* complete */) {
     using config_common::load;
-    load(dead_end.condition, pt, "condition", complete);
+    load(dead_end.condition, pt, "condition");
     load(dead_end.enabled, pt, "enabled");
 }
 
@@ -197,7 +204,7 @@ void load(construction_mode& con_mode,
 }
 
 void load(debruijn_config::construction::early_tip_clipper& etc,
-          boost::property_tree::ptree const& pt, bool) {
+          boost::property_tree::ptree const& pt, bool /*complete*/) {
     using config_common::load;
     load(etc.enable, pt, "enable");
     etc.length_bound = pt.get_optional<size_t>("length_bound");
@@ -215,11 +222,25 @@ void load(debruijn_config::construction& con,
     load(con.early_tc, pt, "early_tip_clipper", complete);
 }
 
+void load(debruijn_config::sensitive_mapper& sensitive_map,
+          boost::property_tree::ptree const& pt, bool complete) {
+    using config_common::load;
+    load(sensitive_map.k, pt, "k", complete);
+}
+
+void load(estimation_mode &est_mode,
+          boost::property_tree::ptree const &pt, std::string const &key,
+          bool complete) {
+    if (complete || pt.find(key) != pt.not_found()) {
+        est_mode = ModeByName<estimation_mode>(pt.get<std::string>(key), EstimationModeNames());
+    }
+}
+
 void load(debruijn_config::simplification::bulge_remover& br,
           boost::property_tree::ptree const& pt, bool complete) {
   using config_common::load;
 
-  load(br.enabled                           , pt,   "enabled");
+  load(br.enabled                           , pt,   "enabled"					  , complete);
   load(br.main_iteration_only               , pt,   "main_iteration_only"	      , complete);
   load(br.max_bulge_length_coefficient		, pt,   "max_bulge_length_coefficient", complete);
   load(br.max_additive_length_coefficient	, pt,
@@ -236,10 +257,18 @@ void load(debruijn_config::simplification::bulge_remover& br,
   load(br.buff_cov_rel_diff,                pt,     "buff_cov_rel_diff", complete);
 }
 
+void load(debruijn_config::simplification::topology_tip_clipper& ttc,
+          boost::property_tree::ptree const& pt, bool /*complete*/) {
+  using config_common::load;
+  load(ttc.length_coeff, pt, "length_coeff");
+  load(ttc.plausibility_length, pt, "plausibility_length");
+  load(ttc.uniqueness_length, pt, "uniqueness_length");
+}
+
 void load(debruijn_config::simplification::complex_tip_clipper &ctc,
           boost::property_tree::ptree const &pt, bool complete) {
     using config_common::load;
-    load(ctc.enabled, pt, "enabled");
+    load(ctc.enabled, pt, "enabled", complete);
     load(ctc.max_relative_coverage, pt, "max_relative_coverage", complete);
     load(ctc.max_edge_len, pt, "max_edge_len", complete);
     load(ctc.condition, pt, "condition", complete);
@@ -248,16 +277,15 @@ void load(debruijn_config::simplification::complex_tip_clipper &ctc,
 void load(debruijn_config::simplification::relative_coverage_edge_disconnector& relative_ed,
         boost::property_tree::ptree const& pt, bool complete) {
   using config_common::load;
-  load(relative_ed.enabled, pt, "enabled");
+  load(relative_ed.enabled, pt, "enabled", complete);
   load(relative_ed.diff_mult, pt, "diff_mult", complete);
   load(relative_ed.edge_sum, pt, "edge_sum", complete);
-  load(relative_ed.unconditional_diff_mult, pt, "unconditional_diff_mult", complete);
 }
 
 void load(debruijn_config::simplification::relative_coverage_comp_remover& rcc,
           boost::property_tree::ptree const& pt, bool complete) {
   using config_common::load;
-  load(rcc.enabled, pt, "enabled");
+  load(rcc.enabled, pt, "enabled", complete);
   load(rcc.coverage_gap, pt, "coverage_gap", complete);
   load(rcc.length_coeff, pt, "max_length_coeff", complete);
   load(rcc.tip_allowing_length_coeff, pt, "max_length_with_tips_coeff", complete);
@@ -269,7 +297,7 @@ void load(debruijn_config::simplification::relative_coverage_comp_remover& rcc,
 void load(debruijn_config::simplification::isolated_edge_remover& ier,
           boost::property_tree::ptree const& pt, bool complete) {
   using config_common::load;
-  load(ier.enabled, pt, "enabled");
+  load(ier.enabled, pt, "enabled", complete);
   load(ier.max_length, pt, "max_length", complete);
   load(ier.use_rl_for_max_length, pt, "use_rl_for_max_length", complete);
   load(ier.max_coverage, pt, "max_coverage", complete);
@@ -280,7 +308,7 @@ void load(debruijn_config::simplification::isolated_edge_remover& ier,
 void load(debruijn_config::simplification::low_covered_edge_remover& lcer,
           boost::property_tree::ptree const& pt, bool complete) {
   using config_common::load;
-  load(lcer.enabled, pt, "lcer_enabled");
+  load(lcer.enabled, pt, "lcer_enabled", complete);
   load(lcer.coverage_threshold, pt, "lcer_coverage_threshold", complete);
 }
 
@@ -313,12 +341,12 @@ void load(debruijn_config::simplification::erroneous_connections_remover& ec,
 }
 
 void load(debruijn_config::simplification::relative_coverage_ec_remover& rcec,
-          boost::property_tree::ptree const& pt, bool complete) {
+          boost::property_tree::ptree const& pt, bool /*complete*/) {
     using config_common::load;
 
     load(rcec.enabled, pt, "enabled");
-    load(rcec.max_ec_length, pt, "rcec_lb", complete);
-    load(rcec.rcec_ratio, pt, "rcec_cb", complete);
+    load(rcec.max_ec_length, pt, "rcec_lb");
+    load(rcec.rcec_ratio, pt, "rcec_cb");
 }
 
 void load(debruijn_config::simplification::topology_based_ec_remover& tec,
@@ -354,14 +382,6 @@ void load(debruijn_config::simplification::max_flow_ec_remover& mfec,
   load(mfec.max_ec_length_coefficient, pt, "max_ec_length_coefficient");
   load(mfec.plausibility_length, pt, "plausibility_length");
   load(mfec.uniqueness_length, pt, "uniqueness_length");
-}
-
-void load(debruijn_config::simplification::topology_tip_clipper& ttc,
-          boost::property_tree::ptree const& pt, bool complete) {
-  using config_common::load;
-  load(ttc.length_coeff, pt, "length_coeff", complete);
-  load(ttc.plausibility_length, pt, "plausibility_length", complete);
-  load(ttc.uniqueness_length, pt, "uniqueness_length", complete);
 }
 
 void load(debruijn_config::simplification::hidden_ec_remover& her,
@@ -406,7 +426,7 @@ void load(debruijn_config::ambiguous_distance_estimator &amde,
           boost::property_tree::ptree const &pt, bool complete) {
     using config_common::load;
 
-    load(amde.enabled, pt, "enabled");
+    load(amde.enabled, pt, "enabled", complete);
     load(amde.haplom_threshold, pt, "haplom_threshold", complete);
     load(amde.relative_length_threshold, pt, "relative_length_threshold", complete);
     load(amde.relative_seq_threshold, pt, "relative_seq_threshold", complete);
@@ -428,13 +448,72 @@ void load(debruijn_config::truseq_analysis& tsa,
   load(tsa.genome_file, pt, "genome_file");
 }
 
-void load(bwa_aligner& bwa,
+void load(debruijn_config::read_cloud_resolver::stats& statistics,
+          boost::property_tree::ptree const& pt, bool /*complete*/) {
+    using config_common::load;
+    load(statistics.genome_path, pt, "genome_path");
+    load(statistics.base_contigs_path, pt, "base_contigs_path");
+    load(statistics.cloud_contigs_path, pt, "cloud_contigs_path");
+}
+
+void load(debruijn_config::read_cloud_resolver::scaffold_polisher& scaff_pol,
+          boost::property_tree::ptree const& pt, bool /*complete*/) {
+    using config_common::load;
+    load(scaff_pol.share_threshold, pt, "share_threshold");
+    load(scaff_pol.read_count_threshold, pt, "read_count_threshold");
+    load(scaff_pol.max_scaffold_dijkstra_distance, pt, "max_scaffold_distance");
+    load(scaff_pol.path_cluster_linkage_distance, pt, "path_cluster_linkage_distance");
+    load(scaff_pol.path_cluster_min_reads, pt, "path_cluster_min_reads");
+    load(scaff_pol.path_cluster_relative_threshold, pt, "path_cluster_score_threshold");
+}
+
+void load(debruijn_config::read_cloud_resolver::scaffold_graph_construction& scaff_con,
+          boost::property_tree::ptree const &pt, bool /*complete*/) {
+    using config_common::load;
+    load(scaff_con.score_percentile, pt, "score_percentile");
+    load(scaff_con.cluster_length_percentile, pt, "cluster_length_percentile");
+    load(scaff_con.count_threshold, pt, "count_threshold");
+    load(scaff_con.relative_coverage_threshold, pt, "relative_coverage_threshold");
+    load(scaff_con.connection_length_threshold, pt, "connection_length_threshold");
+    load(scaff_con.connection_count_threshold, pt, "connection_count_threshold");
+    load(scaff_con.split_procedure_strictness, pt, "split_strictness");
+    load(scaff_con.transitive_distance_threshold, pt, "transitive_distance_threshold");
+    load(scaff_con.path_scaffolder_tail_threshold, pt, "path_scaffolder_tail_threshold");
+    load(scaff_con.path_scaffolder_count_threshold, pt, "path_scaffolder_count_threshold");
+    load(scaff_con.min_edge_length_for_barcode_collection, pt, "min_edge_length_for_barcode_collection");
+}
+
+void load(debruijn_config::read_cloud_resolver& ts_res,
+          boost::property_tree::ptree const& pt, bool /*complete*/) {
+    using config_common::load;
+    load(ts_res.tslr_dataset, pt, "tslr_dataset");
+    load(ts_res.edge_tail_len, pt, "edge_tail_len");
+    load(ts_res.frame_size, pt, "frame_size");
+    load(ts_res.read_cloud_gap_closer_on, pt, "read_cloud_gap_closer_on");
+    load(ts_res.read_cloud_resolution_on, pt, "read_cloud_resolution_on");
+    load(ts_res.scaff_pol, pt, "scaffold_polisher");
+    load(ts_res.scaff_con, pt, "scaffold_graph_construction");
+    load(ts_res.long_edge_length_min_upper_bound, pt, "long_edge_length_min_upper_bound");
+    load(ts_res.long_edge_length_max_upper_bound, pt, "long_edge_length_max_upper_bound");
+    load(ts_res.long_edge_length_lower_bound, pt, "long_edge_length_lower_bound");
+    load(ts_res.min_training_edges, pt, "min_training_edges");
+    load(ts_res.min_training_total_length, pt, "min_training_total_length");
+    load(ts_res.optimal_training_total_length, pt, "optimal_training_total_length");
+    load(ts_res.statistics, pt, "statistics");
+    load(ts_res.path_scaffolding_on, pt, "path_scaffolding_on");
+    load(ts_res.debug_mode, pt, "debug_mode");
+    load(ts_res.gap_closer_connection_score_threshold, pt, "gap_closer_connection_score_threshold");
+    load(ts_res.gap_closer_relative_coverage_threshold, pt, "gap_closer_relative_coverage_threshold");
+    load(ts_res.gap_closer_connection_length_threshold, pt, "gap_closer_connection_length_threshold");
+}
+
+void load(debruijn_config::bwa_aligner& bwa,
           boost::property_tree::ptree const& pt, bool /*complete*/) {
     using config_common::load;
     load(bwa.min_contig_len, pt, "min_contig_len");
 }
 
-void load(pacbio_processor& pb,
+void load(debruijn_config::pacbio_processor& pb,
           boost::property_tree::ptree const& pt, bool /*complete*/) {
   using config_common::load;
 
@@ -478,8 +557,8 @@ void load(debruijn_config::gap_closer& gc,
           boost::property_tree::ptree const& pt, bool /*complete*/) {
   using config_common::load;
   load(gc.minimal_intersection, pt, "minimal_intersection");
-  load(gc.before_raw_simplify, pt, "before_raw_simplify");
   load(gc.before_simplify, pt, "before_simplify");
+  load(gc.in_simplify, pt, "in_simplify");
   load(gc.after_simplify, pt, "after_simplify");
   load(gc.weight_threshold, pt, "weight_threshold");
 }
@@ -558,6 +637,7 @@ void load(debruijn_config::simplification& simp,
 
   load(simp.cycle_iter_count, pt, "cycle_iter_count", complete);
 
+  load(simp.post_simplif_enabled, pt, "post_simplif_enabled", complete);
   load(simp.topology_simplif_enabled, pt, "topology_simplif_enabled", complete);
   load(simp.tc, pt, "tc", complete); // tip clipper:
 
@@ -568,7 +648,7 @@ void load(debruijn_config::simplification& simp,
   load(simp.ec, pt, "ec", complete); // erroneous connections remover:
   load(simp.rcec, pt, "rcec", complete); // relative coverage erroneous connections remover
   load(simp.rcc, pt, "rcc", complete); // relative coverage component remover:
-  load(simp.red, pt, "red", complete); // relative edge disconnector:
+  load(simp.relative_ed, pt, "relative_ed", complete); // relative edge disconnector:
   load(simp.tec, pt, "tec", complete); // topology aware erroneous connections remover:
   load(simp.trec, pt, "trec", complete); // topology and reliability based erroneous connections remover:
   load(simp.isec, pt, "isec", complete); // interstrand erroneous connections remover (thorn remover):
@@ -681,7 +761,10 @@ void load_launch_info(debruijn_config &cfg, boost::property_tree::ptree const &p
         cfg.temp_bin_reads_dir += '/';
 
     load(cfg.max_threads, pt, "max_threads");
-    cfg.max_threads = spades_set_omp_threads(cfg.max_threads);
+    // Fix number of threads according to OMP capabilities.
+    cfg.max_threads = std::min(cfg.max_threads, (size_t) omp_get_max_threads());
+    // Inform OpenMP runtime about this :)
+    omp_set_num_threads((int) cfg.max_threads);
 
     load(cfg.max_memory, pt, "max_memory");
 
@@ -703,6 +786,7 @@ void load_cfg(debruijn_config &cfg, boost::property_tree::ptree const &pt,
 
     //FIXME
     load(cfg.tsa, pt, "tsa", complete);
+    load(cfg.ts_res, pt, "ts_res", complete);
 
     load(cfg.co, pt, "contig_output", complete);
 
@@ -721,6 +805,7 @@ void load_cfg(debruijn_config &cfg, boost::property_tree::ptree const &pt,
 
     load(cfg.max_repeat_length, pt, "max_repeat_length", complete);
 
+    load(cfg.est_mode, pt, "estimation_mode", complete);
     load(cfg.de, pt, "de", complete);
     load(cfg.ade, pt, "ade", complete); // advanced distance estimator:
     load(cfg.amb_de, pt, "amb_de", complete);
@@ -741,6 +826,8 @@ void load_cfg(debruijn_config &cfg, boost::property_tree::ptree const &pt,
     load(cfg.use_scaffolder, pt, "use_scaffolder", complete);
     load(cfg.avoid_rc_connections, pt, "avoid_rc_connections", complete);
 
+    load(cfg.sensitive_map, pt, "sensitive_mapper", complete);
+
     bool save_gp;
     load(save_gp, pt, "save_gp", complete);
     load(cfg.info_printers, pt, "info_printers", complete);
@@ -757,6 +844,7 @@ void load_cfg(debruijn_config &cfg, boost::property_tree::ptree const &pt,
     load(cfg.ss, pt, "strand_specificity", complete);
     load(cfg.calculate_coverage_for_each_lib, pt, "calculate_coverage_for_each_lib", complete);
     load(cfg.search_distance, pt, "search_distance", complete);
+    // UPDATE - New options for Ariadne deconvolution
     INFO("FINDING SEARCH DISTANCE: " << cfg.search_distance);
     load(cfg.size_cutoff, pt, "size_cutoff", complete);
     INFO("FINDING SIZE CUTOFF: " << cfg.size_cutoff);

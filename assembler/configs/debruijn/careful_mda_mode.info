@@ -3,7 +3,6 @@ simp
     ; bulge remover:
     br
     {
-        enabled true
         max_relative_coverage		1.1	; bulge_cov < this * not_bulge_cov
     }
     

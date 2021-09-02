@@ -23,17 +23,17 @@ class GapTrackingListener : public SequenceMapperListener {
     const Graph& g_;
     GapStorage& gap_storage_;
     const GapStorage empty_storage_;
-    std::vector<GapStorage> buffer_storages_;
+    vector<GapStorage> buffer_storages_;
 
     const GapDescription INVALID_GAP;
 
     template<class ReadT>
-    std::vector<GapDescription> InferGaps(const ReadT& read,
-                                          const MappingPath<EdgeId>& mapping) const {
+    vector<GapDescription> InferGaps(const ReadT& read,
+            const MappingPath<EdgeId>& mapping) const {
         TerminalVertexCondition<Graph> tip_condition(g_);
         DEBUG("Inferring gaps")
         VERIFY(!mapping.empty());
-        std::vector<GapDescription> answer;
+        vector<GapDescription> answer;
         for (size_t i = 0; i < mapping.size() - 1; ++i) {
             EdgeId e1 = mapping.edge_at(i);
             EdgeId e2 = mapping.edge_at(i + 1);
@@ -136,34 +136,7 @@ private:
     DECL_LOGGER("GapTrackingListener");
 };
 
-void CloseGaps(conj_graph_pack& gp, bool rtype,
-               const GapStorage& gap_storage,
-               size_t min_weight) {
-    INFO("Closing gaps with long reads");
-
-    HybridGapCloser::ConsensusF consensus_f;
-    if (rtype) {
-        consensus_f = &PoaConsensus;
-    } else {
-        consensus_f = [=](const std::vector<string>& gap_seqs) {
-            return TrivialConsenus(gap_seqs, cfg::get().pb.max_contigs_gap_length);
-        };
-    }
-
-    HybridGapCloser gap_closer(gp.g, gap_storage,
-                               min_weight, consensus_f,
-                               cfg::get().pb.long_seq_limit);
-    auto replacement = gap_closer();
-
-    for (size_t j = 0; j < cfg::get().ds.reads.lib_count(); j++) {
-        gp.single_long_reads[j].ReplaceEdges(replacement);
-    }
-
-    INFO("Closing gaps with long reads finished");
-}
-}
-
-bool IsNontrivialAlignment(const std::vector<std::vector<EdgeId>>& aligned_edges) {
+bool IsNontrivialAlignment(const vector<vector<EdgeId>>& aligned_edges) {
     for (size_t j = 0; j < aligned_edges.size(); j++)
         if (aligned_edges[j].size() > 1)
             return true;
@@ -182,18 +155,18 @@ io::SingleStreamPtr GetReadsStream(const io::SequencingLibrary<config::LibraryDa
 class PacbioAligner {
     const pacbio::PacBioMappingIndex<Graph>& pac_index_;
     PathStorage<Graph>& path_storage_;
-    gap_closing::GapStorage& gap_storage_;
+    GapStorage& gap_storage_;
     pacbio::StatsCounter stats_;
     const PathStorage<Graph> empty_path_storage_;
-    const gap_closing::GapStorage empty_gap_storage_;
+    const GapStorage empty_gap_storage_;
     const size_t read_buffer_size_;
 
     void ProcessReadsBatch(const std::vector<io::SingleRead>& reads, size_t thread_cnt) {
-        std::vector<PathStorage<Graph>> long_reads_by_thread(thread_cnt,
-                                                             empty_path_storage_);
-        std::vector<gap_closing::GapStorage> gaps_by_thread(thread_cnt,
-                                                            empty_gap_storage_);
-        std::vector<pacbio::StatsCounter> stats_by_thread(thread_cnt);
+        vector<PathStorage<Graph>> long_reads_by_thread(thread_cnt,
+                                                        empty_path_storage_);
+        vector<GapStorage> gaps_by_thread(thread_cnt,
+                                          empty_gap_storage_);
+        vector<pacbio::StatsCounter> stats_by_thread(thread_cnt);
 
         size_t longer_500 = 0;
         size_t aligned = 0;
@@ -242,7 +215,7 @@ class PacbioAligner {
 public:
     PacbioAligner(const pacbio::PacBioMappingIndex<Graph>& pac_index,
                   PathStorage<Graph>& path_storage,
-                  gap_closing::GapStorage& gap_storage,
+                  GapStorage& gap_storage,
                   size_t read_buffer_size = 50000) :
             pac_index_(pac_index),
             path_storage_(path_storage),
@@ -282,17 +255,20 @@ public:
 void PacbioAlignLibrary(const conj_graph_pack& gp,
                         const io::SequencingLibrary<config::LibraryData>& lib,
                         PathStorage<Graph>& path_storage,
-                        gap_closing::GapStorage& gap_storage,
-                        size_t thread_cnt, const config::pacbio_processor &pb) {
+                        GapStorage& gap_storage,
+                        size_t thread_cnt) {
     string lib_for_info = (lib.is_long_read_lib() ? "long reads" : "contigs");
     INFO("Aligning "<< lib_for_info << " with bwa-mem based aligner");
 
-    alignment::BWAIndex::AlignmentMode mode =
-            (lib.type() == io::LibraryType::PacBioReads ?
-             alignment::BWAIndex::AlignmentMode::PacBio : alignment::BWAIndex::AlignmentMode::Ont2D);
-
-    // Initialize index
-    pacbio::PacBioMappingIndex<Graph> pac_index(gp.g, pb,
+    alignment::BWAIndex::AlignmentMode mode;
+    if (lib.type() == io::LibraryType::PacBioReads){
+        mode = alignment::BWAIndex::AlignmentMode::PacBio;
+    } else {
+        mode = alignment::BWAIndex::AlignmentMode::Ont2D;
+    }
+    //initializing index
+    pacbio::PacBioMappingIndex<Graph> pac_index(gp.g,
+                                                cfg::get().pb,
                                                 mode);
 
     PacbioAligner aligner(pac_index, path_storage, gap_storage);
@@ -305,8 +281,36 @@ void PacbioAlignLibrary(const conj_graph_pack& gp,
     INFO("Aligning of " << lib_for_info <<" finished");
 }
 
+void CloseGaps(conj_graph_pack& gp, bool rtype,
+               const GapStorage& gap_storage, 
+               size_t min_weight) {
+    INFO("Closing gaps with long reads");
+
+    HybridGapCloser::ConsensusF consensus_f;
+    if (rtype) {
+        consensus_f = &PoaConsensus;
+    } else {
+        consensus_f = [=](const vector<string>& gap_seqs) {
+            return TrivialConsenus(gap_seqs, cfg::get().pb.max_contigs_gap_length);
+        };
+    }
+
+    HybridGapCloser gap_closer(gp.g, gap_storage,
+                               min_weight, consensus_f,
+                               cfg::get().pb.long_seq_limit);
+    auto replacement = gap_closer();
+
+    for (size_t j = 0; j < cfg::get().ds.reads.lib_count(); j++) {
+        gp.single_long_reads[j].ReplaceEdges(replacement);
+    }
+
+    INFO("Closing gaps with long reads finished");
+}
+}
+using namespace gap_closing;
+
 bool ShouldAlignWithPacbioAligner(io::LibraryType lib_type) {
-    return lib_type == io::LibraryType::UntrustedContigs ||
+    return lib_type == io::LibraryType::UntrustedContigs || 
            lib_type == io::LibraryType::PacBioReads ||
            lib_type == io::LibraryType::SangerReads ||
            lib_type == io::LibraryType::NanoporeReads; //||
@@ -315,7 +319,6 @@ bool ShouldAlignWithPacbioAligner(io::LibraryType lib_type) {
 
 void HybridLibrariesAligning::run(conj_graph_pack& gp, const char*) {
     using namespace omnigraph;
-
     bool make_additional_saves = parent_->saves_policy().make_saves_;
     for (size_t lib_id = 0; lib_id < cfg::get().ds.reads.lib_count(); ++lib_id) {
         if (cfg::get().ds.reads[lib_id].is_hybrid_lib()) {
@@ -325,16 +328,16 @@ void HybridLibrariesAligning::run(conj_graph_pack& gp, const char*) {
             bool rtype = lib.is_long_read_lib();
 
             auto& path_storage = gp.single_long_reads[lib_id];
-            gap_closing::GapStorage gap_storage(gp.g);
+            GapStorage gap_storage(gp.g);
 
             if (ShouldAlignWithPacbioAligner(lib.type())) {
                 //TODO put alternative alignment right here
                 PacbioAlignLibrary(gp, lib,
                                    path_storage, gap_storage,
-                                   cfg::get().max_threads, cfg::get().pb);
+                                   cfg::get().max_threads);
             } else {
                 gp.EnsureBasicMapping();
-                gap_closing::GapTrackingListener mapping_listener(gp.g, gap_storage);
+                GapTrackingListener mapping_listener(gp.g, gap_storage);
                 INFO("Processing reads from hybrid library " << lib_id);
 
                 //FIXME make const

@@ -5,12 +5,15 @@
 //* See file LICENSE for details.
 //***************************************************************************
 
+/*
+ * long_edge_storage.hpp
+ *
+ *  Created on: Feb 7, 2013
+ *      Author: lab42
+ */
+
 #pragma once
 
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
 #include <algorithm>
 
 namespace debruijn_graph {
@@ -19,65 +22,63 @@ template<class Graph>
 class PathInfo {
 public:
     typedef typename Graph::EdgeId EdgeId;
+    vector<EdgeId> path;
 
 private:
-    std::vector<EdgeId> path_;
-    mutable size_t w_;
+    mutable size_t w;
 
 public:
-    const std::vector<EdgeId>& path() const {
-        return path_;
-    }
-    std::vector<EdgeId>& path() {
-        return path_;
+    const vector<EdgeId>& getPath() const {
+        return path;
     }
 
-    size_t weight() const {
-        return w_;
+    size_t getWeight() const {
+        return w;
     }
 
-    void increase_weight(int addition = 1) const {
-        w_ += addition;
+    void increaseWeight(int addition = 1) const {
+        w += addition;
     }
 
     bool operator<(const PathInfo<Graph> &other) const {
-        return path_ < other.path_;
+        return path < other.path;
     }
 
-    PathInfo(const std::vector<EdgeId> &p, size_t weight = 0) :
-            path_(p), w_(weight) {
+    PathInfo(const vector<EdgeId> &p, size_t weight = 0) :
+            path(p), w(weight) {
     }
 
     PathInfo(const PathInfo<Graph> &other) {
-        path_ = other.path_;
-        w_ = other.w_;
+        path = other.path;
+        w = other.w;
     }
 
-    std::string str(const Graph &g_) const {
-        std::stringstream s;
-        for (EdgeId e : path_) {
-            s << g_.int_id(e) << " ";
+    string str(const Graph &g_) const {
+        stringstream s;
+        for(auto iter = path.begin(); iter != path.end(); iter ++ ){
+            s << g_.int_id(*iter) << " ";
         }
         return s.str();
     }
+
 };
 
 template<class Graph>
 class PathStorage {
     friend class PathInfo<Graph> ;
     typedef typename Graph::EdgeId EdgeId;
-    typedef std::map<EdgeId, std::set<PathInfo<Graph> > > InnerIndex;
+    typedef map<EdgeId, set<PathInfo<Graph> > > InnerIndex;
 
     const Graph &g_;
     InnerIndex inner_index_;
     static const size_t kLongEdgeForStats = 500;
 
-    void HiddenAddPath(const std::vector<EdgeId> &p, int w) {
+    void HiddenAddPath(const vector<EdgeId> &p, int w){
         if (p.size() == 0 ) return;
-        for (typename std::set<PathInfo<Graph> >::iterator iter = inner_index_[p[0]].begin(); iter != inner_index_[p[0]].end(); ++iter) {
+        for (typename set<PathInfo<Graph> >::iterator iter = inner_index_[p[0]].begin(); iter != inner_index_[p[0]].end(); ++iter) {
 
-            if (iter->path() == p) {
-                iter->increase_weight(w);
+            if (iter->path == p) {
+                iter->increaseWeight(w);
                 return;
             }
         }
@@ -101,13 +102,13 @@ public:
                 iter++) {
             for (auto j_iter = iter->second.begin();
                     j_iter != iter->second.end(); j_iter++) {
-                this->AddPath(j_iter->path(), (int) j_iter->weight());
+                this->AddPath(j_iter->path, (int) j_iter->getWeight());
             }
         }
     }
 
-    void ReplaceEdges(std::map<EdgeId, EdgeId> &old_to_new){
-        std::map<int, EdgeId> tmp_map;
+    void ReplaceEdges(map<EdgeId, EdgeId> &old_to_new){
+        map<int, EdgeId> tmp_map;
 //        for (auto iter = g_.SmartEdgeBegin(); !iter.IsEnd(); ++iter ){
 //            tmp_map[g_.int_id(*iter)] = *iter;
 //        }
@@ -121,13 +122,13 @@ public:
                 DEBUG("new first edge: "<< g_.int_id(old_to_new[iter->first]) << " with " << tmp.size() << " edges ");
                 new_first = old_to_new[iter->first];
             }
-            std::set<PathInfo<Graph> > new_tmp;
+            set<PathInfo<Graph> > new_tmp;
             for (auto j_iter = tmp.begin(); j_iter != tmp.end(); j_iter++) {
                 PathInfo<Graph> pi = *(j_iter);
-                for (size_t k = 0; k < pi.path().size(); k++)
-                    if (old_to_new.find(pi.path()[k]) != old_to_new.end()) {
+                for (size_t k = 0; k < pi.path.size(); k++)
+                    if (old_to_new.find(pi.path[k]) != old_to_new.end()) {
 //                        INFO(g_.int_id(old_to_new[pi.path[k]]));
-                        pi.path()[k] = old_to_new[pi.path()[k]];
+                        pi.path[k] = old_to_new[pi.path[k]];
                     }
                 DEBUG(pi.str(g_));
                 new_tmp.insert(pi);
@@ -149,45 +150,45 @@ public:
         inner_index_ = new_index;
     }
 
-    void AddPath(const std::vector<EdgeId> &p, int w, bool add_rc = false) {
+    void AddPath(const vector<EdgeId> &p, int w, bool add_rc = false) {
         HiddenAddPath(p, w);
         if (add_rc) {
-            std::vector<EdgeId> rc_p(p.size());
+            vector<EdgeId> rc_p(p.size());
             for (size_t i = 0; i < p.size(); i++)
                 rc_p[i] = g_.conjugate(p[p.size() - 1 - i]);
             HiddenAddPath(rc_p, w);
         }
     }
 
-    void DumpToFile(const std::string& filename) const{
-        std::map<EdgeId, EdgeId> auxilary;
+    void DumpToFile(const string& filename) const{
+        map <EdgeId, EdgeId> auxilary;
         DumpToFile(filename, auxilary);
     }
 
-    void DumpToFile(const std::string& filename, const std::map<EdgeId, EdgeId>& replacement,
+    void DumpToFile(const string& filename, const map<EdgeId, EdgeId>& replacement,
                     size_t stats_weight_cutoff = 1, bool need_log = false) const {
-        std::ofstream filestr(filename);
-        std::set<EdgeId> continued_edges;
+        ofstream filestr(filename);
+        set<EdgeId> continued_edges;
 
         for(auto iter = inner_index_.begin(); iter != inner_index_.end(); ++iter){
-            filestr<< iter->second.size() << std::endl;
+            filestr<< iter->second.size() << endl;
             int non1 = 0;
             for (auto j_iter = iter->second.begin(); j_iter != iter->second.end(); ++j_iter) {
-                filestr << " Weight: " << j_iter->weight();
-                if (j_iter->weight() > stats_weight_cutoff)
+                filestr << " Weight: " << j_iter->getWeight();
+                if (j_iter->getWeight() > stats_weight_cutoff)
                     non1++;
 
-                filestr << " length: " << j_iter->path().size() << " ";
-                for (auto p_iter = j_iter->path().begin(); p_iter != j_iter->path().end(); ++p_iter) {
-                    if (p_iter != j_iter->path().end() - 1 && j_iter->weight() > stats_weight_cutoff) {
+                filestr << " length: " << j_iter->path.size() << " ";
+                for (auto p_iter = j_iter->path.begin(); p_iter != j_iter->path.end(); ++p_iter) {
+                    if (p_iter != j_iter->path.end() - 1 && j_iter->getWeight() > stats_weight_cutoff) {
                         continued_edges.insert(*p_iter);
                     }
 
                     filestr << g_.int_id(*p_iter) << "(" << g_.length(*p_iter) << ") ";
                 }
-                filestr << std::endl;
+                filestr << endl;
             }
-            filestr << std::endl;
+            filestr << endl;
         }
 
         int noncontinued = 0;
@@ -222,7 +223,7 @@ public:
         }
     }
 
-    void SaveAllPaths(std::vector<PathInfo<Graph>> &res) const {
+     void SaveAllPaths(vector<PathInfo<Graph>> &res) const {
         for (auto iter = inner_index_.begin(); iter != inner_index_.end(); ++iter) {
             for (auto j_iter = iter->second.begin(); j_iter != iter->second.end(); ++j_iter) {
                 res.push_back(*j_iter);
@@ -230,7 +231,7 @@ public:
         }
     }
 
-    void LoadFromFile(const std::string s, bool force_exists = true) {
+    void LoadFromFile(const string s, bool force_exists = true) {
         FILE* file = fopen(s.c_str(), "r");
         if (force_exists) {
             VERIFY(file != NULL);
@@ -241,9 +242,9 @@ public:
         fclose(file);
 
         INFO("Loading long reads alignment...");
-        std::ifstream filestr(s);
+        ifstream filestr(s);
         INFO("loading from " << s);
-        std::map<size_t, EdgeId> tmp_map;
+        map<size_t, EdgeId> tmp_map;
         for (auto iter = g_.ConstEdgeBegin(); !iter.IsEnd(); ++iter) {
             tmp_map[g_.int_id(*iter)] = *iter;
         }
@@ -264,7 +265,7 @@ public:
                 fl = fscanf(file, "Weight: %d length: %d", &w, &l);
                 TRACE(w << " " << l);
                 VERIFY(fl == 2);
-                std::vector<EdgeId> p;
+                vector<EdgeId> p;
                 for (int j = 0; j < l; j++) {
                     size_t e;
                     int x;
@@ -282,10 +283,11 @@ public:
         INFO("Loading finished.");
     }
 
-    void AddStorage(PathStorage<Graph> &to_add) {
-        for (auto iter = to_add.inner_index_.begin(); iter != to_add.inner_index_.end(); iter++) {
+    void AddStorage(PathStorage<Graph> & to_add) {
+
+        for(auto iter = to_add.inner_index_.begin(); iter != to_add.inner_index_.end(); iter++) {
             for(auto j_iter = iter->second.begin(); j_iter != iter->second.end(); j_iter ++) {
-                this->AddPath(j_iter->path(), (int) j_iter->weight());
+                this->AddPath(j_iter->path, (int) j_iter->getWeight());
             }
         }
     }
@@ -348,3 +350,5 @@ public:
 
 
 }
+
+
