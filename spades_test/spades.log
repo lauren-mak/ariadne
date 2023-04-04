@@ -1,0 +1,121 @@
+Command line: ./spades.py	--test	
+
+System information:
+  SPAdes version: 3.12.0-dev
+  Python version: 3.6.6
+  OS: Linux-3.10.0-693.2.2.el7.x86_64-x86_64-with-centos-7.4.1708-Core
+
+Output dir: /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test
+Mode: read error correction and assembling
+Debug mode is turned OFF
+
+Dataset parameters:
+  Multi-cell mode (you should set '--sc' flag if input data was obtained with MDA (single-cell) technology or --meta flag if processing metagenomic dataset)
+  Reads:
+    Library number: 1, library type: paired-end
+      orientation: fr
+      left reads: ['/pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_1.fq.gz']
+      right reads: ['/pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_2.fq.gz']
+      interlaced reads: not specified
+      single reads: not specified
+      merged reads: not specified
+Read error correction parameters:
+  Iterations: 1
+  PHRED offset will be auto-detected
+  Corrected reads will be compressed
+Assembly parameters:
+  k: automatic selection based on read length
+  Repeat resolution is enabled
+  Mismatch careful mode is turned OFF
+  MismatchCorrector will be SKIPPED
+  Coverage cutoff is turned OFF
+Other parameters:
+  Dir for temp files: /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test/tmp
+  Threads: 16
+  Memory limit (in Gb): 250
+
+
+======= SPAdes pipeline started. Log can be found here: /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test/spades.log
+
+
+===== Read error correction started. 
+
+
+== Running read error correction tool: /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/bin/spades-hammer /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test/corrected/configs/config.info
+
+  0:00:00.000     4M / 4M    INFO    General                 (main.cpp                  :  75)   Starting BayesHammer, built from N/A, git revision N/A
+  0:00:00.000     4M / 4M    INFO    General                 (main.cpp                  :  76)   Loading config from /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test/corrected/configs/config.info
+  0:00:00.001     4M / 4M    INFO    General                 (memory_limit.cpp          :  49)   Memory limit set to 250 Gb
+  0:00:00.001     4M / 4M    INFO    General                 (main.cpp                  :  85)   Trying to determine PHRED offset
+  0:00:00.001     4M / 4M    INFO    General                 (main.cpp                  :  91)   Determined value is 33
+  0:00:00.001     4M / 4M    INFO    General                 (hammer_tools.cpp          :  36)   Hamming graph threshold tau=1, k=21, subkmer positions = [ 0 10 ]
+  0:00:00.001     4M / 4M    INFO    General                 (main.cpp                  : 112)   Size of aux. kmer data 24 bytes
+     === ITERATION 0 begins ===
+  0:00:00.002     4M / 4M    INFO   K-mer Index Building     (kmer_index_builder.hpp    : 301)   Building kmer index
+  0:00:00.002     4M / 4M    INFO    General                 (kmer_index_builder.hpp    : 117)   Splitting kmer instances into 256 files using 16 threads. This might take a while.
+  0:00:00.003     4M / 4M    INFO    General                 (file_limit.hpp            :  32)   Open file limit set to 10024
+  0:00:00.003     4M / 4M    INFO    General                 (kmer_splitters.hpp        :  89)   Memory available for splitting buffers: 5.20825 Gb
+  0:00:00.003     4M / 4M    INFO    General                 (kmer_splitters.hpp        :  97)   Using cell size of 262144
+  0:00:00.044     8G / 8G    INFO   K-mer Splitting          (kmer_data.cpp             :  97)   Processing /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_1.fq.gz
+  0:00:00.401     8G / 8G    INFO   K-mer Splitting          (kmer_data.cpp             :  97)   Processing /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_2.fq.gz
+  0:00:00.595     8G / 8G    INFO   K-mer Splitting          (kmer_data.cpp             : 112)   Total 4108 reads processed
+  0:00:00.651    64M / 8G    INFO    General                 (kmer_index_builder.hpp    : 120)   Starting k-mer counting.
+  0:00:01.027    64M / 8G    INFO    General                 (kmer_index_builder.hpp    : 127)   K-mer counting done. There are 1974 kmers in total.
+  0:00:01.027    64M / 8G    INFO    General                 (kmer_index_builder.hpp    : 133)   Merging temporary buckets.
+  0:00:01.150    64M / 8G    INFO   K-mer Index Building     (kmer_index_builder.hpp    : 314)   Building perfect hash indices
+  0:00:01.162    64M / 8G    INFO    General                 (kmer_index_builder.hpp    : 150)   Merging final buckets.
+  0:00:01.170    64M / 8G    INFO   K-mer Index Building     (kmer_index_builder.hpp    : 336)   Index built. Total 10136 bytes occupied (41.078 bits per kmer).
+  0:00:01.171    64M / 8G    INFO   K-mer Counting           (kmer_data.cpp             : 356)   Arranging kmers in hash map order
+  0:00:01.172    64M / 8G    INFO    General                 (main.cpp                  : 147)   Clustering Hamming graph.
+  0:00:01.172    64M / 8G    INFO    General                 (main.cpp                  : 154)   Extracting clusters
+  0:00:01.174    64M / 8G    INFO    General                 (main.cpp                  : 166)   Clustering done. Total clusters: 1960
+  0:00:01.174    64M / 8G    INFO   K-mer Counting           (kmer_data.cpp             : 376)   Collecting K-mer information, this takes a while.
+  0:00:01.174    64M / 8G    INFO   K-mer Counting           (kmer_data.cpp             : 382)   Processing /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_1.fq.gz
+  0:00:01.183    64M / 8G    INFO   K-mer Counting           (kmer_data.cpp             : 382)   Processing /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_2.fq.gz
+  0:00:01.191    64M / 8G    INFO   K-mer Counting           (kmer_data.cpp             : 389)   Collection done, postprocessing.
+  0:00:01.191    64M / 8G    INFO   K-mer Counting           (kmer_data.cpp             : 403)   There are 1974 kmers in total. Among them 0 (0%) are singletons.
+  0:00:01.191    64M / 8G    INFO    General                 (main.cpp                  : 172)   Subclustering Hamming graph
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 649)   Subclustering done. Total 0 non-read kmers were generated.
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 650)   Subclustering statistics:
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 651)     Total singleton hamming clusters: 1946. Among them 1946 (100%) are good
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 652)     Total singleton subclusters: 8. Among them 8 (100%) are good
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 653)     Total non-singleton subcluster centers: 10. Among them 10 (100%) are good
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 654)     Average size of non-trivial subcluster: 2.8 kmers
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 655)     Average number of sub-clusters per non-singleton cluster: 1.28571
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 656)     Total solid k-mers: 1964
+  0:00:01.194    64M / 8G    INFO   Hamming Subclustering    (kmer_cluster.cpp          : 657)     Substitution probabilities: [4,4]((0.875,0.125,0,0),(0,1,0,0),(0,0,1,0),(0,0,0.125,0.875))
+  0:00:01.194    64M / 8G    INFO    General                 (main.cpp                  : 177)   Finished clustering.
+  0:00:01.194    64M / 8G    INFO    General                 (main.cpp                  : 196)   Starting solid k-mers expansion in 16 threads.
+  0:00:01.209    64M / 8G    INFO    General                 (main.cpp                  : 217)   Solid k-mers iteration 0 produced 0 new k-mers.
+  0:00:01.209    64M / 8G    INFO    General                 (main.cpp                  : 221)   Solid k-mers finalized
+  0:00:01.209    64M / 8G    INFO    General                 (hammer_tools.cpp          : 220)   Starting read correction in 16 threads.
+  0:00:01.209    64M / 8G    INFO    General                 (hammer_tools.cpp          : 233)   Correcting pair of reads: /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_1.fq.gz and /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_2.fq.gz
+  0:00:01.362   408M / 8G    INFO    General                 (hammer_tools.cpp          : 168)   Prepared batch 0 of 2054 reads.
+  0:00:01.366   408M / 8G    INFO    General                 (hammer_tools.cpp          : 175)   Processed batch 0
+  0:00:01.369   408M / 8G    INFO    General                 (hammer_tools.cpp          : 185)   Written batch 0
+  0:00:01.406    64M / 8G    INFO    General                 (hammer_tools.cpp          : 274)   Correction done. Changed 4 bases in 4 reads.
+  0:00:01.406    64M / 8G    INFO    General                 (hammer_tools.cpp          : 275)   Failed to correct 0 bases out of 353915.
+  0:00:01.406    64M / 8G    INFO    General                 (main.cpp                  : 254)   Saving corrected dataset description to /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test/corrected/corrected.yaml
+  0:00:01.407    64M / 8G    INFO    General                 (main.cpp                  : 261)   All done. Exiting.
+
+== Compressing corrected reads (with pigz)
+
+== Dataset description file was created: /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test/corrected/corrected.yaml
+
+
+===== Read error correction finished. 
+
+
+===== Assembling started.
+
+
+== Running assembler: K21
+
+Exception caught /pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test/K21/configs/config.info(3): cannot open include file simplification.info
+
+
+== Error ==  system call for: "['/pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/bin/spades-core', '/pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/spades_test/K21/configs/config.info']" finished abnormally, err code: 4
+
+In case you have troubles running SPAdes, you can write to spades.support@cab.spbu.ru
+or report an issue on our GitHub repository github.com/ablab/spades
+Please provide us with params.txt and spades.log files from the output directory.

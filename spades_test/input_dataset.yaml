@@ -1,0 +1,6 @@
+- "left reads":
+  - "/pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_1.fq.gz"
+  "orientation": "fr"
+  "right reads":
+  - "/pbtech_mounts/homes048/dmm2017/cloudSPAdes-dev/test_dataset/ecoli_1K_2.fq.gz"
+  "type": "paired-end"
