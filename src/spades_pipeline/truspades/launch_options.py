@@ -51,11 +51,6 @@ class Options:
                 print_version_and_exit(self.version)
             if key == "--help" or key == "-h":
                 print_usage_and_exit(1, self.version)
-            elif key == "--test":
-                dir = os.path.abspath("spades_test") + "_truspades"
-                self.output_dir = dir
-                self.input_dirs = [os.path.join(self.home, "test_dataset_truspades")]
-                self.test = True
             elif key == "--do":
                 self.mode = value
             elif key == "--construct-dataset":
