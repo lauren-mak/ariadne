@@ -10,28 +10,32 @@ The Ariadne manuscript will be publicly available soon.
 
 ## Installation
 
-Currently, Ariadne is implemented as a module of an older version of the cloudSPAdes *de novo* assembly program (version 3.12.1). The following libraries need to be pre-installed:
+Ariadne is functional out-of-the-box! The only required binary, `spades-core`, can be found pre-compiled in `src/bin`. All you need to do is clone the repo:
+```
+git clone <url>   
+cd ariadne/
+./spades.py
+```
 
-* g++ (version 5.3.1 or higher)
+### Compiling
+
+Ariadne was initially developed as a module of cloudSPAdes but has since been spun off into a standalone program. The following libraries need to be pre-installed:
+
+* g++ (version 5.3.1 - 7.30)
 * cmake (version 2.8.12 or higher)
 * zlib
 * libbz2
 
-From source: 
 ```
-git clone <url>   
-cd ariadne/
 ./spades_compile.sh
 ```
 The installation directory can be set by `PREFIX=<destination_dir>` in the compile step. 
-
-In the future, Ariadne will be repackaged as a standalone program, along with a scaffold generator such that deconvolved reads can be directly used to generate *de novo* assemblies without a second cloudSPAdes run.
 
 ## Deconvolving Reads
 
 Use the following command to run barcode deconvolution. The option `gemcode` must be set for the main cloudSPAdes modules to recognize barcoded reads. `<fastq_name>` should be separate or interleaved fastq file where reads have a `BX` tag designating the barcode (this is the default output of [longranger basic](https://support.10xgenomics.com/genome-exome/software/pipelines/latest/advanced/other-pipelines)). `<max_search_dist>` is the user-specified parameter for the maximum search distance, which should be smaller than the average length of a genomic fragment. `<min_cloud_size>` is the user-specified parameter for the minimum cloud size- in terms of number of reads- for which the deconvolution process will be run. By default, these parameters are set to 5 kbp and 6 reads respectively. Future versions of Ariadne will allow for the user to specify the barcode identifier. BayesHammer error correction is turned off because the introduced tags interfere with barcode recognition. BayesHammer may be run separately from the assembly procedure to generate error-corrected reads, as long as the barcode format described in **Input** below is followed as input for the actual cloudSPAdes command. 
 ```
-spades.py [--meta] --only-assembler --gemcode1-1 <fastq_name>.R1.fastq --gemcode1-2 <fastq_name>.R2.fastq --search-distance <max_search_dist> --size_cutoff <min_cloud_size> -t <num_threads> -m <mem_in_gb> -o /path/to/output_dir
+./spades.py [--meta] --only-assembler --gemcode1-1 <fastq_name>.R1.fastq --gemcode1-2 <fastq_name>.R2.fastq --search-distance <max_search_dist> --size_cutoff <min_cloud_size> -t <num_threads> -m <mem_in_gb> -o /path/to/output_dir
 ```
 
 For more SPAdes options, refer to the [Spades manual](http://cab.spbu.ru/files/release3.13.1/manual.html) or the command-line options.
@@ -73,14 +77,12 @@ A full exploration of performance metrics will be available with the manuscript.
 
 ## Datasets
 
-The MOCK5 and MOCK20 10x datasets used in the paper may be downloaded from [AWS](https://s3.us-east-2.amazonaws.com/readclouds/cloudspades_data.tar.gz). The MOCK5 LoopSeq and MOCK20 TELL-Seq datasets can be found at https://www.ncbi.nlm.nih.gov/bioproject/PRJNA728470. 
+The MOCK5 10x, MOCK20 10x, MOCK5 LoopSeq and MOCK20 TELL-Seq datasets can be found at https://www.ncbi.nlm.nih.gov/bioproject/PRJNA728470. 
 
 ## Credits and Citations
 
-Find the Ariadne preprint [here](https://www.biorxiv.org/content/10.1101/2021.05.09.443255v1). If you've found Ariadne useful, please cite it as:
+You can find the Ariadne manuscript [here](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-03033-5). If you've found Ariadne useful, please cite it as:
 
-Ariadne: Barcoded Linked-Read Deconvolution Using de Bruijn Graphs
-Lauren Mak, Dmitry Meleshko, David C. Danko, Waris N. Barakzai, Natan Belchikov, Iman Hajirasouliha
-bioRxiv 2021.05.09.443255; doi: https://doi.org/10.1101/2021.05.09.443255
+Ariadne: Barcoded Linked-Read Deconvolution Using de Bruijn Graphs. Mak, L., Meleshko, D., Danko, D.C. et al. Ariadne: synthetic long read deconvolution using assembly graphs. Genome Biol 24, 197 (2023). https://doi.org/10.1186/s13059-023-03033-5
 
 This algorithm was developed by Waris Barakzai and myself, and tested by myself with help from Dmitrii Meleshko, David Danko, Natan Belchikov and Iman Hajirasouliha.
